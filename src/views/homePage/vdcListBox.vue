@@ -1,0 +1,436 @@
+<template>
+  <!-- vdcListBox -->
+  <div class="vdcListBox">
+    <!-- 可用区 zoneDataPageData-->
+    <div class="vdcListBox-item">
+      <commonBox :title="zoneDataPageData.label">
+        <div class="vdcListBox-item-bottom">
+          <div class="vdcListBox-item-bottom-lf">
+            <div class="bottom-icon">
+              <div class="bottom-icon-box vdcList-icon-zone"></div>
+            </div>
+            <div>{{ zoneDataPageData.subTitle }}</div>
+          </div>
+          <div class="vdcListBox-item-bottom-rt">
+            <div class="bottom-item online">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 总数 -->
+                  {{ $t("common.details.total") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ zoneDataPageData.total }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </commonBox>
+    </div>
+    <!-- 集群 clusterDataPageData -->
+    <div class="vdcListBox-item">
+      <commonBox :title="clusterDataPageData.label">
+        <div class="vdcListBox-item-bottom">
+          <div class="vdcListBox-item-bottom-lf">
+            <div class="bottom-icon">
+              <div class="bottom-icon-box vdcList-icon-cluster"></div>
+            </div>
+            <div>{{ clusterDataPageData.subTitle }}</div>
+          </div>
+          <div class="vdcListBox-item-bottom-rt">
+            <div class="bottom-item online">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 在线 -->
+                  {{ $t("common.details.online") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ clusterDataPageData.online }}
+              </div>
+            </div>
+            <div class="bottom-item offline">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 离线 -->
+                  {{ $t("common.details.offline") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ clusterDataPageData.offline }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </commonBox>
+    </div>
+    <!-- 物理机 physicalHostDataPageData -->
+    <div class="vdcListBox-item">
+      <commonBox :title="physicalHostDataPageData.label">
+        <div class="vdcListBox-item-bottom">
+          <div class="vdcListBox-item-bottom-lf">
+            <div class="bottom-icon">
+              <div class="bottom-icon-box vdcList-icon-physicalHost"></div>
+            </div>
+            <div>{{ physicalHostDataPageData.subTitle }}</div>
+          </div>
+          <div class="vdcListBox-item-bottom-rt">
+            <div class="bottom-item online">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 在线 -->
+                  {{ $t("common.details.online") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ physicalHostDataPageData.online }}
+              </div>
+            </div>
+            <div class="bottom-item offline">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 离线 -->
+                  {{ $t("common.details.offline") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ physicalHostDataPageData.offline }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </commonBox>
+    </div>
+    <!-- VDC vdcDataPageData -->
+    <div class="vdcListBox-item">
+      <commonBox :title="vdcDataPageData.label">
+        <div class="vdcListBox-item-bottom">
+          <div class="vdcListBox-item-bottom-lf">
+            <div class="bottom-icon">
+              <div class="bottom-icon-box vdcList-icon-VDC"></div>
+            </div>
+            <div>{{ vdcDataPageData.subTitle }}</div>
+          </div>
+          <div class="vdcListBox-item-bottom-rt">
+            <div class="bottom-item online">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 已分配 -->
+                  {{ $t("common.alreadyAllocate") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ vdcDataPageData.online }}
+              </div>
+            </div>
+            <div class="bottom-item offline">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 未分配 -->
+                  {{ $t("common.noAllocate") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ vdcDataPageData.offline }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </commonBox>
+    </div>
+
+    <!-- 云服务器 serverVmDataPageData -->
+    <div class="vdcListBox-item">
+      <commonBox :title="serverVmDataPageData.label">
+        <div class="vdcListBox-item-bottom">
+          <div class="vdcListBox-item-bottom-lf">
+            <div class="bottom-icon">
+              <div class="bottom-icon-box vdcList-icon-serverVm"></div>
+            </div>
+            <div>{{ serverVmDataPageData.subTitle }}</div>
+          </div>
+          <div class="vdcListBox-item-bottom-rt">
+            <div class="bottom-item online">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 在线 -->
+                  {{ $t("common.details.online") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ serverVmDataPageData.online }}
+              </div>
+            </div>
+            <div class="bottom-item offline">
+              <div class="bottom-item-iconLabel">
+                <div class="bottom-item-icon"></div>
+                <div class="bottom-item-label">
+                  <!-- 离线 -->
+                  {{ $t("common.details.offline") }}
+                </div>
+              </div>
+              <div class="bottom-item-number">
+                {{ serverVmDataPageData.offline }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </commonBox>
+    </div>
+  </div>
+</template>
+
+<script>
+import commonBox from "./commonBox.vue";
+export default {
+  name: "vdcListBox",
+  props: ["pageData"],
+  components: { commonBox },
+  computed: {},
+  data() {
+    return {
+      vdclist: [
+        {
+          label: this.$t("common.home.zone"), // "可用区",
+          subTitle: this.$t("common.home.zoneNum"), //  "可用区数量",
+          total: "0",
+          online: "0",
+          offline: "0",
+          key: "zone",
+        },
+        {
+          label: this.$t("common.home.cluster"), // "集群",
+          subTitle: this.$t("common.home.total"), // "集群总数",
+          total: "0",
+          online: "0",
+          offline: "0",
+          key: "cluster",
+        },
+        {
+          label: this.$t("common.home.physicalHost"), // "物理机",
+          subTitle: this.$t("common.home.total"), // "物理机总数",
+          total: "0",
+          online: "0",
+          offline: "0",
+          key: "physicalHost",
+        },
+        {
+          label: this.$t("common.home.VDC"), // "VDC",
+          subTitle: this.$t("common.home.total"), // "VDC总数",
+          total: "0",
+          online: "0",
+          offline: "0",
+          key: "VDC",
+        },
+        {
+          label: this.$t("common.home.serverVm"), // "云服务器",
+          subTitle: this.$t("common.home.total"), // "云服务器总数",
+          total: "0",
+          online: "0",
+          offline: "0",
+          key: "serverVm",
+        },
+      ],
+      zoneDataPageData: {
+        label: this.$t("common.home.zone"), // "可用区",
+        subTitle: this.$t("common.home.zoneNum"), //  "可用区数量",
+        total: "0",
+        online: "0",
+        offline: "0",
+        key: "zone",
+      },
+      clusterDataPageData: {
+        label: this.$t("common.home.cluster"), // "集群",
+        subTitle: this.$t("common.home.total"), // "集群总数",
+        total: "0",
+        online: "0",
+        offline: "0",
+        key: "cluster",
+      },
+      physicalHostDataPageData: {
+        label: this.$t("common.home.physicalHost"), // "物理机",
+        subTitle: this.$t("common.home.total"), // "物理机总数",
+        total: "0",
+        online: "0",
+        offline: "0",
+        key: "physicalHost",
+      },
+      vdcDataPageData: {
+        label: this.$t("common.home.VDC"), // "VDC",
+        subTitle: this.$t("common.home.total"), // "VDC总数",
+        total: "0",
+        online: "0",
+        offline: "0",
+        key: "VDC",
+      },
+      serverVmDataPageData: {
+        label: this.$t("common.home.serverVm"), // "云服务器",
+        subTitle: this.$t("common.home.total"), // "云服务器总数",
+        total: "0",
+        online: "0",
+        offline: "0",
+        key: "serverVm",
+      },
+      serverVmData: {},
+    };
+  },
+  watch: {
+    pageData(val) {
+      this.setpageData(val);
+    },
+  },
+  methods: {
+    setpageData(pageData) {
+      let { zoneData, clusterData, physicalHostData, vdcData, serverVmData } =
+        pageData;
+      let list = [];
+      this.vdclist.forEach((element) => {
+        let { key } = element;
+        let listi = element;
+        switch (key) {
+          case "zone":
+            listi.total = zoneData.totalZone;
+            this.zoneDataPageData = listi;
+            break;
+          case "cluster":
+            listi.subTitle = element.subTitle + "：" + clusterData.totalCluster;
+            listi.online = clusterData.onlineCluster;
+            listi.offline = clusterData.offlineCluster;
+            this.clusterDataPageData = listi;
+            break;
+          case "physicalHost":
+            listi.subTitle =
+              element.subTitle + "：" + physicalHostData.totalPhysicalHost;
+            listi.online = physicalHostData.onlinePhysicalHost;
+            listi.offline = physicalHostData.offlinePhysicalHost;
+            this.physicalHostDataPageData = listi;
+            break;
+          case "VDC":
+            listi.subTitle = element.subTitle + "：" + vdcData.totalVdc;
+            listi.online = vdcData.alreadyAllocateVdc;
+            listi.offline = vdcData.noAllocateVdc;
+            this.vdcDataPageData = listi;
+            break;
+          case "serverVm":
+            listi.subTitle =
+              element.subTitle + "：" + serverVmData.totalServerVm;
+            listi.online = serverVmData.onlineServerVm;
+            listi.offline = serverVmData.offlineServerVm;
+            this.serverVmDataPageData = listi;
+            break;
+
+          default:
+            break;
+        }
+        list.push(listi);
+      });
+      this.pageShowlist = list;
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.vdcListBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 14px;
+  .vdcListBox-item {
+    width: 100%;
+    min-height: 120px;
+    height: 19%;
+  }
+  .vdcListBox-item-bottom {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    align-items: center;
+    .vdcListBox-item-bottom-lf {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      .bottom-icon {
+        width: 75px;
+        height: 45px;
+        font-size: 34px;
+        font-weight: bold;
+        color: $msgInfo;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        .bottom-icon-box {
+          width: 42px;
+          height: 42px;
+        }
+      }
+
+      .bottom-label {
+        // border: 1px solid red;
+        // width: 75px;
+        // height: 45px;
+      }
+    }
+    .vdcListBox-item-bottom-rt {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      height: 100%;
+      // align-items: center;
+      justify-content: center;
+      .bottom-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 50%;
+        line-height: 1;
+        .bottom-item-iconLabel {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .bottom-item-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+          }
+          .bottom-item-label {
+            margin-right: 5px;
+            height: 100%;
+          }
+        }
+
+        .bottom-item-number {
+          // font-size: 38px;
+          // line-height: 38px;
+          // height: 100%;
+          // font-weight: bold;
+        }
+      }
+      .online {
+        .bottom-item-icon {
+          background-color: $msgInfo;
+        }
+      }
+      .offline {
+        .bottom-item-icon {
+          background-color: $msgDanger;
+        }
+      }
+    }
+  }
+}
+</style>

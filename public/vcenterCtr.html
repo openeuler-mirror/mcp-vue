@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="./favicon.ico">
+    <title>
+        vcenter控制台
+    </title>
+    <link rel="stylesheet" type="text/css" href="./vcenterCtr/wmks-all.css" />
+    <script type="text/javascript" src="./vcenterCtr/jquery-3.6.1.js"></script>
+    <script type="text/javascript" src="./vcenterCtr/jquery-ui.js"></script>
+    <script type="text/javascript" src="./vcenterCtr/wmks.min.js"></script>
+</head>
+
+<body>
+    <div id="bar" style="position:absolute;display: block;z-index: 9999;width: inherit;height: 40px;line-height: 40px;">
+        <div id="buttonBar">
+            <div class="buttonC">
+                <button onclick="viewFullScreen();">查看全屏</button>
+                <button onclick="sendCAD();">发送 Ctrl+Alt+Delete</button>
+            </div>
+        </div>
+    </div>
+    <div id="wmksContainer" style="position:absolute;width:100%;height:95%;top:40px"></div>
+</body>
+<script>
+    function getQueryVariable(variable) {
+        let query = window.location.search.substring(1);
+        let vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            let pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+    const vmName = getQueryVariable("v");
+    const ip = getQueryVariable("i");
+    const ticket = getQueryVariable("t");
+    const wssHostUrl = `wss://${ip}/ticket/${ticket}`;
+    const wmks = WMKS.createWMKS("wmksContainer", {}).register(WMKS.CONST.Events.CONNECTION_STATE_CHANGE, function (event, data) {
+        if (data.state === WMKS.CONST.ConnectionState.CONNECTED) {
+            console.log("connection state change : connected");
+        }
+    });
+    wmks.connect(wssHostUrl);
+    function viewFullScreen() {
+        wmks.enterFullScreen();
+    }
+
+    function sendCAD() {
+        wmks.sendCAD();
+    }
+</script>
+
+</html>
