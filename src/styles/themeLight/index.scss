@@ -1,0 +1,140 @@
+[data-theme="light"] {
+  @import './iconBg.scss';
+
+  .app-wrapper-content {
+    color: $light_fontColor;
+    background: $light_contentBg;
+  }
+
+  .commonBox,
+  .page-wrapper-left,
+  .page-wrapper-right .app-container {
+    background: $light_gray;
+  }
+
+  .page-wrapper-icon {
+    .org-text {
+      color: $light_fontColor;
+    }
+  }
+
+  // 头部路由文字
+  .app-breadcrumb.el-breadcrumb {
+    .no-redirect {
+      color: $light_fontColor;
+    }
+  }
+
+  .el-breadcrumb__inner a,
+  .el-breadcrumb__inner.is-link {
+    color: $light_fontColor;
+  }
+
+  // 左侧菜单
+  .sidebar-container {
+
+    .submenu-title-noDropdown,
+    .el-submenu__title,
+    .el-submenu .el-menu-item {
+
+      &.is-active,
+      &:hover {
+        background-color: $light_menuHover  !important;
+        color: $menuHoverRightBorder;
+      }
+    }
+
+    .el-menu-item,
+    .el-submenu__title {
+      color: $light_menuColor;
+    }
+
+    .el-menu-item:focus,
+    .el-menu-item:hover {
+      background-color: $light_menuHover  !important;
+    }
+  }
+
+  // 表格
+  .mc-table {
+    .el-table {
+
+      .el-table__fixed-right {
+        background-color: $light_tableBg;
+      }
+
+      color: $light_fontColor;
+
+      th>.cell,
+      .el-progress__text {
+        color: $light_fontColor;
+      }
+
+      th,
+      .el-table__fixed-right-patch,
+      .el-table--enable-row-hover .el-table__body tr:hover>td {
+        background-color: $light_tableheaderBg;
+      }
+
+      th.is-leaf .cell::after {
+        background-color: $light_tableheadersplit;
+      }
+
+      .el-table__body tr.hover-row.current-row>td,
+      .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+      .el-table__body tr.hover-row.el-table__row--striped>td,
+      .el-table__body tr.hover-row>td {
+        background-color: $light_tableheaderBg;
+      }
+
+
+    }
+
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+      background-color: $light_tableheaderBg;
+    }
+
+    .el-table td,
+    .el-table th.is-leaf {
+      border-bottom: 1px solid $light_tableBorderColor  !important;
+    }
+
+  }
+
+  .title-box,
+  .basicInfo-title,
+  .panel-setting>span,
+  .workDetail h3 {
+    color: $light_fontColor;
+  }
+
+  .el-tree {
+    color: $light_fontColor;
+
+    .el-tree-node.is-current>.el-tree-node__content,
+    .el-tree-node__content:hover,
+    .el-tree-node:focus>.el-tree-node__content {
+      background: $light_tree_nodebg;
+    }
+  }
+
+  .el-tabs {
+    .el-tabs__item {
+      color: $light_fontColor;
+    }
+
+    .el-tabs__item.is-active {
+      color: #409EFF;
+    }
+  }
+
+  // 详情页面
+  .basicInfo-content {
+    color: $light_fontColor;
+  }
+
+  // form表单
+  .el-form-item__label {
+    color: $light_fontColor;
+  }
+}

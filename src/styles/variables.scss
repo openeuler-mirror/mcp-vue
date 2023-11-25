@@ -1,0 +1,107 @@
+@import './mixin.scss';
+
+// sidebar
+$menuText: #000;
+$menuActiveText: #000;
+$subMenuActiveText: #000; //https://github.com/ElemeFE/element/issues/12951
+
+$menuBg: #ffffff;
+$dark_menuHover: #2f394c; // 菜单（暗色）
+$light_menuHover: #F5F7FA; // 菜单（亮色）
+
+$dark_menuColor: #eaeaeb; // 菜单字体（暗色）
+$light_menuColor: #2f394c; // 菜单字体（暗色）
+
+$menuHoverRightBorder: #409EFF;
+$name_avatarBg: #409EFF;
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
+
+$loginBg: #34333c; //登录首页背景色
+
+$dark_gray: #172238; //表单背景色（暗色）
+$light_gray: #fff; //表单背景色（亮色）
+
+$dark_contentBg: #0d1421; // 页面整体背景颜色（暗色）
+$light_contentBg: #F5F7FA; // 页面整体背景颜色（亮色）
+
+$btnBg: #409EFF; //按钮背景色
+
+$fontColor: #333333; // 字体颜色
+$dark_fontColor: #eaeaeb; // 字体颜色
+$light_fontColor: #333333; // 字体颜色
+
+$fontLightColr: #999; // 浅色
+$borderColor: #d7d7d7; // 边框颜色
+$boxShadow: 0px 0px 4px 3px #ededed; // 描边
+
+$msgSuccess: #67C23A; //成功消息颜色
+$msgWarning: #E6A23C; //警告消息颜色
+$msgInfo: #409EFF; //提示消息颜色
+$msgDanger: #F56C6C; //严重消息颜色
+$msgNotice: #303133; //通知消息颜色
+
+$headerBg: #172238; // 页面头部背景
+$headerColor: #ffffff; // 页面头部字体颜色
+
+
+$headerBarBorder: #409EFF; // 页面整体背景颜色
+$sideBarWidth: 230px;
+
+// 表格颜色
+// 表头颜色
+
+$light_tableBg: #fff; // 表格背景（亮色）
+$dark_tableBg: #172238; // 表格背景（暗色）
+$dark_tableheaderBg: #232d42; // 表格行鼠标划过颜色（暗色）
+$light_tableheaderBg: #f5f7fa; // 表格行鼠标划过颜色（亮色）
+// 行鼠标滑过
+$dark_tablecellhoverBg: #232d42; // 表格行鼠标划过颜色（暗色）
+$light_tablecellhoverBg: #fafafa; // 表格行鼠标划过颜色（亮色）
+// 行分割线
+$dark_tableBorderColor: #394255; // 表格行边框颜色（暗色）
+$light_tableBorderColor: #e8e8e8; // 表格行边框颜色（亮色）
+// 表头分割线
+$dark_tableheadersplit: #394255; // 表格行鼠标划过颜色（暗色）
+$light_tableheadersplit: #ebeef5; // 表格行鼠标划过颜色（亮色）
+
+// 表格分页
+$dark_paginationColor: #fff; // 表格分页字体颜色（暗色）
+$light_paginationColor: rgba(0, 0, 0, 0.65); // 表格分页字体颜色（亮色）
+
+$dark_paginationBgColor: #262c38; // 表格分页背景颜色（暗色）
+$light_paginationBgColor: #fff; // 表格分页背景颜色（亮色）
+
+
+$dark_paginationactiveBgColor: #409EFF; // 表格分页背景颜色（暗色）.active
+$light_paginationactiveBgColor: #409EFF; // 表格分页背景颜色（亮色）.active
+
+
+$dark_paginationHoverBgColor: #454a54; // 表格分页背景颜色（暗色）:hover
+$light_paginationHoverBgColor: #ebeef5; // 表格分页背景颜色（亮色）:hover
+
+$dark_tree_nodebg: #232d42; // 树组件选中项颜色（暗色）
+$light_tree_nodebg: #f0f7ff; // 树组件选中项颜色（亮色）
+
+
+// the :export directive is the magic sauce for webpack
+
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  dark_gray: $loginBg;
+  loginBg: $dark_gray;
+  light_gray: $light_gray;
+  btnBg: $btnBg;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+  msgSuccess: $msgSuccess;
+  msgWarning: $msgWarning;
+  msgInfo: $msgInfo;
+  msgDanger: $msgDanger;
+  msgNotice: $msgNotice;
+}

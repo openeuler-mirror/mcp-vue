@@ -1,0 +1,335 @@
+// cover some element-ui styles
+
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-breadcrumb__inner a:hover,
+.el-breadcrumb__inner.is-link:hover {
+  color: #409EFF !important;
+  cursor: pointer;
+}
+
+.el-upload {
+  input[type="file"] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+
+// to fixed https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+}
+
+// refine element ui upload
+.upload-container {
+  .el-upload {
+    width: 100%;
+
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+// dropdown
+.el-dropdown-menu {
+  a {
+    display: block
+  }
+
+  .el-link--inner {
+    width: max-content;
+    display: block;
+  }
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
+}
+
+
+.el-form-item {
+  .el-form-item__label-wrap {
+    margin-left: 0 !important;
+  }
+}
+
+
+// form labe 粗细
+.el-form-item .el-form-item__label {
+  font-weight: normal;
+}
+
+// 确定/取消 交换位置，确定在左边
+.el-message-box__btns {
+  display: flex;
+  flex-flow: row-reverse;
+
+  >button {
+    margin-left: 15px;
+  }
+}
+
+
+// 表单中样式统一
+.el-form {
+
+  // icon
+  [class*="el-icon-"] {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 20px;
+    color: #C0C4CC;
+  }
+
+  [class*="el-icon-"]:hover {
+    color: #409eff;
+  }
+
+  .el-select .el-tag__close[class*="el-icon-"] {
+    cursor: pointer;
+    margin-left: 0px;
+    font-size: 10px;
+    color: #909399;
+  }
+
+  .el-select .el-tag__close[class*="el-icon-"]:hover {
+    color: #FFF;
+    background-color: #909399;
+  }
+
+  .el-input.is-disabled .el-input__inner,
+  .el-input-group input[qlinput-readonly] {
+    // background-color: transparent;
+    border-color: #E4E7ED;
+    // color: #C0C4CC;
+    cursor: not-allowed;
+  }
+
+  .el-form-item.is-error .el-input__inner,
+  .el-form-item.is-error .el-input__inner:focus,
+  .el-form-item.is-error .el-textarea__inner,
+  .el-form-item.is-error .el-textarea__inner:focus,
+  .el-message-box__input input.invalid,
+  .el-message-box__input input.invalid:focus {
+    border-color: #F56C6C !important;
+  }
+
+
+  .el-input-group__append .el-input--suffix .el-input__inner,
+  .el-input-group__prepend .el-input--suffix .el-input__inner {
+    border-color: transparent !important;
+  }
+
+  .input-with-select {
+    .el-input-group__append {
+      background-color: #fff;
+      padding: 0;
+      width: 70px;
+      height: 30px;
+      overflow: hidden;
+    }
+
+    .el-input-group__append button.el-button {
+      background-color: #fff;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0
+    }
+
+    .el-input-group__append button.el-button:hover {
+      background-color: #e9f5ff;
+    }
+
+    .el-input-group__append .el-button.is-disabled,
+    .el-input-group__append .el-button.is-disabled:hover {
+      background-color: #F5F7FA;
+    }
+  }
+}
+
+.el-input-group__append,
+.el-input-group__prepend {
+  background-color: #fff;
+}
+
+.el-button--primary {
+
+  // icon
+  [class*="el-icon-"] {
+    cursor: pointer;
+    margin: 0px;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  [class*="el-icon-"]:hover {
+    color: #fff;
+  }
+}
+
+.el-input-number {
+
+  .el-input-number__decrease,
+  .el-input-number__increase {
+
+    // icon
+    [class*="el-icon-"] {
+      cursor: pointer;
+      margin: 0px;
+      font-size: 12px;
+      color: #909399;
+    }
+
+    [class*="el-icon-"]:hover {
+      color: #909399;
+    }
+  }
+
+}
+
+// 统一弹窗宽度
+.el-dialog {
+  width: 600px;
+}
+
+.lg-dialog {
+  .el-dialog {
+    width: 1000px;
+  }
+}
+
+.sm-dialog {
+  .el-dialog {
+    width: 450px;
+  }
+}
+
+.el-tabs {
+  .el-tabs__header {
+    margin: 0px;
+    margin-bottom: 20px;
+  }
+
+  .el-tabs__item {
+    padding: 0;
+    font-size: 16px;
+    min-width: 200px;
+    text-align: center;
+  }
+
+  .el-tabs__active-bar {
+    height: 1px;
+  }
+
+  .el-tabs__nav-wrap::after {
+    height: 1px;
+  }
+}
+
+.divider-title {
+  font-weight: bold;
+}
+
+.el-divider--horizontal {
+  margin: 0px;
+}
+
+.el-input-group__append {
+
+  .el-button.is-disabled,
+  .el-button.is-disabled:focus,
+  .el-button.is-disabled:hover {
+    color: inherit;
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+// tree
+.el-tree {
+
+  background-color: transparent !important;
+
+  .custom-tree-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      margin: 0 4px;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    // icon
+    [class*="el-icon-"] {
+      font-size: 16px;
+      cursor: pointer;
+      color: #909399;
+    }
+
+    // [class*="el-icon-"]:hover {
+    //   color: #409eff;
+    // }
+  }
+
+  .el-tree-node__expand-icon.is-leaf {
+    color: transparent !important;
+    cursor: default;
+  }
+}
+
+// .el-step
+.el-step {
+  $step-color: #409EFF;
+
+  .el-step__head.is-process {
+    color: $step-color;
+    border-color: $step-color;
+  }
+
+  .el-step__title.is-process {
+    color: $step-color;
+  }
+
+  .el-step__head.is-finish {
+    .el-step__line {
+      position: absolute;
+      border-color: inherit;
+      background-color: $step-color;
+    }
+  }
+}
+
+.el-tooltip__popper {
+  max-width: 200px;
+}
+
+
+.el-dialog__body {
+  padding: 20px;
+  line-height: 20px;
+}
+
+.el-dialog__footer {
+  .dialog-footer {
+    .el-button+.el-button {
+      margin-left: 15px;
+    }
+  }
+}
