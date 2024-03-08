@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-content changeSpecModal">
     <!-- 分配资源 -->
-    <div class="drawer-body-content">
+    <div class="create-new-formtable">
       <!-- 一级vdc -->
       <firstVdcresource
         v-if="showfirstVdc"
@@ -31,9 +31,10 @@
             <el-input
               v-model="refuseFormData.auditOpinion"
               type="textarea"
-              maxlength="400"
+              :rows="3"
+              placeholder=""
+              maxlength="50"
               show-word-limit
-              :autosize="{ minRows: 2, maxRows: 4 }"
             />
           </el-form-item>
         </el-form>
@@ -258,8 +259,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .changeSpecModal {
+  .create-new-formtable {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    max-height: 82vh;
+    padding: 0 50px;
+  }
   .template-box {
     margin-top: 15px;
     .el-textarea {
@@ -269,7 +281,10 @@ export default {
   }
 }
 .footBtn {
-  border-top: 1px $borderColor dashed;
+  //position: absolute;bottom: 0;right: 0;left: 0;
+  padding: 25px 70px;
+
+  border-top: 1px $borderColor solid;
   .el-button {
     margin-right: 15px;
   }

@@ -171,11 +171,8 @@ export default {
     setPageDefaultData(defaultData) {
       let { serverClusterType, clusterList, clusterBindResourceList } =
         defaultData;
-
-      this.clusterList = JSON.parse(JSON.stringify(clusterList));
-      this.clusterBindResourceList = JSON.parse(
-        JSON.stringify(clusterBindResourceList)
-      );
+      this.clusterList = clusterList;
+      this.clusterBindResourceList = clusterBindResourceList;
       this.serverClusterTypeChange(serverClusterType);
     },
     serverClusterTypeChange(val) {
@@ -251,7 +248,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 .computResources-box {
 }
 </style>

@@ -2,17 +2,13 @@
   <!-- 组织管理 -->
   <div class="organizationMgr-home app-container">
     <!-- 操作按钮 -->
-    <headerBox @refresh="refreshTable" :spinBol="tableLoading">
-      <template slot="headerLeft">
-        <el-button @click="newlyBuild" v-if="currentBtnShow('create_org')">
-          {{ $t("authorityMgr.createOrg") }}
-        </el-button>
-      </template>
-    </headerBox>
-
+    <header-bar
+      ref="headerBar"
+      @newlyBuild="newlyBuild"
+      @refreshTable="refreshTable"
+    />
     <mc-table
       ref="orgTable"
-      :tableLoading="tableLoading"
       :data="tableData"
       :total="total"
       :pageSize="pageSize"
@@ -191,7 +187,7 @@
 </template>
 
 <script>
-import headerBox from "@/components/headerBox";
+import headerBar from "./header-bar";
 import mcTable from "@/components/MctablePro";
 import oper from "@/components/Operation";
 import mcAllocationratio from "@/components/Mcallocationratio";
@@ -202,7 +198,7 @@ import transformat from "@/utils/transformat";
 export default {
   name: "organizationMgr",
   components: {
-    headerBox,
+    headerBar,
     mcTable,
     mcAllocationratio,
     createorganizModal,
@@ -212,7 +208,6 @@ export default {
   data() {
     return {
       rowkey: "organizationId",
-      tableLoading: false,
       treeProps: { children: "children", hasChildren: "hasChildren" },
       columnArr: [
         {
@@ -366,17 +361,19 @@ export default {
       this.renderTable();
     },
     renderTable() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
+
       queryOrgTree()
         .then((res) => {
           this.tableData = res;
+          this.$hideFullScreenLoading();
         })
         .catch((err) => {
           this.alertTips(err);
           this.tableData = [];
-        })
-        .finally(() => {
-          this.tableLoading = false;
+          this.$hideFullScreenLoading();
         });
     },
     handlePageChange(page) {
@@ -430,3 +427,6 @@ i.el-icon-d-arrow-right {
   }
 }
 </style>
+
+
+

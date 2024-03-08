@@ -93,13 +93,3 @@ export function modifyTopOrgName(data) {
         data
     })
 }
-
-
-// 私有镜像组织
-export function canSelectOrg(data) {
-    return request({
-        url: '/image/canSelectOrg',
-        method: 'post',
-        data
-    })
-}

@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-content vdcSetNetWork">
-    <div class="drawer-body-content">
+    <div class="create-new-form">
       <el-form
         ref="createnetworkDataForm"
         label-width="auto"
@@ -655,69 +655,82 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
-
+@include DrawerRtl;
 .vdcSetNetWork {
-  .drawer-body-content {
+  .create-new-form {
     @include formStyle;
-  }
-  .vdcSetNetWork-box {
-    width: 400px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex: 1;
+    max-height: 82vh;
+    overflow: auto;
+    $input-width: 375px;
 
-    .left-vdcSetNetWork,
-    .right-vdcSetNetWork {
-      width: 200px;
-      height: 100%;
+    .el-input {
+      width: $input-width;
+    }
+
+    .el-textarea {
+      width: $input-width;
+    }
+
+    .vdcSetNetWork-box {
+      width: 400px;
+      height: 300px;
       display: flex;
-      flex-direction: column;
-      .vdcSetNetWork-content {
+      align-items: center;
+      justify-content: space-between;
+
+      .left-vdcSetNetWork,
+      .right-vdcSetNetWork {
         width: 200px;
         height: 100%;
         display: flex;
         flex-direction: column;
-        border: 1px solid #e8e8e8;
-        padding: 5px;
-        overflow: auto;
-        .el-checkbox-group {
+        .vdcSetNetWork-content {
+          width: 200px;
+          height: 100%;
           display: flex;
           flex-direction: column;
+          border: 1px solid #e8e8e8;
+          padding: 5px;
+          overflow: auto;
+          .el-checkbox-group {
+            display: flex;
+            flex-direction: column;
 
-          .el-checkbox {
-            margin: 0px;
+            .el-checkbox {
+              margin: 0px;
+            }
           }
         }
       }
-    }
-    .cneter-vdcSetNetWork {
-      height: 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0 15px;
-      .vdcSetNetWork-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid;
-        font-size: 20px;
-        font-weight: 400;
-        background-color: transparent;
-        border-color: #e8e8e8;
-        cursor: pointer;
+      .cneter-vdcSetNetWork {
+        height: 80px;
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-      }
-      .vdcSetNetWork-btn:hover {
-        color: #fff;
-        background-color: #409eff;
-        border-color: #409eff;
+        margin: 0 15px;
+        .vdcSetNetWork-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1px solid;
+          font-size: 20px;
+          font-weight: 400;
+          background-color: transparent;
+          border-color: #e8e8e8;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .vdcSetNetWork-btn:hover {
+          color: #fff;
+          background-color: #409eff;
+          border-color: #409eff;
+        }
       }
     }
   }

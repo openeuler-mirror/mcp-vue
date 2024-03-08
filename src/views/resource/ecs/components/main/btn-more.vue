@@ -19,9 +19,7 @@
         </el-dropdown-item>
       </template>
       <el-dropdown-item v-if="toggleList.length == 0">
-        <el-link :underline="false">
-          {{ $t("common.noMoreOperations") }}
-        </el-link>
+        <el-link :underline="false"> 暂无更多操作 </el-link>
       </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
@@ -85,18 +83,6 @@ export default {
         // { key: "edit", label: "变更规格", disabled: true, show: true },
         // { key: "applyDeferred", label: "申请延期", disabled: true, show: true },
         {
-          key: "makeImage",
-          label: this.$t("imageMgr.makeImage"), //"制作镜像",
-          disabled: true,
-          show: true,
-        },
-        {
-          key: "transfer",
-          label: this.$t("transferMgr.transfer"), // "转移",
-          disabled: true,
-          show: true,
-        },
-        {
           key: "delete",
           label: this.$t("resourceMgr.batchDelete"), //"删除",
           disabled: true,
@@ -140,10 +126,6 @@ export default {
         applyDeferredBtnDisabled,
         deleteBtnShow,
         deleteBtnDisabled,
-        makeImageBtnShow,
-        makeImageBtnDisabled,
-        transferBtnShow,
-        transferBtnDisabled,
       } = toggleListData;
       let list = [];
       this.toggleListArr.forEach((element) => {
@@ -220,24 +202,6 @@ export default {
             }
 
             break;
-          //  制作镜像
-          case "makeImage":
-            element.show = this.otherBtnShow("image", "make_image");
-            if (makeImageBtnShow) {
-              element.disabled = makeImageBtnDisabled;
-              list.push(element);
-            }
-            break;
-
-          // 转移
-          case "transfer":
-            element.show = true;
-            if (transferBtnShow) {
-              element.disabled = transferBtnDisabled;
-              list.push(element);
-            }
-            break;
-
           default:
             list = [];
             break;
@@ -296,15 +260,6 @@ export default {
         this.toggleListData.deleteBtnDisabled = true;
         this.deleteServerVm();
       }
-      if (type === "makeImage") {
-        this.toggleListData.makeImageBtnDisabled = true; // 制作镜像按钮
-        this.makeImageServerVm();
-      }
-      // 转移
-      if (type === "transfer") {
-        this.toggleListData.transferBtnDisabled = true; // 转移按钮
-        this.transferServerVm();
-      }
       this.defaultListNew(this.toggleListData);
     },
     //删除
@@ -321,8 +276,8 @@ export default {
         closeOnPressEscape: false,
       })
         .then(() => {
-          const { serverVmUuid, clusterId } = this.selectData[0];
-          deleteServerVm({ serverVmUuid, clusterId })
+          let serverVmUuid = this.selectData[0].serverVmUuid;
+          deleteServerVm({ serverVmUuid })
             .then((res) => {
               ReMessage.success(successMsg);
               this.refreshParentTable();
@@ -343,8 +298,8 @@ export default {
     startVm() {
       let successMsg = this.$t("common.successfulOperation"); // "操作成功";
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
-      const { serverVmUuid, clusterId } = this.selectData[0];
-      startServerVm({ serverVmUuid, clusterId })
+      let serverVmUuid = this.selectData[0].serverVmUuid;
+      startServerVm({ serverVmUuid })
         .then((res) => {
           ReMessage.success(successMsg);
           this.refreshParentTable();
@@ -357,9 +312,9 @@ export default {
     shutdownVm() {
       let successMsg = this.$t("common.successfulOperation"); // "操作成功";
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
-      const { serverVmUuid, clusterId } = this.selectData[0];
+      let serverVmUuid = this.selectData[0].serverVmUuid;
       this.$emit("shutdownVm");
-      shutdownServerVm({ serverVmUuid, clusterId })
+      shutdownServerVm({ serverVmUuid })
         .then((res) => {
           ReMessage.success(successMsg);
           this.refreshParentTable();
@@ -372,6 +327,7 @@ export default {
     abortVm() {
       let confirmMsg = this.$t("resourceMgr.abortconfirmMsg"); // "此操作可能导致云服务器内尚未保存的数据丢失，是否确认强制关机？"
       let confirmTit = this.$t("resourceMgr.abortconfirmTit"); // "强制关机",
+
       let successMsg = this.$t("resourceMgr.abortSucc"); // "强制关机成功!";
       let errorMsg = this.$t("resourceMgr.abortErr"); // "强制关机失败!";
       MessageBox.confirm(confirmMsg, confirmTit, {
@@ -380,8 +336,8 @@ export default {
         type: "warning",
       })
         .then(() => {
-          const { serverVmUuid, clusterId } = this.selectData[0];
-          abortServerVm({ serverVmUuid, clusterId })
+          let serverVmUuid = this.selectData[0].serverVmUuid;
+          abortServerVm({ serverVmUuid })
             .then((res) => {
               ReMessage.success(successMsg);
               this.refreshParentTable();
@@ -398,10 +354,10 @@ export default {
         });
     },
     restartVm() {
-      let successMsg = this.$t("resourceMgr.restartSucc"); // "重启成功!";
-      let errorMsg = this.$t("resourceMgr.restartErr"); // "重启失败!";
-      const { serverVmUuid, clusterId } = this.selectData[0];
-      restartServerVm({ serverVmUuid, clusterId })
+      let successMsg = this.$t("resourceMgr.abortSucc"); // "重启成功!";
+      let errorMsg = this.$t("resourceMgr.abortErr"); // "重启失败!";
+      let serverVmUuid = this.selectData[0].serverVmUuid;
+      restartServerVm({ serverVmUuid })
         .then((res) => {
           ReMessage.success(successMsg);
           this.refreshParentTable();
@@ -414,6 +370,7 @@ export default {
     forcerebootVm() {
       let confirmMsg = this.$t("resourceMgr.forcedRestartconfirmMsg"); // "此操作可能导致云服务器内尚未保存的数据丢失，是否确认强制重启？",
       let confirmTit = this.$t("resourceMgr.forcedRestartconfirmTit"); // "强制重启",
+
       let successMsg = this.$t("resourceMgr.forcedRestartSucc"); // "强制重启成功!";
       let errorMsg = this.$t("resourceMgr.forcedRestartErr"); // "强制重启失败!";
       MessageBox.confirm(confirmMsg, confirmTit, {
@@ -422,8 +379,8 @@ export default {
         type: "warning",
       })
         .then(() => {
-          const { serverVmUuid, clusterId } = this.selectData[0];
-          forcedRestartServerVm({ serverVmUuid, clusterId })
+          let serverVmUuid = this.selectData[0].serverVmUuid;
+          forcedRestartServerVm({ serverVmUuid })
             .then((res) => {
               ReMessage.success(successMsg);
               this.refreshParentTable();
@@ -441,12 +398,6 @@ export default {
     },
     refreshParentTable() {
       this.$emit("refreshTable");
-    },
-    makeImageServerVm() {
-      this.$emit("downToggle", { key: "makeImage", row: this.selectData[0] });
-    },
-    transferServerVm() {
-      this.$emit("downToggle", { key: "transfer", row: this.selectData[0] });
     },
   },
 };

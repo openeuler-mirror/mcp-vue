@@ -151,7 +151,6 @@
 
 <script>
 import headerBar from "./header-bar";
-import { getUrlWithParam } from "@/utils";
 import {
   detailSummary,
   detailNetwork,
@@ -182,7 +181,6 @@ export default {
       activeTab: "summary",
       footVisible: false,
       serverVmUuid: this.$route.params.id,
-      clusterId: this.$route.params.cid,
       basicInfo: {}, // 基础信息
       imgSrc: "",
       vncBtnShow: false,
@@ -208,16 +206,12 @@ export default {
       this.getServerVmInfo();
     },
     getServerVmInfo() {
-      getServerVmDetail({
-        serverVmUuid: this.serverVmUuid,
-        clusterId: this.clusterId,
-      }).then((data) => {
+      getServerVmDetail({ serverVmUuid: this.serverVmUuid }).then((data) => {
         this.basicInfo = data;
         let imgObj = {
           mcServerVmLogoPath: this.basicInfo.logo,
           mcServerVmLogoName: this.basicInfo.logoName,
           serverVmUuid: this.serverVmUuid,
-          clusterId: this.clusterId,
         };
         downLoadServerVmLog(imgObj).then((res) => {
           this.imgSrc = "data:image/png;base64," + res.body;
@@ -241,7 +235,7 @@ export default {
     openVncUrl() {
       let serverVmUuid = this.basicInfo.uuid;
       this.vncBtnDisabled = true;
-      getVncUrl({ serverVmUuid, clusterId: this.clusterId })
+      getVncUrl({ serverVmUuid })
         .then((res) => {
           let vncUrl = res.vncUrl;
           if (vncUrl) {
@@ -255,12 +249,12 @@ export default {
     },
     getstatusLabel(status) {
       let statusObj = {
-        AVAILABLE: this.$t("resourceMgr.zoneAVAILABLE"), // "在线"
-        CONNECTED: this.$t("resourceMgr.zoneCONNECTED"), // "已连接"
-        SUSPEND: this.$t("resourceMgr.zoneSUSPEND"), // "暂停"
-        OFFLINE: this.$t("resourceMgr.zoneOFFLINE"), // "离线"
-        INSTALLING: this.$t("resourceMgr.zoneINSTALLING"), // "安装"
-        OVERDUE: this.$t("resourceMgr.zoneOVERDUE"), // "已过期"
+        AVAILABLE: "在线",
+        CONNECTED: "已连接",
+        SUSPEND: "暂停",
+        OFFLINE: "离线",
+        INSTALLING: "安装",
+        OVERDUE: "已过期",
       };
       return statusObj[status] || "-";
     },

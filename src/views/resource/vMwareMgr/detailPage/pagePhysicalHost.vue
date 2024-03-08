@@ -17,6 +17,7 @@
           v-if="item.prop == 'powerStatus'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -27,8 +28,9 @@
         <el-table-column
           v-else-if="item.prop == 'operation'"
           fixed="right"
-          :key="item.label + index"
+          :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
           className="tableoperation"
         >
@@ -53,9 +55,10 @@
         </el-table-column>
         <el-table-column
           v-else
-          :key="item.label + index"
+          :key="index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -98,7 +101,6 @@ export default {
     return {
       rowkey: "vmId",
       pageInfo: {},
-      vcenterId: this.$route.params.id,
       tableColumns: [
         // 名称
         {
@@ -145,7 +147,7 @@ export default {
       let pramas = {
         // pageNo: this.pageNo,
         // pageSize: this.pageSize,
-        vcenterId: this.vcenterId,
+        vcenterId: this.pageInfo.vcenterId,
       };
 
       vmList(pramas)
@@ -198,7 +200,7 @@ export default {
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
       this.$showFullScreenLoading(".mc-table");
       let params = {
-        vcenterId: this.vcenterId,
+        vcenterId: this.pageInfo.vcenterId,
         vmId: row.vmId,
       };
       powerOn(params)
@@ -218,7 +220,7 @@ export default {
       let successMsg = this.$t("common.successfulOperation"); // "操作成功";
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
       let params = {
-        vcenterId: this.vcenterId,
+        vcenterId: this.pageInfo.vcenterId,
         vmId: row.vmId,
       };
       powerOff(params)

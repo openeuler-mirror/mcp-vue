@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-content">
     <div class="create-new-form-steps">
-      <el-steps :active="activestep" class="kcp-steps">
+      <el-steps :active="activestep">
         <!-- 基本信息 -->
         <el-step :title="$t('resourceMgr.vdcBaseInfo')"></el-step>
         <!-- 网络 -->
@@ -12,7 +12,7 @@
     </div>
 
     <!-- 基本信息 -->
-    <div v-if="activestep == 0" class="drawer-body-content">
+    <div v-if="activestep == 0" class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -80,20 +80,12 @@
     </div>
 
     <!-- 网络 -->
-    <div v-if="activestep == 1" class="drawer-body-content">
-      <!-- 这里的网络选择与设置为旧版代码 819-1-server-3版本更改为新版2、3层网络规格 -->
-      <!-- <createEditNetworkBox ref="netWorkForm" :networkOptions="networkOptions">
-      </createEditNetworkBox> -->
-      <selectNetSpecList
-        ref="netWorkForm"
-        :showfirstVdc="showfirstVdc"
-        :selectedNetworkIds="networkIds"
-        :netPecArr="netPecArr"
-        @change="handelChangeNetPec"
-      ></selectNetSpecList>
+    <div v-if="activestep == 1" class="create-new-form">
+      <createEditNetworkBox ref="netWorkForm" :networkOptions="networkOptions">
+      </createEditNetworkBox>
     </div>
     <!-- 确认信息 -->
-    <div v-if="activestep == 2" class="drawer-body-content">
+    <div v-if="activestep == 2" class="create-new-form">
       <div class="template-box flex">
         <!-- 基本信息 -->
         <div class="template-box-title">
@@ -181,14 +173,12 @@
 <script>
 import { modifyVdc } from "@/api/vdcapi";
 import bindVdcModal from "@/views/components/vdcBindVdc/bindVdcModal.vue";
-import selectNetSpecList from "../../components/selectNetSpecList/selectNetSpecList.vue";
 import createEditNetworkBox from "@/views/components/setVdcNetWork/createEditNetworkBox.vue";
 import validate from "@/utils/validate";
 export default {
   components: {
     bindVdcModal,
     createEditNetworkBox,
-    selectNetSpecList,
   },
   props: {
     formOptions: {
@@ -201,7 +191,7 @@ export default {
       labelPosition: "left",
       vdcparentId: "",
       showbindVdcModal: false,
-      networkList: [],
+
       zoneList: [],
 
       oriFormData: {
@@ -246,10 +236,8 @@ export default {
         ],
       },
       activestep: 0,
-      //选择网络规格
-      netPecArr: [],
-      //选择网络规格的IDs
-      networkIds: [],
+
+      networkOptions: {},
 
       editDisable: false,
       showfirstVdc: false,
@@ -261,8 +249,7 @@ export default {
     this.activestep = 0;
     this.createDataFormData = JSON.parse(JSON.stringify(this.oriFormData));
     let { editflag, formData } = this.formOptions;
-    this.netPecArr = formData.canSelectedNetworkList;
-    this.networkIds = formData.selectedNetworkIds;
+
     if (editflag) {
       this.editDisable = true;
       // 编辑
@@ -275,9 +262,8 @@ export default {
 
       this.createDataFormData.parentId = formData.parentId;
       this.createDataFormData.parentName = formData.parentName;
-      this.networkList = this.netPecArr.filter(
-        (e) => this.networkIds.indexOf(e.networkSpecId) >= 0
-      );
+
+      this.networkList = formData.networkList;
     } else {
       this.editDisable = false;
       this.networkList = [];
@@ -351,6 +337,15 @@ export default {
           this.$refs.createDataForm.validate((valid) => {
             if (valid) {
               let { editflag, formData } = this.formOptions;
+              this.networkOptions = {
+                editflag: editflag,
+                firstVdc: this.showfirstVdc,
+                formData: {
+                  zoneId: this.createDataFormData.zoneId,
+                  vdcparentId: this.createDataFormData.parentId,
+                  networkList: this.networkList,
+                },
+              };
               this.activestep = this.activestep + step; // 编辑用户信息
             } else {
               return false;
@@ -359,11 +354,13 @@ export default {
 
           break;
         case 1: // 网络信息校验
-          let netWorkFormDatavalid = this.networkList.length > 0;
+          let netWorkFormDatavalid = this.$refs.netWorkForm.handleConfirm();
+
           if (netWorkFormDatavalid) {
+            this.networkList =
+              this.$refs.netWorkForm.netWorkFormData.vdcNetWorkList;
             this.activestep = this.activestep + step;
           } else {
-            this.$message.error("请选择网络规格");
             return false;
           }
           break;
@@ -378,7 +375,7 @@ export default {
         zoneId: this.createDataFormData.zoneId, // 可用区ID
         vdcName: this.createDataFormData.vdcName, // vdc名称
         remark: this.createDataFormData.remark || "", // 描述
-        networkIds: this.networkIds,
+        networkList: this.networkList,
         vdcId: this.createDataFormData.vdcId,
       };
       modifyVdc(editData)
@@ -394,11 +391,6 @@ export default {
       this.activestep = 0;
       this.$parent.closeDrawer();
     },
-    handelChangeNetPec(e) {
-      this.networkList = e;
-      const networkId = e.map((item) => item.networkSpecId);
-      this.$set(this, "networkIds", networkId);
-    },
     handleCloseCreate(done) {
       this.$parent.closeDrawer();
     },
@@ -407,15 +399,55 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
-
+@include DrawerRtl;
 .create-new-form-steps {
-  padding: 20px 30px 0;
+  padding: 20px 50px;
 }
-.drawer-body-content {
+.create-new-form {
   @include formStyle;
+  display: flex;
+  flex: 1;
+  max-height: 82vh;
+  overflow: auto;
+  $input-width: 375px;
+  flex-direction: column;
+  .template-box {
+    .template-box-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-right: 25px;
+      line-height: 32px;
+    }
+    .template-box-content {
+      flex: 1;
+      margin-right: 25px;
+    }
+  }
+  .el-input {
+    width: $input-width;
+  }
+  .el-select {
+    width: $input-width;
+  }
+  .el-textarea {
+    width: $input-width;
+  }
+}
+.create-new-formtable {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-height: 82vh;
+  padding: 0 50px;
 }
 .footBtn {
-  border-top: 1px $borderColor dashed;
+  //position: absolute;bottom: 0;right: 0;left: 0;
+  padding: 25px 70px;
+
+  border-top: 1px $borderColor solid;
   .el-button {
     margin-right: 15px;
   }

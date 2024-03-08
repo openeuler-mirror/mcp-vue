@@ -31,7 +31,6 @@
         <header-bar
           ref="headerBar"
           :select-data="selectTable"
-          :spinBol="tableLoading"
           @newlyBuild="newlyBuild"
           @deleteInfos="deleteInfos"
           @refreshTable="refreshTable"
@@ -42,7 +41,6 @@
           :total="total"
           :pageSize="pageSize"
           :currentPage="pageNo"
-          :tableLoading="tableLoading"
           @current-change="handlePageChange"
           @size-change="handleSizeChange"
           @selection-change="handleSelectione"
@@ -60,6 +58,7 @@
             <el-table-column
               v-if="item.prop == 'operation'"
               fixed="right"
+              :resizable="index != 0 && index != columnArr.length - 1"
               :key="index"
               :label="item.label"
               :width="item.width"
@@ -162,7 +161,7 @@ export default {
         children: "children",
         label: "organizationName",
       },
-      tableLoading: false,
+
       rowkey: "userId",
       tableTreeProps: { children: "children", hasChildren: "hasChildren" },
       checkedColumns: [],
@@ -262,7 +261,9 @@ export default {
         });
     },
     renderTable() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
       let pramas = {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
@@ -273,12 +274,11 @@ export default {
         .then((res) => {
           this.tableData = res.list;
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
         .catch((err) => {
+          this.$hideFullScreenLoading();
           this.alertTips(err);
-        })
-        .finally(() => {
-          this.tableLoading = false;
         });
     },
     handleNodeClick(data) {
@@ -337,7 +337,9 @@ export default {
     },
     deleteInfos() {
       this.$confirm(
-        this.$t("authorityMgr.deletesTipMsg"),
+        this.userIds.length > 1
+          ? this.$t("authorityMgr.deletesTipMsg")
+          : this.$t("authorityMgr.deleteTipMsg"),
         this.$t("common.tips"),
         {
           confirmButtonText: this.$t("common.confirm"),

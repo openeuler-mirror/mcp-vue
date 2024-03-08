@@ -4,7 +4,7 @@
       <div class="header-left">
         <el-select
           v-model="clusterValue"
-          :placeholder="$t('resourceMgr.plccluster')"
+          placeholder="请选择集群"
           @change="clusterChange"
         >
           <el-option
@@ -78,7 +78,12 @@
       </div>
       <div class="header-right">
         <searchInput @change="searchInputChange" />
-        <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+        <i
+          class="el-icon-refresh setting-icon"
+          style="margin-left: 15px"
+          :title="$t('common.refresh')"
+          @click="refresh"
+        />
         <!-- <i
           v-if="currentBtnShow('exportAlarmLog')"
           class="el-icon-download setting-icon"
@@ -92,21 +97,14 @@
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 import searchInput from "@/components/SearchInput";
 import { getLoginUserCluster } from "@/api/clusterapi";
 import { alarmLogFilterList } from "@/api/monitoringApi";
 export default {
   components: {
     searchInput,
-    utilsButton,
   },
-  props: {
-    spinBol: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: {},
   data() {
     return {
       // 集群
@@ -203,6 +201,7 @@ export default {
     },
     // 选择时间
     timeDatachange(date) {
+      console.log(date, 22222);
       let startTime = "";
       let endTime = "";
       if (date) {

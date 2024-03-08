@@ -157,12 +157,3 @@ export function applyModifyVdcDetail(data) {
         data
     })
 }
-
-// 审核云服务器申请-更改集群-刷新数据
-export function refreshMcBaseInfo(data) {
-    return request({
-        url: '/workOrder/refreshMcBaseInfo',
-        method: 'post',
-        data
-    })
-}

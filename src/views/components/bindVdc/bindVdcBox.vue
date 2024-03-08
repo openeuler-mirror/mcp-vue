@@ -35,6 +35,7 @@
             :key="index"
             :label="item.label"
             :width="item.width"
+            :resizable="index != 0 && index != columnArr.length - 1"
           >
             <template slot-scope="{ row }">
               <span>
@@ -49,6 +50,7 @@
             :key="index"
             :label="item.label"
             :width="item.width"
+            :resizable="index != 0 && index != columnArr.length - 1"
           >
             <template slot-scope="{ row }">
               <span>{{ row[item.prop] }}</span>
@@ -122,6 +124,7 @@ export default {
   computed: {},
   methods: {
     toCreateVdc() {
+      // localStorage.setItem("kcp-pagekey", "resource");
       bus.$emit("changeMenuNav", "resource");
       this.$router.push({
         name: "vdcPage",
@@ -172,8 +175,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .bind-table {
   display: flex;
@@ -183,6 +187,6 @@ export default {
   -ms-flex: 1;
   flex: 1;
   max-height: 82vh;
-  padding: 20px 30px;
+  padding: 0 50px;
 }
 </style>

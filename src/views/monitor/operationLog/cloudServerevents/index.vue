@@ -1,16 +1,12 @@
 <template>
   <div class="workorder app-container">
     <!-- 头部菜单栏 -->
-    <header-bar
-      ref="headerBar"
-      @refreshTable="refreshTable"
-      :spin="tableLoading"
-    />
+    <header-bar ref="headerBar" @refreshTable="refreshTable" />
+    <!-- <headerBarNew ref="headerBar" @refreshTable="refreshTable" /> -->
 
     <mc-table
       ref="workOrderTable"
       :data="tableData"
-      :tableLoading="tableLoading"
       :total="total"
       :pageSize="pageSize"
       :currentPage="pageNo"
@@ -26,6 +22,7 @@
           :key="item.prop + index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :sortable="item.sortable"
         >
           <template slot-scope="{ row }">
@@ -49,6 +46,7 @@
 <script>
 import mcTable from "@/components/MctablePro";
 import headerBar from "./header-bar";
+import headerBarNew from "./header-barNew.vue";
 import { pageServerVirtualizationEvent } from "@/api/monitoringApi";
 
 export default {
@@ -56,11 +54,11 @@ export default {
   components: {
     headerBar,
     mcTable,
+    headerBarNew,
   },
   data() {
     return {
       rowkey: "",
-      tableLoading: false,
       columnArr: [
         {
           label: this.$t("monitoring.serverEvtMap.severity"), // "严重性",
@@ -199,7 +197,9 @@ export default {
       this.endTime = date.endTime;
     },
     renderTable() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
       let params = {
         pageSize: this.pageSize, //	string	非必须 分页数量
         pageNo: this.pageNo, // 非必须 页面
@@ -217,9 +217,10 @@ export default {
         .then((res) => {
           this.tableData = res.list;
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
-        .finally((err) => {
-          this.tableLoading = false;
+        .catch((err) => {
+          this.$hideFullScreenLoading();
         });
     },
   },

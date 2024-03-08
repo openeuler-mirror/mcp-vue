@@ -167,8 +167,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .create-new-network {
   @include formStyle;

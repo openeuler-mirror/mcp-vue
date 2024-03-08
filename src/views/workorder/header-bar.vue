@@ -53,7 +53,7 @@
           @change="timeDatachange"
         >
         </el-date-picker>
-        <!-- <span style="margin-left: 10px">组织：</span>
+        <!-- <span style="margin-left: 10px">组织：</span>  
       <el-cascader
         v-model="organizationDefault"
         :options="organizationList"
@@ -63,8 +63,12 @@
       </div>
       <div class="header-right">
         <searchInput @change="searchInputChange" />
-
-        <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+        <i
+          class="el-icon-refresh setting-icon"
+          style="margin-left: 15px"
+          :title="$t('common.refresh')"
+          @click="refresh"
+        />
       </div>
     </div>
 
@@ -88,13 +92,7 @@
           :label="$t('workOrder.reviewComments')"
           prop="auditOpinion"
         >
-          <el-input
-            v-model="batchForm.auditOpinion"
-            type="textarea"
-            maxlength="400"
-            show-word-limit
-            :autosize="{ minRows: 2, maxRows: 4 }"
-          />
+          <el-input v-model="batchForm.auditOpinion" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -110,7 +108,6 @@
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 import { queryOrgTree } from "@/api/organization";
 import { batchCheck } from "@/api/workOrder";
 import searchInput from "@/components/SearchInput";
@@ -119,17 +116,12 @@ import validate from "@/utils/validate";
 export default {
   components: {
     searchInput,
-    utilsButton,
   },
   props: {
     // 选中的数组
     selectData: {
       type: Array,
       default: () => [],
-    },
-    spinBol: {
-      type: Boolean,
-      default: false,
     },
   },
   data() {
@@ -468,7 +460,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
 .header-box {
   @include headerBarStyle;

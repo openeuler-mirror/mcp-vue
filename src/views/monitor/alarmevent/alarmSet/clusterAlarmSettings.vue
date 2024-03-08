@@ -1,11 +1,7 @@
 <template>
-  <div class="alarmSet" v-loading="tableLoading">
+  <div class="alarmSet">
     <!-- 头部菜单栏 -->
-    <header-bar
-      ref="headerBar"
-      @refreshTable="refreshTable"
-      :spinBol="tableLoading"
-    />
+    <header-bar ref="headerBar" @refreshTable="refreshTable" />
     <div class="panel-setting">
       <span>{{ $t("alarmSetting.interval") }}</span>
       <el-input v-model="alarmInterval" />
@@ -64,10 +60,13 @@ export default {
       activeName: "cloudServerAlarmPolicy",
       clusterId: "",
       alarmInterval: "",
-      tableLoading: false,
     };
   },
+  created() {
+    // this.renderTable();
+  },
   methods: {
+    handleConfirm() {},
     handleSave() {
       if (!this.alarmInterval) {
         this.$rmsg.warning(this.$t("alarmSetting.intervalEmpty"));

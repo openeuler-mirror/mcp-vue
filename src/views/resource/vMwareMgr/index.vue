@@ -25,6 +25,7 @@
           v-if="item.prop == 'name'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -47,6 +48,7 @@
           v-else-if="item.prop == 'operation'"
           fixed="right"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width || '200px'"
           className="tableoperation"
@@ -74,6 +76,7 @@
           :key="index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
         >
           <template slot-scope="{ row }">
             <el-tooltip

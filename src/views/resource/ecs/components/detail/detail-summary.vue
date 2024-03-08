@@ -89,6 +89,7 @@
         v-for="(item, index) in columnArr"
         :key="index"
         :label="item.label"
+        :resizable="index != 0 && index != columnArr.length - 1"
       >
         <template slot-scope="{ row, column, $index }">
           <span>{{ row[item.prop] }}</span>
@@ -112,7 +113,7 @@ export default {
       serverVmUuid: this.$route.params.id,
       // 变更云服务器
       serverSummaryInfo: { cpuCount: "", cpuPercent: 0 },
-      clusterId: this.$route.params.cid,
+
       resourceUsedInfo: {
         cpuCount: "", // CPU
 
@@ -169,21 +170,16 @@ export default {
   },
   methods: {
     getServerVmSummary() {
-      serverVmSummary({
-        serverVmUuid: this.serverVmUuid,
-        clusterId: this.clusterId,
-      }).then((data) => {
+      serverVmSummary({ serverVmUuid: this.serverVmUuid }).then((data) => {
         this.serverSummaryInfo = data;
         this.drowChart();
       });
     },
     renderTable() {
       let serverVmUuid = this.serverVmUuid;
-      serverVmAlarmEvent({ serverVmUuid, clusterId: this.clusterId }).then(
-        (res) => {
-          this.tableData = res;
-        }
-      );
+      serverVmAlarmEvent({ serverVmUuid }).then((res) => {
+        this.tableData = res;
+      });
     },
     // 计算百分比
     calculatePercentage(num, total) {

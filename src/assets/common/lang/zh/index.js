@@ -5,12 +5,6 @@ import monitorMgr from './monitorMgr'
 import alarmevents from './alarmevents'
 import serverVirtualization from './serverVirtualization'
 import operateMgr from './operateMgr.js'
-import imageMgr from './imageMgr.js'
-import operateLog from './operateLog.js'
-import transferMgr from './transferMgr.js'
-import taskcenter from './taskcenter.js'
-import externalCloud from './externalCloud.js'
-import reliableCenter from './reliableCenter.js'
 export default {
     common,// 公共模块
     authorityMgr, //权限管理
@@ -19,10 +13,4 @@ export default {
     ...alarmevents, // 告警事件
     ...serverVirtualization, // kcp及自服务云服务器详情-操作日志，参考mc将任务详情，和失败原因，进行国际化转移
     ...operateMgr, // 操作
-    ...imageMgr, // 镜像管理
-    ...operateLog, // 操作日志
-    ...transferMgr, // 云服务器转移
-    ...taskcenter, // 任务中心
-    externalCloud,//外部云
-    reliableCenter,//可靠中心
 }

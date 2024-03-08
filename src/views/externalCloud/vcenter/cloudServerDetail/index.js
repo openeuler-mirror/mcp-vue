@@ -1,5 +1,0 @@
-export { default as detailSummary } from './detail-summary'
-export { default as detailNetwork } from './detail-network.vue'
-export { default as detailDisk } from './detail-disk.vue'
-export { default as detailMonitor } from './detail-monitor'
-export { default as detailLog } from './detail-log'

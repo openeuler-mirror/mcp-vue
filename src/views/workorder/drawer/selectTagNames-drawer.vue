@@ -1,7 +1,7 @@
 <template>
   <!-- 选择计算资源 -->
   <el-drawer
-    size="880px"
+    size="800px"
     :title="$t('workOrder.chooseComputingRes')"
     direction="rtl"
     custom-class="workorder-pass-drawer"
@@ -16,7 +16,7 @@
       ><div class="drawer-content">
         <div class="service-modify">
           <mc-table
-            :data="clusterBindResourceTable"
+            :data="clusterBindResourceList"
             @selection-change="handlerSelectionClusterChange"
             ref="multiTable"
             :rowkey="rowkey"
@@ -24,7 +24,11 @@
           >
             <!-- <el-table-column type="selection" width="50" align="center" /> -->
             <template v-for="(item, index) in columnArr">
-              <el-table-column :key="index" :label="item.label">
+              <el-table-column
+                :key="index"
+                :resizable="index != 0 && index != columnArr.length - 1"
+                :label="item.label"
+              >
                 <template slot-scope="{ row }">
                   <span>{{ row[item.prop] }}</span>
                 </template>
@@ -76,20 +80,18 @@ export default {
         { label: "集群", prop: "" },
         { label: "说明", prop: "description" },
       ],
-      clusterBindResourceTable: [],
     };
   },
   watch: {
     visible(isvis) {
       this.drawerVisible = isvis;
-      this.clusterBindResourceTable = this.clusterBindResourceList;
     },
   },
   methods: {
     setTableselectTagIds() {
       let selected = this.selectTagIds.split(",");
       for (let i = 0; i < selected.length; i++) {
-        let row = this.clusterBindResourceTable.find(
+        let row = this.clusterBindResourceList.find(
           (item) => item.id.toString() === selected[i]
         );
         if (row) {
@@ -137,9 +139,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
 
+
+<style lang="scss" scope >
+@import "~@/styles/mixin.scss";
+@include DrawerRtl;
 .service-modify {
   display: flex;
   flex-direction: column;

@@ -33,10 +33,6 @@ export default {
           label: this.$t("common.route.resource"), // "资源"
         },
         {
-          key: "reliableCenter",
-          label: this.$t("common.route.reliableCenter"), // "可靠中心"
-        },
-        {
           key: "operator",
           label: this.$t("common.route.operator"), // "运营"
         },
@@ -44,40 +40,13 @@ export default {
           key: "monitor",
           label: this.$t("common.route.monitor"), // "监控"
         },
-        {
-          key: "externalCloud",
-          label: this.$t("common.route.externalCloud"), // "外部云"
-        },
       ],
       menuList: [],
       menuKeyList: [],
     };
   },
-  watch: {
-    $route: {
-      handler: function (to, oldVal) {
-        // 增加监控原因：架构中layout依赖pagekey
-        // 但是当页面跳转没有设置pagekey的时候会出现侧边栏nav不跟着变化的问题
-        if (to.meta.pagekey) {
-          const newIndex = localStorage.getItem("kcp-pagekey");
-          newIndex === this.activeIndex ? "" : (this.activeIndex = newIndex);
-        }
-      },
-      // 深度观察监听
-      deep: true,
-    },
-  },
+  created() {},
   mounted() {
-    let info = JSON.parse(localStorage.getItem("userInfo"));
-    const kcpRole = info.kcpRole;
-    kcpRole === "master"
-      ? ""
-      : (this.orimenuList = [
-          {
-            key: "reliableCenter",
-            label: this.$t("common.route.reliableCenter"), // "可靠中心"
-          },
-        ]);
     this.getmenuList();
     let that = this;
     bus.$on("changeMenuNav", function (val) {
@@ -98,15 +67,12 @@ export default {
         this.menuKeyList.push(routeKey);
       });
       this.menuList = [];
-      const kcpRole = info.kcpRole;
-      kcpRole === "master"
-        ? (this.menuList = [
-            {
-              key: "homePage",
-              label: this.$t("common.route.homePage"), // "首页"
-            },
-          ])
-        : "";
+      this.menuList = [
+        {
+          key: "homePage",
+          label: this.$t("common.route.homePage"), // "首页"
+        },
+      ];
 
       this.orimenuList.forEach((element) => {
         let { key } = element;

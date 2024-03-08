@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content">
+    <div class="check-modify-servervm">
       <div class="template-box">
         <el-form
           ref="passModifyServervmForm"
@@ -31,7 +31,7 @@
             :formData="passModifyformData"
           ></computResources>
           <!-- 存储位置  -->
-          <!-- <el-form-item
+          <el-form-item
             :label="$t('workOrder.storageLocation')"
             prop="storageLocationId"
           >
@@ -46,7 +46,7 @@
                 :value="item.id"
               />
             </el-select>
-          </el-form-item> -->
+          </el-form-item>
           <el-form-item label="CPU" prop="cpu">
             <el-input-number v-model="passModifyServervmFormData.cpu" />
           </el-form-item>
@@ -93,10 +93,10 @@
             <el-input
               v-model="passModifyServervmFormData.auditOpinion"
               type="textarea"
+              :rows="3"
               placeholder=""
-              maxlength="400"
+              maxlength="500"
               show-word-limit
-              :autosize="{ minRows: 2, maxRows: 4 }"
             />
           </el-form-item>
         </el-form>
@@ -227,8 +227,8 @@ export default {
         this.passModifyServervmFormData.selectCluster = res.selectCluster;
         this.passModifyServervmFormData.selectClusterUuid =
           res.selectClusterUuid;
-        // this.passModifyServervmFormData.storageLocationId =
-        //   res.storageLocationId;
+        this.passModifyServervmFormData.storageLocationId =
+          res.storageLocationId;
 
         this.storageLocationList = res.storageLocationList;
 
@@ -280,7 +280,7 @@ export default {
       let auditOpinion = this.passModifyServervmFormData.auditOpinion;
       let aliasName = this.passModifyServervmFormData.aliasName;
 
-      // let storageLocationId = this.passModifyServervmFormData.storageLocationId;
+      let storageLocationId = this.passModifyServervmFormData.storageLocationId;
       let vcpus = this.passModifyServervmFormData.cpu;
       let memory = this.passModifyServervmFormData.mem;
       let memUnit = this.passModifyServervmFormData.memUnit;
@@ -313,7 +313,7 @@ export default {
         operatingSystem,
         systemType,
 
-        // storageLocationId,
+        storageLocationId,
         vcpus,
         memory,
         memUnit,
@@ -337,10 +337,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
 
-.drawer-body-content {
+.check-modify-servervm {
   @include formStyle;
   flex: 1;
   max-height: 82vh;

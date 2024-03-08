@@ -65,8 +65,7 @@ export default {
     'monitoring.alarmEvent.type.RABBIT_CONNECT_FAIL': 'RabbitMQ连接错误',
     'monitoring.alarmEvent.type.VIRTUALSERVER_KYLINTOOL': 'qga版本',
     'monitoring.alarmEvent.type.VIRTUALSERVER_KSVDTOOL_EVENT': '设置IP/用户名/密码',
-    'monitoring.alarmEvent.type.MARIADB': '数据库告警',
-    'monitoring.alarmEvent.type.RESOURCE_ALLOCATION': '资源达到配额阈值',
+
     alarmSetting: {
         type: '类型',
         urgentValue: '紧急告警',
@@ -82,8 +81,7 @@ export default {
         'thresholdInput': '无效的告警阈值，告警阈值有效范围：0～99！',
         cloudServerAlarmPolicy: '云服务器告警策略', // 云服务器告警策略
         physicalServerAlertPolicy: '物理服务器告警策略', // 物理服务器告警策略
-        siteLickCheck:'异地容灾-链路检测',
-        machineExpire:'云服务器使用到期',
+
         clusterAlarmSettings: '集群告警设置', // 集群告警设置
         platformAlarmSettings: '平台告警设置', // 平台告警设置
         clusterAlarmlog: '集群告警日志', // 集群告警日志

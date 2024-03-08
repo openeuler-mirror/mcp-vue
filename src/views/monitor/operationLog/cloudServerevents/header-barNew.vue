@@ -2,79 +2,11 @@
   <div class="header-outbox">
     <div class="header-box">
       <div class="header-left">
-        <el-select
-          v-model="clusterValue"
-          placeholder="请选择集群"
-          @change="clusterChange"
-        >
-          <el-option
-            v-for="item in clusterList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-        <!-- 时间 -->
-        <el-date-picker
-          style="margin-left: 15px"
-          v-model="timeData"
-          type="daterange"
-          format="yyyy-MM-dd HH:mm:ss"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          :range-separator="$t('common.to')"
-          :start-placeholder="$t('common.startdate')"
-          :end-placeholder="$t('common.enddate')"
-          :default-time="['00:00:00', '23:59:59']"
-          @change="timeDatachange"
-        >
-        </el-date-picker>
-        <!-- 级别 -->
-        <el-select
-          style="margin-left: 15px"
-          v-model="levelValue"
-          placeholder="请选择级别"
-          @change="levelChange"
-        >
-          <el-option
-            v-for="item in levelOptions"
-            :key="item.value"
-            :label="$t(item.label)"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-
-        <!-- 类型-->
-        <el-select
-          style="margin-left: 15px"
-          v-model="typeValue"
-          placeholder="请选择类型"
-          @change="typeChange"
-        >
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.value"
-            :label="$t(item.label)"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-        <!-- 对象 -->
-        <el-select
-          style="margin-left: 15px"
-          v-model="serversValue"
-          placeholder="请选择类型"
-          @change="serversChange"
-        >
-          <el-option
-            v-for="item in serversOptions"
-            :key="item.value"
-            :label="$t(item.label)"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+        <div class="filter-item"></div>
+        <div class="filter-item"></div>
+        <div class="filter-item"></div>
+        <div class="filter-item"></div>
+        <div class="filter-item"></div>
       </div>
       <div class="header-right">
         <searchInput @change="searchInputChange" />
@@ -214,13 +146,33 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 .header-box {
   @include headerBarStyle;
+  height: unset;
+  min-height: 62px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  .header-left {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex: 1;
+    margin-left: -8px;
+    margin-right: -8px;
+    .filter-item {
+      width: 200px;
+      height: 30px;
+      margin: 5px 8px;
+      border: 1px solid red;
+    }
+  }
+  .header-right {
+    display: flex;
+    align-self: flex-start;
+  }
 }
 </style>

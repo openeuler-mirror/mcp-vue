@@ -70,7 +70,6 @@ export default {
         },
       },
       serverVmUuid: this.$route.params.id,
-      clusterId: this.$route.params.cid,
       timeList: [],
       cpuUsed: [],
       memUsed: [],
@@ -89,17 +88,15 @@ export default {
   methods: {
     getMonitorInfo() {
       let serverVmUuid = this.serverVmUuid;
-      getServerVmMonitorInfo({ serverVmUuid, clusterId: this.clusterId }).then(
-        (res) => {
-          this.timeList = res.timeList;
-          this.cpuUsed = res.cpuUsed;
-          this.memUsed = res.memUsed;
-          this.diskReadSpeed = res.diskReadSpeed;
-          this.diskWriteSpeed = res.diskWriteSpeed;
-          this.netWorkInSpeed = res.netWorkInSpeed;
-          this.netWorkOutSpeed = res.netWorkOutSpeed;
-        }
-      );
+      getServerVmMonitorInfo({ serverVmUuid }).then((res) => {
+        this.timeList = res.timeList;
+        this.cpuUsed = res.cpuUsed;
+        this.memUsed = res.memUsed;
+        this.diskReadSpeed = res.diskReadSpeed;
+        this.diskWriteSpeed = res.diskWriteSpeed;
+        this.netWorkInSpeed = res.netWorkInSpeed;
+        this.netWorkOutSpeed = res.netWorkOutSpeed;
+      });
     },
     calcCpuData(timeData, cpuData) {
       const chartOptions = JSON.parse(JSON.stringify(this.chartOptions));

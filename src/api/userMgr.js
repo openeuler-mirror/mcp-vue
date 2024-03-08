@@ -54,12 +54,3 @@ export function modifyUser(data) {
         data
     })
 }
-
-// 编辑用户
-export function pageUserByOrg(data) {
-    return request({
-        url: '/user/pageUserByOrg',
-        method: 'post',
-        data
-    })
-}

@@ -2,13 +2,7 @@
   <div class="ecs app-container">
     <div class="ecs-home-left">
       <!-- <div class="title-box">{{ $t("resourceMgr.zonelist") }}</div> -->
-      <div
-        v-loading.lock="treeLoading"
-        :element-loading-text="$t('common.loadingText')"
-        element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.2)"
-        class="content-box ecs-el-tree kcp-el-tree"
-      >
+      <div class="content-box ecs-el-tree kcp-el-tree">
         <el-tree
           ref="ecstree"
           :data="treeData"
@@ -30,10 +24,6 @@
             ></span>
             <span v-else-if="data.type == 'ORG'" class="el-icon-coin"></span>
             <span v-else-if="data.type == 'USER'" class="el-icon-user"></span>
-            <span
-              v-else-if="data.type == 'MCDEFAULT'"
-              class="el-icon-files"
-            ></span>
             <span v-else class="el-icon-coin"></span>
             <span>{{ node.label }}</span>
             <span>{{ "(" + data.serverVmCount + ")" }}</span>
@@ -41,22 +31,14 @@
         </el-tree>
       </div>
     </div>
-    <div
-      v-loading="tableLoading"
-      :element-loading-text="$t('common.loadingText')"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.2)"
-      class="ecs-home-right"
-    >
+    <div class="ecs-home-right">
       <!-- 云服务器头部菜单栏 -->
       <header-bar
         ref="headerBar"
         :select-data="selectTable"
-        :spinBol="tableLoading"
-        :canSelectClurster="selectClurster"
-        @clusterKeyChange="changeclusterKey"
         @refreshTable="refreshTable"
         @headerBarEmit="headerBarEmit"
+        @getclusterTreeData="getclusterTreeData"
       />
 
       <!-- 云服务器列表 -->
@@ -86,6 +68,7 @@
             :prop="item.prop"
             :width="item.width"
             :sortable="item.sortable"
+            :resizable="index != 0 && index != columnShowArr.length - 1"
             :filters="statusFilter"
             :filter-multiple="false"
           >
@@ -99,6 +82,7 @@
             v-else-if="item.prop === 'systemImg'"
             :key="'systemImg' + index"
             column-key="systemImg"
+            :resizable="index != 0 && index != columnShowArr.length - 1"
             :label="item.label"
             :prop="item.prop"
             :width="item.width"
@@ -115,6 +99,7 @@
             :key="'taskStatus' + index"
             column-key="ecstaskStatus"
             :label="item.label"
+            :resizable="index != 0 && index != columnShowArr.length - 1"
             :prop="item.prop"
             :width="item.width"
             :sortable="item.sortable"
@@ -129,6 +114,7 @@
             :key="item.prop + index"
             :label="item.label"
             :prop="item.prop"
+            :resizable="index != 0 && index != columnShowArr.length - 1"
             :width="item.width"
             :sortable="item.sortable"
           >
@@ -153,6 +139,7 @@
             :key="item.prop + index"
             :label="item.label"
             :prop="item.prop"
+            :resizable="index != 0 && index != columnShowArr.length - 1"
             :width="item.width"
             :sortable="item.sortable"
           >
@@ -170,7 +157,6 @@
                     name: 'escPageDetail',
                     params: {
                       id: row.serverVmUuid,
-                      cid: row.clusterId,
                       type: 'escPageDetail',
                       serverVmUuid: row.serverVmUuid,
                       tab: 'summary',
@@ -224,7 +210,7 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column :width="140" className="tableoperation" fixed="right">
+        <el-table-column :width="100" className="tableoperation" fixed="right">
           <template slot="header">
             <div class="tableoperation-header">
               <div>{{ $t("common.operation") }}</div>
@@ -236,58 +222,44 @@
             </div>
           </template>
           <template slot-scope="{ row }">
-            <div class="btn-content">
-              <el-link
-                v-if="row.startBtnShow && currentBtnShow('start_servervm')"
-                :disabled="row.startBtnDisabled"
-                type="primary"
-                @click.stop="startServerVm(row)"
-              >
-                <!-- 开机 -->
-                {{ $t("resourceMgr.start_servervm") }}
-              </el-link>
-              <el-link
-                v-if="row.vncBtnShow"
-                :disabled="row.vncBtnDisabled"
-                type="primary"
-                @click.stop="openVnc(row)"
-              >
-                <!-- 控制台 -->
-                {{ $t("resourceMgr.openVnc") }}
-              </el-link>
-              <btn-more
-                ref="btnMore"
-                :key="row.serverVmId"
-                :disabled-list="[]"
-                :select-data="[row]"
-                :btn-type="'link'"
-                class="el-link"
-                @downToggleCommand="downToggleCommand"
-                @handleShowDely="handleShowDely(row)"
-                @downToggle="downToggle"
-                @refreshTable="refreshTable"
-              />
-            </div>
+            <el-link
+              v-if="row.startBtnShow && currentBtnShow('start_servervm')"
+              :disabled="row.startBtnDisabled"
+              type="primary"
+              @click.stop="startServerVm(row)"
+            >
+              <!-- 开机 -->
+              {{ $t("resourceMgr.start_servervm") }}
+            </el-link>
+            <el-link
+              v-if="row.vncBtnShow"
+              :disabled="row.vncBtnDisabled"
+              type="primary"
+              @click.stop="openVnc(row)"
+            >
+              <!-- 控制台 -->
+              {{ $t("resourceMgr.openVnc") }}
+            </el-link>
+            <btn-more
+              ref="btnMore"
+              :key="row.serverVmId"
+              :disabled-list="[]"
+              :select-data="[row]"
+              :btn-type="'link'"
+              class="el-link"
+              @downToggleCommand="downToggleCommand"
+              @handleShowDely="handleShowDely(row)"
+              @refreshTable="refreshTable"
+            />
           </template>
         </el-table-column>
       </mc-table>
     </div>
-
-    <!-- 制作镜像 -->
-    <makeImageModal
-      :options="makeImageModalOption"
-      :visible.sync="showmakeImageModalModal"
-    ></makeImageModal>
-
-    <!-- 服务器转移 -->
-    <transferVmModal
-      :options="transferModalOption"
-      :transforType="zoneOrgTreeSearchObj.type"
-      :visible.sync="showtransferModalModal"
-      @refreshTable="refreshTreeTable"
-    ></transferVmModal>
   </div>
 </template>
+
+
+
 
 <script>
 import mcTable from "@/components/MctablePro";
@@ -298,10 +270,8 @@ import statusRow from "./components/statusRow.vue";
 import systemImg from "./components/systemImg.vue";
 import ReMessage from "@/utils/message";
 import { getVncUrl, startServerVm } from "@/api/serverVm";
-import { zoneOrgTree, serverVmList, defaultServerVmList } from "@/api/ecsapi";
+import { zoneOrgTree, serverVmList } from "@/api/ecsapi";
 import actbtnPms from "./components/main/actbtnPmsList";
-import makeImageModal from "./components/makeImage/createEditModal.vue";
-import transferVmModal from "./components/transferVm/createEditModal.vue";
 export default {
   name: "Ecs",
   components: {
@@ -312,8 +282,6 @@ export default {
     taskStatusRow,
     statusRow,
     systemImg,
-    makeImageModal,
-    transferVmModal,
   },
   data() {
     return {
@@ -321,15 +289,14 @@ export default {
       defaultExpandedkeys: [],
       defaultCheckedkeys: [],
       zoneOrgTreeSearchObj: {},
-      tableLoading: false,
-      selectClurster: [],
       treeData: [],
       treeProps: {
         children: "child",
         label: "name",
       },
       nodeKey: "treeUniqueId",
-      rowkey: "serverVmUuid",
+
+      rowkey: "serverVmId",
       selectionType: "multipleTable",
       columnArr: [
         // 表格总的列数据
@@ -380,13 +347,6 @@ export default {
         {
           label: this.$t("resourceMgr.zoneorgName"), // "所属组织",
           prop: "orgName",
-          width: 120,
-          show: true,
-          tooltipsFlag: true,
-        },
-        {
-          label: this.$t("resourceMgr.zoneuserName"), // "所属用户",
-          prop: "userName",
           width: 120,
           show: true,
           tooltipsFlag: true,
@@ -477,7 +437,6 @@ export default {
       total: 0,
       // 分页数1开始
       pageNo: 1,
-      treeLoading: false,
       // 每页数量
       pageSize: 20,
       searchStatus: "ALL",
@@ -505,35 +464,21 @@ export default {
           text: this.$t("resourceMgr.zoneSUSPEND"), // "暂停",
           value: "SUSPEND",
         },
-        // {
-        //   text: this.$t("resourceMgr.zoneOVERDUE"), // "已过期",
-        //   value: "OVERDUE",
-        // },
+        {
+          text: this.$t("resourceMgr.zoneOVERDUE"), // "已过期",
+          value: "OVERDUE",
+        },
         {
           text: this.$t("resourceMgr.zoneUNKNOWN"), // "其他",
           value: "UNKNOWN",
         },
       ],
       clusterKey: "0",
-      //制作镜像模态框配置
-      showmakeImageModalModal: false,
-      makeImageModalOption: {
-        title: "",
-        editflag: "",
-        formData: "", // 表单数据
-      },
-      // 服务器转移模态框
-      showtransferModalModal: false,
-      transferModalOption: {
-        title: "",
-        editflag: "",
-        formData: "", // 表单数据
-      },
     };
   },
   created() {
-    this.showmakeImageModalModal = false;
-    this.showtransferModalModal = false;
+    // this.getTreeData();
+    // this.renderTable();
   },
   mounted() {
     const timeCount = 20000;
@@ -545,29 +490,28 @@ export default {
     this.$once("hook:beforeDestroy", () => {
       clearInterval(esctimer);
     });
-
-    this.getTreeData();
   },
   methods: {
-    refreshTreeTable() {
-      this.getTreeData();
-    },
     refreshTable() {
       this.renderTable();
     },
+    getclusterTreeData() {
+      this.getTreeData();
+    },
     getTreeData() {
       this.defaultCheckedkeys = [];
-      this.treeLoading = true;
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".ecs-el-tree");
+      });
       let params = { clusterId: this.clusterKey };
       zoneOrgTree(params).then((res) => {
+        this.$hideFullScreenLoading();
         if (res && res.length > 0) {
           this.treeData = res;
+
           this.$nextTick(() => {
-            this.defaultCheckedkeys = [res[0].treeUniqueId];
-            this.selectClurster = res[0].clusterIds;
+            this.defaultCheckedkeys = [res[0].uniqueId];
             this.$refs.ecstree.setCurrentKey(this.defaultCheckedkeys[0]);
-            this.treeLoading = false;
           });
           this.zoneOrgTreeSearchObj = res[0];
           this.pageNo = 1;
@@ -578,9 +522,9 @@ export default {
     },
     handleNodeClick(data) {
       this.zoneOrgTreeSearchObj = data;
-      this.$set(this, "selectClurster", data.clusterIds);
-      //切换集群类型的时候 重置集群 因为可能选中的分组下没有该集群
-      this.$refs.headerBar.clusterChange(0, 1);
+      this.pageNo = 1;
+      this.pageSize = 20;
+      this.renderTable();
     },
     headerBarEmit(rows) {
       let tableDataOri = JSON.parse(JSON.stringify(this.tableData));
@@ -632,39 +576,33 @@ export default {
         headers
       );
     },
-    getServerVmTableList(tableParams, headers) {
-      const params = {
-        ...tableParams,
+    getServerVmTableList(
+      { pageNo, pageSize, searchKey, vmStatus, type, uniqueId },
+      headers
+    ) {
+      if (!uniqueId) {
+        return;
+      }
+      this.$hideFullScreenLoading();
+      let params = {
+        pageNo,
+        pageSize,
+        searchKey,
+        vmStatus,
+        type,
+        uniqueId,
         clusterId: this.clusterKey,
       };
-      const { type } = tableParams;
-      if (type !== "MCDEFAULT") {
-        serverVmList(params, headers)
-          .then((res) => {
-            this.tableData = JSON.parse(
-              JSON.stringify(this.dealBootUp(res.list))
-            );
-            this.total = res.pageInfo.total;
-          })
-          .finally(() => {
-            this.tableLoading = false;
-          });
-      } else {
-        //默认分组
-        defaultServerVmList(params, headers)
-          .then((res) => {
-            this.tableData = JSON.parse(
-              JSON.stringify(this.dealBootUp(res.list))
-            );
-            this.total = res.pageInfo.total;
-          })
-          .finally(() => {
-            this.tableLoading = false;
-          });
-      }
+      serverVmList(params, headers).then((res) => {
+        this.tableData = JSON.parse(JSON.stringify(this.dealBootUp(res.list)));
+        this.total = res.pageInfo.total;
+        this.$hideFullScreenLoading();
+      });
     },
     renderTable() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
       let pageNo = this.pageNo;
       let pageSize = this.pageSize;
       let searchKey = this.searchKey;
@@ -673,8 +611,9 @@ export default {
       }
       this.selectTable = [];
       let vmStatus = this.searchStatus;
-      let type = this.zoneOrgTreeSearchObj.type; // 必须 点击树状结构类型	枚举: ZONE,ORG,USER,MCDEFAULT
-      let uniqueId = this.zoneOrgTreeSearchObj.uniqueId; // 必须 树形节点值
+      let type = this.zoneOrgTreeSearchObj.type; // 非必须 点击树状结构类型	枚举: ZONE,ORG,USER
+      let uniqueId = this.zoneOrgTreeSearchObj.uniqueId; // 非必须 树形节点值
+
       this.selectTable = [];
       let headers = {};
       this.getServerVmTableList(
@@ -717,13 +656,6 @@ export default {
 
         element.deleteBtnShow = false; // 删除按钮 delete Show
         element.deleteBtnDisabled = true; // 删除按钮 delete Disabled
-
-        element.makeImageBtnShow = false; // 制作镜像 makeImage Show
-        element.makeImageBtnDisabled = true; // 制作镜像 makeImage Disabled
-
-        element.transferBtnShow = true; // 转移 transfer Show
-        element.transferBtnDisabled = false; // 转移 transfer Disabled
-
         if (taskStatus == "LEISURE") {
           // 根据电源状态控制
           // 根据电源状态控制处理 开机按钮start startBtn
@@ -775,12 +707,6 @@ export default {
           if (actbtnPms.deletestatusShowList.indexOf(status) > -1) {
             element.deleteBtnShow = true;
             element.deleteBtnDisabled = false;
-          }
-
-          // 根据电源状态控制处理 制作镜像按钮 makeImage
-          if (actbtnPms.makeImagestatusShowList.indexOf(status) > -1) {
-            element.makeImageBtnShow = true;
-            element.makeImageBtnDisabled = false;
           }
         } else {
           // 根据任务状态控制
@@ -839,12 +765,6 @@ export default {
             element.deleteBtnShow = true;
             element.deleteBtnDisabled = false;
           }
-
-          // 根据任务状态控制处理 制作镜像按钮 makeImage
-          if (actbtnPms.deletetaskStatusShowList.indexOf(taskStatus) > -1) {
-            element.makeImageBtnShow = true;
-            element.makeImageBtnDisabled = false;
-          }
         }
       });
       return list;
@@ -881,14 +801,6 @@ export default {
     // 集群变更
     changeclusterKey(val) {
       this.clusterKey = val;
-
-      let type = this.zoneOrgTreeSearchObj.type; // 必须 点击树状结构类型	枚举: ZONE,ORG,USER,MCDEFAULT
-      let uniqueId = this.zoneOrgTreeSearchObj.uniqueId; // 必须 树形节点值
-      if (type && uniqueId) {
-        this.renderTable();
-        this.pageNo = 1;
-        this.pageSize = 20;
-      }
     },
     filterChange(filters) {
       //状态过滤
@@ -938,10 +850,9 @@ export default {
       }
     },
     openVnc(row) {
-      const { serverVmUuid, clusterId } = row;
+      let serverVmUuid = row.serverVmUuid;
 
-      getVncUrl({ serverVmUuid, clusterId }).then((res) => {
-        // 不可进行编码
+      getVncUrl({ serverVmUuid }).then((res) => {
         let vncUrl = res.vncUrl;
         if (vncUrl) {
           window.open(vncUrl, "_blank");
@@ -949,9 +860,9 @@ export default {
       });
     },
     startServerVm(row) {
-      const { serverVmUuid, clusterId } = row;
+      let serverVmUuid = row.serverVmUuid;
       row.startBtnDisabled = true;
-      startServerVm({ serverVmUuid, clusterId })
+      startServerVm({ serverVmUuid })
         .then((res) => {
           ReMessage.success(this.$t("resourceMgr.startServerVm"));
           this.refreshTable();
@@ -961,47 +872,6 @@ export default {
           this.refreshTable();
         });
     },
-    downToggle(val) {
-      let { key, row } = val;
-      switch (key) {
-        case "makeImage": // 制作镜像
-          this.setmakeImage(row);
-          break;
-        case "transfer": // 转移
-          this.settransfer(row);
-          break;
-
-        default:
-          break;
-      }
-    },
-    setmakeImage(row) {
-      this.makeImageModalOption.title = this.$t("imageMgr.makeImage"); // "制作镜像";
-      this.makeImageModalOption.formData = row; // 表单数据
-      this.showmakeImageModalModal = true;
-    },
-    settransfer(row) {
-      this.transferModalOption.title =
-        this.$t("transferMgr.transfer") + `"${row.aliasName}"`;
-      this.transferModalOption.formData = row; // 表单数据
-      this.showtransferModalModal = true;
-    },
-  },
-  beforeDestroy() {
-    this.showmakeImageModalModal = false;
-    this.showtransferModalModal = false;
-  },
-  createdVm() {
-    this.showmakeImageModalModal = false;
-    this.showtransferModalModal = false;
-  },
-  openVm() {
-    this.showmakeImageModalModal = false;
-    this.showtransferModalModal = false;
-  },
-  closeVm() {
-    this.showmakeImageModalModal = false;
-    this.showtransferModalModal = false;
   },
 };
 </script>
@@ -1071,9 +941,6 @@ export default {
     height: 40px;
     overflow: hidden;
     border-radius: 50%;
-  }
-  .btn-content {
-    display: flex;
   }
 }
 </style>

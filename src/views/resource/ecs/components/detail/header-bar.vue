@@ -7,7 +7,7 @@
         type="primary"
         @click="openVncUrl()"
       >
-        {{ $t("resourceMgr.openVnc") }}
+        控制台
       </el-button>
       <!-- <el-button
         v-if="startBtnShow"
@@ -99,7 +99,7 @@ export default {
       this.shutdownBtnDisabled = true;
       shutdownServerVm({ serverVmUuid })
         .then((res) => {
-          ReMessage.success(this.$t("resourceMgr.shutdownSucc"));
+          ReMessage.success("关机成功");
           this.refresh();
         })
         .catch((err) => {
@@ -112,7 +112,7 @@ export default {
       this.startBtnDisabled = true;
       startServerVm({ serverVmUuid })
         .then((res) => {
-          ReMessage.success(this.$t("resourceMgr.startServerVm"));
+          ReMessage.success("开机成功");
           this.refresh();
         })
         .catch((err) => {

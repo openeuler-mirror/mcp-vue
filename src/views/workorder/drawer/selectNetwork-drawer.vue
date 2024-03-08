@@ -1,7 +1,7 @@
 <template>
   <!-- 选择网络信息 -->
   <el-drawer
-    size="880px"
+    size="800px"
     :title="$t('workOrder.chooseNetworkInfo')"
     direction="rtl"
     :wrapper-closable="true"
@@ -14,7 +14,7 @@
     <div class="drawer-content">
       <div class="bind-table">
         <mc-table
-          :data="tabaleData"
+          :data="networkList"
           @selection-change="handlerSelectionNetworkChange"
           :rowkey="rowkey"
           :selectionType="selectionType"
@@ -22,17 +22,22 @@
           style="margin-top: 20px"
         >
           <template v-for="(item, index) in columnArr">
-            <!-- 状态 -->
             <el-table-column
-              v-if="item.prop == 'opr'"
+              v-if="item.prop == 'securityPolicy'"
               :key="index"
               :label="item.label"
+              :resizable="index != 0 && index != columnArr.length - 1"
               :width="item.width"
             >
               <template slot-scope="{ row }">
-                <el-link type="primary" @click="toDetail(row)">
-                  {{ $t("resourceMgr.task.detail") }}</el-link
+                <el-tooltip
+                  effect="light"
+                  :content="getsecurityPolicyDesc(row[item.prop])"
+                  placement="top"
+                  :visible-arrow="true"
                 >
+                  <span>{{ getsecurityPolicyDesc(row[item.prop]) }}</span>
+                </el-tooltip>
               </template>
             </el-table-column>
             <el-table-column
@@ -40,6 +45,7 @@
               :key="index"
               :label="item.label"
               :width="item.width"
+              :resizable="index != 0 && index != columnArr.length - 1"
             >
               <template slot-scope="{ row }">
                 <el-tooltip
@@ -63,10 +69,6 @@
         @cancel="handlerCancel"
       />
     </div>
-    <networkSpecDetail
-      :visible.sync="showSpecDEtail"
-      :networkSpecId="networkSpecId"
-    ></networkSpecDetail>
   </el-drawer>
 </template>
 
@@ -75,12 +77,10 @@ import mcTable from "@/components/MctablePro";
 import footBtn from "@/components/Footbtn";
 import ReMessage from "@/utils/message";
 import dictionary from "@/assets/common/dataDictionary/dictionary";
-import networkSpecDetail from "@/components/networkSpecDetail";
 export default {
   components: {
     mcTable,
     footBtn,
-    networkSpecDetail,
   },
   props: {
     visible: {
@@ -101,39 +101,62 @@ export default {
       rowkey: "networkId",
       selectionType: "singleTable",
       drawerVisible: this.visible,
-      tabaleData: [],
       selectTable: [],
       selectNetworkName: "",
-      showSpecDEtail: false,
-      showSpecDEtail: false,
-      networkSpecId: null,
       selectNetworkId: 0,
       columnArr: [
+        // {
+        //   label: this.$t("authorityMgr.netWorkSet.ID"), // "ID",
+        //   prop: "networkId",
+        // },
         {
-          label: this.$t("resourceMgr.network.netSpecName"),
+          label: this.$t("authorityMgr.netWorkSet.networkName"), // "网络名称",
           prop: "networkName",
         },
+        // {
+        //   label: this.$t("authorityMgr.netWorkSet.interfaceType"), // "网络类型",
+        //   prop: "interfaceType",
+        // },
         {
-          label: this.$t("resourceMgr.vMwareMgr.remark"),
-          prop: "networkDescription",
+          label: this.$t("authorityMgr.netWorkSet.virtualSwitch"), // "虚拟交换机",
+          prop: "virtualSwitch",
         },
-        { label: this.$t("resourceMgr.zoneClusterDesc"), prop: "clusterName" },
-        { label: this.$t("resourceMgr.task.action"), prop: "opr" },
+        {
+          label: this.$t("authorityMgr.netWorkSet.modelType"), // "网卡类型",
+          prop: "modelType",
+        },
+        {
+          label: this.$t("authorityMgr.netWorkSet.addressPool"), // "地址池",
+          prop: "addressPool",
+        },
+        {
+          label: this.$t("authorityMgr.netWorkSet.portGroup"), // "端口组",
+          prop: "portGroup",
+        },
+        {
+          label: this.$t("resourceMgr.network.securityPolicy"), // "安全策略"
+          prop: "securityPolicy",
+          tooltipsFlag: true,
+        },
+        {
+          label: this.$t("authorityMgr.netWorkSet.securityGroup"), // "安全组",
+          prop: "securityGroup",
+          tooltipsFlag: true,
+        },
+        {
+          label: this.$t("resourceMgr.network.virtualFirewallName"), // "虚拟防火墙",
+          prop: "virtualFirewallName",
+          tooltipsFlag: true,
+        },
       ],
     };
   },
   watch: {
     visible(isvis) {
       this.drawerVisible = isvis;
-      this.$nextTick(() => {
-        this.$refs.multiTable && this.$refs.multiTable.calcTableHeight();
-      });
     },
-    networkList(val) {
-      this.tabaleData = JSON.parse(JSON.stringify(val));
-    },
+    networkList(val) {},
   },
-  created() {},
   methods: {
     getsecurityPolicyDesc(securityPolicy) {
       return dictionary.getDesc(securityPolicy, dictionary.securityPolicyArr);
@@ -161,12 +184,8 @@ export default {
         return;
       }
       let obj = JSON.parse(JSON.stringify(this.selectedNetworkInfo));
-      obj.networkId = this.selectTable[0].networkSpecId;
+      obj.networkId = this.selectTable[0].networkId;
       obj.networkName = this.selectTable[0].networkName;
-      obj.networkType =
-        this.selectTable[0].networkLevelType === "LAYER_3_NETWORK"
-          ? "l3Network"
-          : "l2Network";
       this.$emit("handlerConfirm", obj);
       this.handlerCancel();
     },
@@ -177,10 +196,6 @@ export default {
       this.selectTable = [];
       this.handleCloseSelectNetwork();
     },
-    toDetail(row) {
-      this.networkSpecId = row.networkSpecId;
-      this.showSpecDEtail = true;
-    },
     handleCloseSelectNetwork() {
       this.$emit("update:visible", false);
     },
@@ -188,8 +203,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .bind-table {
   display: flex;
@@ -199,10 +215,23 @@ export default {
   -ms-flex: 1;
   flex: 1;
   // max-height: 82vh;
-  padding: 20px 30px;
+  padding: 0 50px;
   .demo-table-expand {
     box-shadow: 0px 0px 4px 3px #ededed;
     padding: 10px;
+  }
+}
+.search-box {
+  display: inline-block;
+  .el-button {
+    margin-left: 15px;
+  }
+  .small-input-box {
+    width: 60px;
+    margin-left: 5px;
+  }
+  .input-box {
+    width: 100%;
   }
 }
 </style>

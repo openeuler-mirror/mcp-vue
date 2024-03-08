@@ -29,7 +29,6 @@ export default {
         mcServerVmLogoPath: this.imgInfo.logo || "",
         mcServerVmLogoName: this.imgInfo.logoName || "",
         serverVmUuid: this.imgInfo.serverVmUuid,
-        clusterId: this.imgInfo.clusterId,
       };
       downLoadServerVmLog(imgObj).then((res) => {
         this.imgSrc = "data:image/png;base64," + res.body;

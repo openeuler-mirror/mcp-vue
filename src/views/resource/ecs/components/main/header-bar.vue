@@ -69,14 +69,18 @@
         v-if="currentBtnShow('search_servervm')"
         @change="searchInputChange"
       />
-      <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+      <i
+        style="margin-left: 15px"
+        class="el-icon-refresh setting-icon"
+        :title="$t('common.refresh')"
+        @click="refresh"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import searchInput from "@/components/SearchInput";
-import utilsButton from "@/components/utilsButton";
 import ReMessage from "@/utils/message";
 import { MessageBox } from "element-ui";
 import { getLoginUserCluster } from "@/api/clusterapi";
@@ -91,21 +95,12 @@ import {
 export default {
   components: {
     searchInput,
-    utilsButton,
   },
   props: {
     // 选中的数组
     selectData: {
       type: Array,
       default: () => [],
-    },
-    canSelectClurster: {
-      type: Array,
-      default: () => [],
-    },
-    spinBol: {
-      type: Boolean,
-      default: false,
     },
   },
   data() {
@@ -138,7 +133,6 @@ export default {
       // 集群
       clusterValue: "",
       clusterList: [],
-      clusterOwnList: [],
     };
   },
   watch: {
@@ -148,15 +142,6 @@ export default {
         if (newV.length > 0) {
           this.setBtnsDis(newV);
         }
-      },
-      deep: true,
-    },
-    canSelectClurster: {
-      handler: function (newV, oldV) {
-        const clusterList = this.clusterOwnList.filter(
-          (res) => res.value === 0 || newV.indexOf(res.value) >= 0
-        );
-        this.clusterList = clusterList;
       },
       deep: true,
     },
@@ -174,7 +159,7 @@ export default {
           this.clusterList = [
             {
               label: this.$t("resourceMgr.allcluster"), // "全部集群",
-              value: 0,
+              value: "0",
             },
           ];
           list.forEach((element) => {
@@ -184,7 +169,6 @@ export default {
               value: clusterId,
             });
           });
-          this.clusterOwnList = this.clusterList;
           this.clusterValue = this.clusterList[0].value;
           this.clusterChange(this.clusterValue);
         })
@@ -192,7 +176,8 @@ export default {
     },
     clusterChange(value) {
       this.clusterValue = value;
-      this.$emit("clusterKeyChange", value);
+      this.$parent.changeclusterKey(value);
+      this.$emit("getclusterTreeData");
     },
     setBtnsDis(newV) {
       // 开机按钮  start
@@ -270,13 +255,13 @@ export default {
     startService() {
       let successMsg = this.$t("common.successfulOperation"); // "操作成功";
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
-      const batchServerVmParams = this.getBatchOperateParam();
+      let serverVmUuids = this.getBatchSelectedUuid();
       this.selectData.forEach((element) => {
         element.startBtnDisabled = true;
       });
       this.$emit("headerBarEmit", this.selectData);
 
-      batchStartServerVm({ batchServerVmParams })
+      batchStartServerVm({ serverVmUuids })
         .then((res) => {
           ReMessage.success(successMsg);
           this.initDisabled(true);
@@ -292,12 +277,12 @@ export default {
     closeService() {
       let successMsg = this.$t("common.successfulOperation"); // "操作成功";
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
-      const batchServerVmParams = this.getBatchOperateParam();
+      let serverVmUuids = this.getBatchSelectedUuid();
       this.selectData.forEach((element) => {
         element.shutdownBtnDisabled = true;
       });
       this.$emit("headerBarEmit", this.selectData);
-      batchShutdownServerVm({ batchServerVmParams })
+      batchShutdownServerVm({ serverVmUuids })
         .then((res) => {
           ReMessage.success(successMsg);
           this.initDisabled(true);
@@ -313,12 +298,12 @@ export default {
     rebootService() {
       let successMsg = this.$t("common.successfulOperation"); // "操作成功";
       let errorMsg = this.$t("common.operationFailed"); // "操作失败";
-      const batchServerVmParams = this.getBatchOperateParam();
+      let serverVmUuids = this.getBatchSelectedUuid();
       this.selectData.forEach((element) => {
         element.rebootBtnDisabled = true;
       });
       this.$emit("headerBarEmit", this.selectData);
-      batchRebootServerVm({ batchServerVmParams })
+      batchRebootServerVm({ serverVmUuids })
         .then((res) => {
           ReMessage.success(successMsg);
           this.initDisabled(true);
@@ -341,8 +326,8 @@ export default {
         cancelButtonText: this.$t("common.cancel"),
         type: "warning",
       }).then(() => {
-        const batchServerVmParams = this.getBatchOperateParam();
-        batchDeleteServerVm({ batchServerVmParams })
+        let serverVmUuids = this.getBatchSelectedUuid();
+        batchDeleteServerVm({ serverVmUuids })
           .then((res) => {
             ReMessage.success(successMsg);
             this.initDisabled(true);
@@ -367,8 +352,8 @@ export default {
         cancelButtonText: this.$t("common.cancel"),
         type: "warning",
       }).then(() => {
-        const { serverVmUuid, clusterId } = this.selectData[0];
-        abortServerVm({ serverVmUuid, clusterId })
+        let serverVmUuid = this.selectData[0].serverVmUuid;
+        abortServerVm({ serverVmUuid })
           .then((res) => {
             ReMessage.success(successMsg);
             this.initDisabled(true);
@@ -393,8 +378,8 @@ export default {
         cancelButtonText: this.$t("common.cancel"),
         type: "warning",
       }).then(() => {
-        const { serverVmUuid, clusterId } = this.selectData[0];
-        forcedRestartServerVm({ serverVmUuid, clusterId })
+        let serverVmUuid = this.selectData[0].serverVmUuid;
+        forcedRestartServerVm({ serverVmUuid })
           .then((res) => {
             ReMessage.success(successMsg);
             this.initDisabled(true);
@@ -429,19 +414,18 @@ export default {
         this.batchForcerebootVm();
       }
     },
-    getBatchOperateParam() {
-      const batchServerVmParams = [];
+    getBatchSelectedUuid() {
+      let serverVmUuids = [];
       for (let i = 0; i < this.selectData.length; i++) {
-        const { serverVmUuid, clusterId } = this.selectData[i];
-        batchServerVmParams.push({ serverVmUuid, clusterId });
+        serverVmUuids.push(this.selectData[i].serverVmUuid);
       }
-      return batchServerVmParams;
+      return serverVmUuids;
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
 .header-box {
   @include headerBarStyle;

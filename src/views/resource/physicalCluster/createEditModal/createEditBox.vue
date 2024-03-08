@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content-steps">
-      <el-steps :active="activestep" class="kcp-steps">
+    <div class="create-new-form-steps">
+      <el-steps :active="activestep">
         <el-step :title="$t('resourceMgr.clusterBaseInfo')"></el-step>
         <el-step :title="$t('resourceMgr.clusterStorageInfo')"></el-step>
         <el-step :title="$t('resourceMgr.clusterConfirmInfo')"></el-step>
@@ -9,7 +9,7 @@
     </div>
 
     <!-- 基本信息 -->
-    <div v-if="activestep == 0" class="drawer-body-content">
+    <div v-if="activestep == 0" class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -38,8 +38,6 @@
           <el-form-item :label="$t('resourceMgr.clusterRemark')" prop="remark">
             <el-input
               type="textarea"
-              maxlength="400"
-              show-word-limit
               :autosize="{ minRows: 2, maxRows: 4 }"
               v-model="createDataFormData.remark"
             />
@@ -151,7 +149,7 @@
               <i class="kcp-infoQues icon-infoQues"></i>
             </el-tooltip>
           </el-form-item>
-          <!-- 管理员密码 -->
+
           <el-form-item
             :label="$t('resourceMgr.clusterAdminPassword')"
             prop="clusterAdminPassword"
@@ -161,7 +159,11 @@
               :disabled="passwordDis"
               type="password"
               autocomplete="nope"
-              :placeholder="$t('resourceMgr.clusterAdminPasswordplac')"
+              :placeholder="
+                $t('common.pleaseEnter') +
+                $t('resourceMgr.clusterAdmin') +
+                $t('resourceMgr.clusterAdminPassword')
+              "
             />
 
             <el-link
@@ -173,33 +175,11 @@
               {{ $t("resourceMgr.clusterEditPassword") }}
             </el-link>
           </el-form-item>
-          <!-- root密码 -->
-          <el-form-item
-            :label="$t('resourceMgr.rootPassword')"
-            prop="rootPassword"
-          >
-            <el-input
-              v-model="createDataFormData.rootPassword"
-              :disabled="rootPasswordDis"
-              type="password"
-              autocomplete="nope"
-              :placeholder="$t('resourceMgr.rootPasswordplac')"
-            />
-
-            <el-link
-              v-if="formOptions.editflag"
-              type="primary"
-              style="margin-left: 10px"
-              @click="editrootPassword()"
-            >
-              {{ $t("resourceMgr.clusterEditPassword") }}
-            </el-link>
-          </el-form-item>
         </el-form>
       </div>
     </div>
     <!-- 存储信息 -->
-    <div v-if="activestep == 1" class="drawer-body-content">
+    <div v-if="activestep == 1" class="create-new-formtable">
       <mc-table
         :data="tableData"
         :total="total"
@@ -212,6 +192,7 @@
             v-if="item.prop == 'userate'"
             :key="item.prop + index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -226,6 +207,7 @@
           <el-table-column
             v-else-if="item.prop == 'status'"
             :key="index"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :label="item.label"
             :width="item.width"
           >
@@ -237,6 +219,7 @@
             v-else-if="item.prop == 'type'"
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -246,6 +229,7 @@
           <el-table-column
             v-else-if="item.prop == 'usage'"
             :key="index"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :label="item.label"
             :width="item.width"
           >
@@ -257,6 +241,7 @@
             v-else
             :key="item.prop + index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -267,7 +252,7 @@
       </mc-table>
     </div>
     <!-- 确认信息 -->
-    <div v-if="activestep == 2" class="drawer-body-content">
+    <div v-if="activestep == 2" class="create-new-form">
       <div class="template-box flex">
         <div class="template-box-title">
           {{ $t("resourceMgr.clusterBaseInfo") }}
@@ -400,7 +385,6 @@ export default {
         clusterUrl: [],
         clusterAdminName: "", // 用户名
         clusterAdminPassword: "", // 登录密码
-        rootPassword: "", // root登录密码
         clusterNodeList: [
           { httpType: "https://", ipAddress: "", port: "8443" },
         ],
@@ -470,32 +454,9 @@ export default {
           //  密码不能为空
           {
             required: true,
-            message: this.$t("resourceMgr.clusterAdminPasswordplac"),
-            trigger: "blur",
-          },
-          // 密码长度应控制在 6 ~ 18 个字符
-          {
-            min: 6,
-            max: 18,
             message:
               this.$t("resourceMgr.clusterAdminPassword") +
-              this.$t("common.adminPwdLength"),
-            trigger: "blur",
-          },
-          // 密码只能由英文字母、数字组合
-          {
-            trigger: "blur",
-            message:
-              this.$t("resourceMgr.clusterAdminPassword") +
-              this.$t("common.adminPwdWranMsg"),
-            validator: validate.validateCharEnNum,
-          },
-        ],
-        rootPassword: [
-          //  密码不能为空
-          {
-            required: true,
-            message: this.$t("resourceMgr.rootPasswordplac"),
+              this.$t("common.notNull"),
             trigger: "blur",
           },
           // 密码长度应控制在 6 ~ 18 个字符
@@ -520,7 +481,6 @@ export default {
 
       activestep: 0,
       passwordDis: false,
-      rootPasswordDis: false,
       clusterAdminNameDis: false,
 
       rowkey: "id",
@@ -577,7 +537,6 @@ export default {
       // 编辑
       this.clusterAdminNameDis = true;
       this.passwordDis = true;
-      this.rootPasswordDis = true;
       this.createDataFormData.name = formData.name;
       this.createDataFormData.remark = formData.remark;
       this.createDataFormData.type = formData.type;
@@ -585,12 +544,10 @@ export default {
       this.createDataFormData.clusterAdminName = formData.clusterAdminName;
       this.createDataFormData.clusterAdminPassword =
         formData.clusterAdminPassword.slice(0, 10);
-      this.createDataFormData.rootPassword = formData.rootPassword.slice(0, 10);
     } else {
       // 新增
       this.clusterAdminNameDis = false;
       this.passwordDis = false;
-      this.rootPasswordDis = false;
     }
   },
   computed: {},
@@ -617,10 +574,6 @@ export default {
     editpassword() {
       this.passwordDis = false;
       this.createDataFormData.clusterAdminPassword = "";
-    },
-    editrootPassword() {
-      this.rootPasswordDis = false;
-      this.createDataFormData.rootPassword = "";
     },
     getpageStorage() {
       this.$nextTick(() => {
@@ -775,23 +728,13 @@ export default {
     commitEdit() {
       let { formData } = this.formOptions;
       let clusterAdminPassword = "";
-      let rootPassword = "";
       let ifModifyPassword = false;
-      let ifModifyRootPassword = false;
       if (this.passwordDis) {
         clusterAdminPassword = formData.clusterAdminPassword;
         ifModifyPassword = false;
       } else {
         clusterAdminPassword = this.createDataFormData.clusterAdminPassword;
         ifModifyPassword = true;
-      }
-
-      if (this.rootPasswordDis) {
-        rootPassword = formData.rootPassword;
-        ifModifyRootPassword = false;
-      } else {
-        rootPassword = this.createDataFormData.rootPassword;
-        ifModifyRootPassword = true;
       }
       let editOrgData = {
         clusterId: formData.clusterId,
@@ -802,8 +745,6 @@ export default {
         clusterAdminName: this.createDataFormData.clusterAdminName, // 集群管理员名称
         clusterAdminPassword: clusterAdminPassword, // 集群管理员密码
         ifModifyPassword: ifModifyPassword,
-        rootPassword: rootPassword,
-        ifModifyRootPassword: ifModifyRootPassword,
       };
       modifyCluster(editOrgData)
         .then((res) => {
@@ -822,7 +763,6 @@ export default {
         clusterNodeList: this.createDataFormData.clusterNodeList, // 集群url(用逗号隔开)
         clusterAdminName: this.createDataFormData.clusterAdminName, // 集群管理员名称
         clusterAdminPassword: this.createDataFormData.clusterAdminPassword, // 集群管理员密码
-        rootPassword: this.createDataFormData.rootPassword,
       };
 
       creatCluster(createData)
@@ -850,14 +790,20 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
-
-.drawer-body-content-steps {
-  padding: 20px 30px;
+@include DrawerRtl;
+.create-new-form-steps {
+  padding: 20px 50px;
 }
-.drawer-body-content {
+.create-new-form {
   @include formStyle;
+  display: flex;
+  flex: 1;
+  max-height: 82vh;
+  overflow: auto;
+  $input-width: 375px;
+  flex-direction: column;
   .template-box {
     .template-box-title {
       font-size: 16px;
@@ -865,7 +811,7 @@ export default {
       margin-right: 25px;
       line-height: 32px;
     }
-    .template-box-content::v-deep {
+    .template-box-content {
       .el-form-item--mini.el-form-item,
       .el-form-item--small.el-form-item {
         margin-bottom: 0px !important;
@@ -882,14 +828,32 @@ export default {
       }
     }
   }
+  .el-input {
+    width: $input-width;
+  }
+  .el-textarea {
+    width: $input-width;
+  }
+}
+.create-new-formtable {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-height: 82vh;
+  padding: 0 50px;
 }
 .footBtn {
-  border-top: 1px $borderColor dashed;
+  //position: absolute;bottom: 0;right: 0;left: 0;
+  padding: 25px 70px;
+  border-top: 1px $borderColor solid;
   .el-button {
     margin-right: 15px;
   }
 }
-.input-with-elselect ::v-deep {
+.input-with-elselect {
   .el-input-group__prepend {
     background-color: transparent;
     overflow: hidden;

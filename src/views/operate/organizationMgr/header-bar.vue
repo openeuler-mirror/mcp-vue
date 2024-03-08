@@ -1,8 +1,8 @@
 <template>
   <div class="header-box">
     <div class="header-left">
-      <el-button @click="newBuild">
-        {{ $t("common.add") }}
+      <el-button @click="newlyBuild" v-if="currentBtnShow('create_org')">
+        {{ $t("authorityMgr.createOrg") }}
       </el-button>
     </div>
     <div class="header-right">
@@ -26,8 +26,8 @@ export default {
     refresh() {
       this.$emit("refreshTable");
     },
-    newBuild() {
-      this.$emit("newBuild");
+    newlyBuild() {
+      this.$emit("newlyBuild");
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-content">
     <!-- 基本信息 -->
-    <div class="drawer-body-content">
+    <div class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -31,8 +31,6 @@
           >
             <el-input
               type="textarea"
-              maxlength="400"
-              show-word-limit
               :autosize="{ minRows: 2, maxRows: 4 }"
               v-model="createDataFormData.remark"
             />
@@ -337,15 +335,20 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
-
+@include DrawerRtl;
 .create-new-form-steps {
-  padding: 20px 30px 0;
+  padding: 20px 50px;
 }
 .create-new-form {
   @include formStyle;
-
+  display: flex;
+  flex: 1;
+  max-height: 82vh;
+  overflow: auto;
+  $input-width: 375px;
+  flex-direction: column;
   .template-box {
     .template-box-title {
       font-size: 16px;
@@ -370,9 +373,20 @@ export default {
       }
     }
   }
+  .el-input {
+    width: $input-width;
+  }
+  .el-textarea {
+    width: $input-width;
+  }
 }
 .footBtn {
-  border-top: 1px $borderColor dashed;
+  //position: absolute;bottom: 0;right: 0;left: 0;
+  padding: 25px 70px;
+  border-top: 1px $borderColor solid;
+  .el-button {
+    margin-right: 15px;
+  }
 }
 .input-with-select {
   .el-input-group__prepend {

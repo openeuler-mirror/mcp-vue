@@ -4,14 +4,12 @@
     <!-- 操作按钮 -->
     <header-bar
       ref="headerBar"
-      :spinBol="tableLoading"
       @newlyBuild="newlyBuild"
       @refreshTable="refreshTable"
     />
     <mc-table
       class="loading-area"
       ref="availabilityZoneTable"
-      :tableLoading="tableLoading"
       :data="tableData"
       :total="total"
       :pageSize="pageSize"
@@ -28,6 +26,7 @@
         <el-table-column
           v-if="item.prop == 'name'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -47,7 +46,8 @@
         <!-- CPU总容量 -->
         <el-table-column
           v-else-if="item.prop == 'cpuTotal'"
-          :key="index + 'cpuTotal'"
+          :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -58,7 +58,8 @@
         <!-- 内存总容量 -->
         <el-table-column
           v-else-if="item.prop == 'memTotal'"
-          :key="index + 'cpmemTotaluTotal'"
+          :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -69,7 +70,8 @@
         <!-- 存储总容量 -->
         <el-table-column
           v-else-if="item.prop == 'storageTotal'"
-          :key="index + 'storageTotal'"
+          :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -81,7 +83,8 @@
         <el-table-column
           v-else-if="item.prop == 'operation'"
           fixed="right"
-          :key="index + 'operation'"
+          :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :min-width="item.width || '200px'"
           className="tableoperation"
@@ -106,9 +109,10 @@
 
         <el-table-column
           v-else
-          :key="index + item.label"
+          :key="index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -148,7 +152,6 @@ export default {
       treeProps: { children: "children", hasChildren: "hasChildren" },
       checkedColumns: [],
       checkedColumns22: [],
-      tableLoading: false,
       columnArr: [
         // 名称
         {
@@ -282,7 +285,9 @@ export default {
       this.getTableData();
     },
     getTableData() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".page-wrapper-content");
+      });
       let pramas = {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
@@ -291,13 +296,12 @@ export default {
         .then((res) => {
           this.tableData = res.list;
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
         .catch((err) => {
           this.alertTips(err);
           this.tableData = [];
-        })
-        .finally(() => {
-          this.tableLoading = false;
+          this.$hideFullScreenLoading();
         });
     },
     handlePageChange(page) {
@@ -312,3 +316,5 @@ export default {
   },
 };
 </script>
+
+

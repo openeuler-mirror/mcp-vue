@@ -15,7 +15,12 @@
         style="margin-top: 20px"
       >
         <template v-for="(item, index) in columnArr">
-          <el-table-column :key="index" :label="item.label" :width="item.width">
+          <el-table-column
+            :key="index"
+            :resizable="index != 0 && index != columnArr.length - 1"
+            :label="item.label"
+            :width="item.width"
+          >
             <template slot-scope="{ row }">
               <el-tooltip
                 v-if="item.tooltipsFlag"
@@ -177,8 +182,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .bind-table {
   display: flex;
@@ -188,6 +194,6 @@ export default {
   -ms-flex: 1;
   flex: 1;
   max-height: 82vh;
-  padding: 20px 30px;
+  padding: 0 50px;
 }
 </style>

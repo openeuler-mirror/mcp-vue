@@ -16,6 +16,7 @@
           v-if="item.prop == 'userate'"
           :key="item.prop + index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -31,6 +32,7 @@
           v-else-if="item.prop == 'status'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -41,6 +43,7 @@
           v-else-if="item.prop == 'type'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -51,47 +54,18 @@
           v-else-if="item.prop == 'usage'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
             <span>{{ getStorageUsage(row.usage) }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          v-else-if="item.prop == 'available'"
-          :key="index"
-          :label="item.label"
-          :width="item.width"
-        >
-          <template slot-scope="{ row }">
-            <span v-if="row.available"
-              ><i class="el-icon-circle-check" style="color: #67c23a"></i>
-              {{ $t("resourceMgr.storage.enable") }}</span
-            >
-            <span v-else
-              ><i class="el-icon-circle-close" style="color: #f56c6c"></i
-              >{{ $t("resourceMgr.storage.disable") }}</span
-            >
-          </template>
-        </el-table-column>
 
-        <el-table-column
-          v-else-if="item.prop == 'opr'"
-          :key="index"
-          :label="item.label"
-          :width="item.width"
-        >
-          <template slot-scope="{ row }">
-            <el-button @click="changeStatus(row)" type="text" class="">{{
-              row.available
-                ? $t("resourceMgr.storage.disable")
-                : $t("resourceMgr.storage.enable")
-            }}</el-button>
-          </template>
-        </el-table-column>
         <el-table-column
           v-else
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -107,7 +81,7 @@
 <script>
 import mcTable from "@/components/MctablePro";
 import mcAllocationratio from "@/components/Mcallocationratio";
-import { pageStorage, changeClusterUse } from "@/api/clusterapi";
+import { pageStorage } from "@/api/clusterapi";
 import transformat from "@/utils/transformat";
 import statuscell from "../../components/statuscell/index.vue";
 import dictionary from "@/assets/common/dataDictionary/dictionary";
@@ -152,18 +126,8 @@ export default {
           label: this.$t("resourceMgr.storageUsedSize") + "(GB)",
           prop: "availableSize",
         },
-
         // 利用率
         { label: this.$t("resourceMgr.storageUserate"), prop: "userate" },
-        // 启用状态
-        {
-          label: this.$t("resourceMgr.storage.enableState"),
-          prop: "available",
-        },
-        {
-          label: this.$t("resourceMgr.task.action"),
-          prop: "opr",
-        },
       ],
       tableData: [],
 
@@ -205,35 +169,6 @@ export default {
           this.tableData = [];
           this.$hideFullScreenLoading();
         });
-    },
-    changeStatus(row) {
-      const wayText = row.available
-        ? this.$t("resourceMgr.storage.disable")
-        : this.$t("resourceMgr.storage.enable");
-      const tipsText =
-        this.$t("resourceMgr.storage.sure") + wayText + row.name + "?";
-      const confirmText = row.available
-        ? this.$t("resourceMgr.storage.disTips")
-        : this.$t("resourceMgr.storage.enableTips");
-      this.$confirm(confirmText, tipsText, {
-        confirmButtonText: this.$t("resourceMgr.storage.sure"),
-        cancelButtonText: this.$t("resourceMgr.storage.cancel"),
-        type: "warning",
-      }).then(() => {
-        const { id, name, available } = row;
-        changeClusterUse({
-          clusterId: this.pageInfo.clusterId,
-          storageId: id,
-          storageName: name,
-          status: !available,
-        }).then((res) => {
-          this.getpageStorage();
-          this.$message({
-            type: "success",
-            message: `${wayText}${this.$t("resourceMgr.storage.success")}!`,
-          });
-        });
-      });
     },
     totableData(list) {
       list.forEach((element, index) => {

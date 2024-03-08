@@ -17,8 +17,6 @@
         :label="$t('resourceMgr.clusterStorage')"
         name="third"
       ></el-tab-pane>
-      <!-- 网络 -->
-      <el-tab-pane label="网络" name="netWork"></el-tab-pane>
     </el-tabs>
     <clusterSummary
       v-if="activeName == 'first'"
@@ -32,10 +30,6 @@
       v-if="activeName == 'third'"
       :dataInfo="clusterSummaryInfo"
     ></detailStorage>
-    <networkDetail
-      v-if="activeName == 'netWork'"
-      :dataInfo="clusterSummaryInfo"
-    ></networkDetail>
   </div>
 </template>
 
@@ -44,15 +38,9 @@ import clusterSummary from "./detailPage/clusterSummary.vue";
 import pagePhysicalHost from "./detailPage/pagePhysicalHost.vue";
 import detailStorage from "./detailPage/detailStorage";
 import { clusterInfo } from "@/api/clusterapi";
-import networkDetail from "./detailPage/networkDetail/networkDetail";
 export default {
   name: "physicalClusterDetail",
-  components: {
-    clusterSummary,
-    pagePhysicalHost,
-    detailStorage,
-    networkDetail,
-  },
+  components: { clusterSummary, pagePhysicalHost, detailStorage },
   data() {
     return {
       activeName: "first",

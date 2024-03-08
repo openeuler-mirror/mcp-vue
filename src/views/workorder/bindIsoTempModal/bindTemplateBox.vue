@@ -34,6 +34,7 @@
             v-if="item.prop == 'isoLabel'"
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -51,6 +52,7 @@
             v-else
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -251,12 +253,13 @@ export default {
 };
 </script>
 <style>
-.bind-table .search-box .small-input-box .el-input__suffix {
+.search-box .small-input-box .el-input__suffix {
   right: 12px;
 }
 </style>
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .bind-table {
   display: flex;
@@ -265,7 +268,7 @@ export default {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 20px 30px;
+  padding: 0 50px;
   .table-ccsl {
     max-width: 100%;
     display: block;
@@ -273,18 +276,18 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .search-box {
-    display: inline-block;
-    .el-button {
-      margin-left: 15px;
-    }
-    .small-input-box {
-      width: 60px;
-      margin-left: 5px;
-    }
-    .input-box {
-      width: 100%;
-    }
+}
+.search-box {
+  display: inline-block;
+  .el-button {
+    margin-left: 15px;
+  }
+  .small-input-box {
+    width: 60px;
+    margin-left: 5px;
+  }
+  .input-box {
+    width: 100%;
   }
 }
 </style>

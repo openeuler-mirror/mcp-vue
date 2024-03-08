@@ -148,12 +148,6 @@ export default {
           label: this.$t("resourceMgr.zoneDISK_COPYING"), // "正在磁盘复制",
         },
         {
-          key: "CREATE_KCP_IMAGE",
-          class: "running",
-          icon: "el-icon-loading",
-          label: this.$t("resourceMgr.zoneCREATE_KCP_IMAGE"), // "正在制作模板镜像",
-        },
-        {
           key: "",
           class: "error",
           icon: "",

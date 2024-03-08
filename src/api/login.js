@@ -45,25 +45,19 @@ export function resetPassword(data) {
 }
 
 // 获取告警数量
-export function alarmNotifications(data, headers) {
+export function alarmNotifications(data) {
   return request({
     url: '/monitoring/alarmNotifications',
     method: 'post',
-    data,
-    headers: {
-      ...headers
-    }
+    data
   })
 }
 
 // 获取待审核工单数量
-export function getWaitCheckCount(data, headers) {
+export function getWaitCheckCount(data) {
   return request({
     url: '/workOrder/getWaitCheckCount',
     method: 'post',
-    data,
-    headers: {
-      ...headers
-    }
+    data
   })
 }

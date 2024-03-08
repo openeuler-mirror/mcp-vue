@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content">
+    <div class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -289,7 +289,7 @@ export default {
           {
             trigger: "blur",
             message: this.$t("authorityMgr.userNamecombination"),
-            validator: validate.validateCharNum,
+            validator: validate.validateEnNum,
           },
         ],
         realName: [
@@ -479,7 +479,6 @@ export default {
       modifyUser(editData)
         .then((res) => {
           this.alertTips(this.$t("authorityMgr.modifyUsersuccess"), "success");
-          this.$emit("freshTree");
           this.$parent.closeDrawer();
         })
         .catch((err) => {
@@ -544,6 +543,7 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .create-new-form {
   @include formStyle;

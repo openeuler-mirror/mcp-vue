@@ -220,8 +220,8 @@ export default {
       display: flex;
       flex-direction: row;
       .homeBtn-item {
-        min-width: 100px;
-        padding: 0 10px;
+        width: 100px;
+        height: 36px;
         text-align: center;
         line-height: 36px;
         margin: 0 5px;

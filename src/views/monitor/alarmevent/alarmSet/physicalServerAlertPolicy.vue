@@ -11,6 +11,7 @@
         <el-table-column
           v-if="item.prop == 'type'"
           :key="item.prop"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -23,6 +24,7 @@
           v-else-if="item.prop == 'operation'"
           fixed="right"
           :key="index"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :label="item.label"
           :min-width="item.width || '200px'"
         >
@@ -46,6 +48,7 @@
           v-else
           :key="item.prop"
           :label="item.label"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">

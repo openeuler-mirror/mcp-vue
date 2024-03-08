@@ -228,7 +228,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 .setDiskInfo-box {
   .applyDelete {
     margin-left: 10px;

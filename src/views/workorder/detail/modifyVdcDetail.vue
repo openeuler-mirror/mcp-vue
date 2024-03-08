@@ -146,9 +146,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
-
+@include DrawerRtl;
 .modifyVdcDetail-flexBox {
   display: flex;
   flex-direction: row;

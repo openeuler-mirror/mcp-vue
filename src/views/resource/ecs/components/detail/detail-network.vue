@@ -11,6 +11,7 @@
         v-for="(item, index) in columnArr"
         :key="index"
         :width="item.width"
+        :resizable="index != 0 && index != columnArr.length - 1"
         :label="item.label"
       >
         <template slot-scope="{ row, column, $index }">
@@ -71,7 +72,6 @@ export default {
       ],
       tableData: [],
       serverVmUuid: this.$route.params.id,
-      clusterId: this.$route.params.cid,
       total: 0,
       // 分页数1开始
       pageNo: 1,
@@ -85,11 +85,9 @@ export default {
   methods: {
     renderTable() {
       let serverVmUuid = this.serverVmUuid;
-      serverVmNetwork({ serverVmUuid, clusterId: this.clusterId }).then(
-        (res) => {
-          this.tableData = res;
-        }
-      );
+      serverVmNetwork({ serverVmUuid }).then((res) => {
+        this.tableData = res;
+      });
     },
   },
 };

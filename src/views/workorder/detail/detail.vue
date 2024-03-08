@@ -183,25 +183,17 @@
         <el-form-item :label="$t('workOrder.statusDesc')">
           <span>{{ applyServerVM.statusDesc }}</span>
         </el-form-item>
-
-        <div v-if="applyServerVM.createByKcpImage">
-          <el-form-item label="镜像名称">
-            <span>{{ applyServerVM.imageName }}</span>
-          </el-form-item>
-        </div>
-        <div v-else>
-          <!-- 镜像 -->
-          <el-form-item
-            v-if="applyServerVM.applyServerVmType == 'ISO'"
-            :label="$t('workOrder.iso')"
-          >
-            <span>{{ applyServerVM.isoList[0].isoFile }}</span>
-          </el-form-item>
-          <!-- 模板名称 -->
-          <el-form-item v-else :label="$t('workOrder.templateName')">
-            <span>{{ applyServerVM.templateName }}</span>
-          </el-form-item>
-        </div>
+        <!-- 镜像 -->
+        <el-form-item
+          v-if="applyServerVM.applyServerVmType == 'ISO'"
+          :label="$t('workOrder.iso')"
+        >
+          <span>{{ applyServerVM.isoList[0].isoFile }}</span>
+        </el-form-item>
+        <!-- 模板名称 -->
+        <el-form-item v-else :label="$t('workOrder.templateName')">
+          <span>{{ applyServerVM.templateName }}</span>
+        </el-form-item>
 
         <!-- <el-form-item label="模板名称">
         <span>{{ applyServerVM.templateName }}</span>
@@ -620,9 +612,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
-
+@include DrawerRtl;
 .workDetail {
   @include formStyle;
   display: flex;
@@ -634,7 +626,7 @@ export default {
     height: 0px;
     flex: 1;
     overflow: auto;
-    .el-form .el-form-item {
+    .el-form > .el-form-item {
       margin-bottom: 0px !important;
     }
     p {

@@ -26,6 +26,7 @@
           <el-table-column
             v-if="item.prop == 'vdcConfigure'"
             :key="index"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :label="item.label"
             :width="item.width"
           >
@@ -41,6 +42,7 @@
           <el-table-column
             v-else
             :key="index"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :label="item.label"
             :width="item.width"
           >
@@ -158,8 +160,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
 .bind-table {
   display: flex;
@@ -168,6 +171,7 @@ export default {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: 20px 30px;
+  max-height: 82vh;
+  padding: 0 50px;
 }
 </style>

@@ -270,20 +270,4 @@ export function serverVmAlarmEvent(data) {
     })
 }
 
-// 云服务器转移
-export function serverVmTransfer(data) {
-    return request({
-        url: '/serverVm/serverVmTransfer',
-        method: 'post',
-        data
-    })
-}
 
-// 云服务器转移(跨组织)
-export function transferCanSelectOrg(data) {
-    return request({
-        url: '/serverVm/transferCanSelectOrg',
-        method: 'post',
-        data
-    })
-}

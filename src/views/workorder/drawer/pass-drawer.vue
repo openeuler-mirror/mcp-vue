@@ -9,35 +9,37 @@
     :before-close="handleClosePass"
   >
     <template>
-      <div class="drawer-body-content">
-        <div class="template-box">
-          <el-form
-            ref="passForm"
-            label-width="auto"
-            :model="passFormData"
-            :rules="rulesTemplate"
-          >
-            <el-form-item
-              :label="$t('workOrder.reviewComments')"
-              prop="auditOpinion"
+      <div class="drawer-content">
+        <div class="service-modify">
+          <div class="template-box">
+            <el-form
+              ref="passForm"
+              label-width="auto"
+              :model="passFormData"
+              :rules="rulesTemplate"
             >
-              <el-input
-                v-model="passFormData.auditOpinion"
-                type="textarea"
-                placeholder=""
-                maxlength="400"
-                show-word-limit
-                :autosize="{ minRows: 2, maxRows: 4 }"
-              />
-            </el-form-item>
-          </el-form>
+              <el-form-item
+                :label="$t('workOrder.reviewComments')"
+                prop="auditOpinion"
+              >
+                <el-input
+                  v-model="passFormData.auditOpinion"
+                  type="textarea"
+                  :rows="3"
+                  placeholder=""
+                  maxlength="500"
+                  show-word-limit
+                />
+              </el-form-item>
+            </el-form>
+          </div>
         </div>
+        <foot-btn
+          class="drawer-foot"
+          @confirm="handlerConfirm"
+          @cancel="handlerCancel"
+        />
       </div>
-      <foot-btn
-        class="drawer-foot"
-        @confirm="handlerConfirm"
-        @cancel="handlerCancel"
-      />
     </template>
   </el-drawer>
 </template>
@@ -143,6 +145,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
+.service-modify {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-height: 82vh;
+  padding: 0 50px;
+}
 </style>

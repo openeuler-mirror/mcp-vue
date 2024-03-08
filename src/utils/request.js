@@ -11,12 +11,11 @@ const service = axios.create({
   // timeout: 5000
 })
 
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // config.headers['Content-Type'] = 'application/json;charset=UTF-8'
-    config.headers['KYLIN_LANGUAGE'] = localStorage.getItem("kcp-lang") || 'zh'
+    config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+    config.headers['KYLIN_LANGUAGE'] = localStorage.getItem("kcp-lang") || ' "zh"'
     if (store.getters.token) {
       config.headers['KYLIN_ACCESS_TOKEN'] = getToken()
     }
@@ -59,17 +58,11 @@ service.interceptors.response.use(
       }
       return Promise.reject(res.desc)
     } else {
-      //后端有时直接返回bol
-      if (isBoolean(res.data)) {
-        return res.data
-      }else {
-        return res.data || res.desc
-      }
-
+      return res.data || res.desc
     }
   },
   error => {
-    console.error('err' + error) // for debug
+    console.log('err' + error) // for debug
     ReMessage.error({
       message: error.message,
       type: 'error',
@@ -80,8 +73,6 @@ service.interceptors.response.use(
   }
 )
 
-function isBoolean(data) {
-  return typeof data === 'boolean';
-}
+
 
 export default service

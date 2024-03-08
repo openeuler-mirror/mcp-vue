@@ -4,10 +4,7 @@
       ref="detailLog"
       :data="tableData"
       :total="total"
-      :pageSize="pageSize"
-      :currentPage="pageNo"
       :short-height="60"
-      @size-change="handleSizeChange"
       @current-change="handlePageChange"
       :rowkey="rowkey"
     >
@@ -17,6 +14,7 @@
           :key="item.prop + index"
           :width="item.width"
           :label="item.label"
+          :resizable="index != 0 && index != columnArr.length - 1"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -33,6 +31,7 @@
           v-else
           :key="item.prop + index"
           :width="item.width"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :label="item.label"
         >
           <template slot-scope="{ row }">
@@ -98,7 +97,6 @@ export default {
       ],
       tableData: [],
       serverVmUuid: this.$route.params.id,
-      clusterId: this.$route.params.cid,
       total: 0,
       // 分页数1开始
       pageNo: 1,
@@ -126,21 +124,11 @@ export default {
       this.pageNo = +page;
       this.renderTable();
     },
-    handleSizeChange(pageSize) {
-      this.pageNo = 1;
-      this.pageSize = pageSize;
-      this.renderTable();
-    },
     renderTable() {
       let pageNo = this.pageNo;
       let pageSize = this.pageSize;
       let serverVmUuid = this.serverVmUuid;
-      getServerVmOperateLog({
-        pageNo,
-        pageSize,
-        clusterId: this.clusterId,
-        serverVmUuid,
-      }).then((res) => {
+      getServerVmOperateLog({ pageNo, pageSize, serverVmUuid }).then((res) => {
         this.tableData = res.list;
         this.total = res.pageInfo.total;
       });

@@ -22,6 +22,7 @@
           v-for="(item, index) in columnArr"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">

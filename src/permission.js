@@ -10,6 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 router.beforeEach(async (to, from, next) => {
+  console.log('to:', to, 'from:', from)
 
   // start progress bar
   NProgress.start()
@@ -29,13 +30,14 @@ router.beforeEach(async (to, from, next) => {
       next(`/login`)
       NProgress.done()
     } else {
-      to.params.pagekey?localStorage.setItem("kcp-pagekey",to.params.pagekey):''
       let pagekey = localStorage.getItem("kcp-pagekey")
       if (pagekey && to.meta.routeKey) {
         localStorage.setItem("kcp-router", JSON.stringify({ pagekey: pagekey, path: to.path }));
       }
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
+
+
         next()
       } else {
         try {
@@ -54,6 +56,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     /* has no token*/
+
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()

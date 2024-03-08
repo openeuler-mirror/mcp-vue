@@ -66,10 +66,7 @@
           </span>
         </div>
 
-        <div
-          class="bingIp"
-          v-if="showbingIpBox && item.networkType === 'l2Network'"
-        >
+        <div class="bingIp" v-if="showbingIpBox">
           <div class="bingIp-warp">
             <el-checkbox
               :disabled="item.networkruleForm.automaticAcqIp"
@@ -271,13 +268,30 @@ export default {
       this.setPageDefaultData(val);
     },
   },
-
+  // watch: {
+  //   data: {
+  //     handler: function (newValue, oldValue) {
+  //       if (newValue) {
+  //         this.$refs.elTable.clearSelection();
+  //         this.tableData = newValue;
+  //         this.toggleSelection();
+  //         this.$nextTick(() => {
+  //           this.calcTableHeight();
+  //         });
+  //       }
+  //     },
+  //     // 代表在wacth里声明了 立即先去执行handler方法
+  //     immediate: false,
+  //     deep: true,
+  //   },
+  // },
   methods: {
     setPageDefaultData(defaultData) {
       if (JSON.stringify(defaultData) == "{}") {
         return;
       } else {
-        let { interfaceList, applyNum, canSelectedNetworkList } = defaultData;
+        let { interfaceList, applyNum, networkConfigList } = defaultData;
+
         switch (this.pageMode) {
           case "TEMPADD": // 模板新增
             if (applyNum == 1) {
@@ -296,7 +310,7 @@ export default {
             break;
         }
         this.applyNum = applyNum;
-        this.networkList = JSON.parse(JSON.stringify(canSelectedNetworkList));
+        this.networkList = networkConfigList;
         this.dealnetworksListIndex(interfaceList);
       }
     },
@@ -310,6 +324,7 @@ export default {
         }
       });
       this.orinetworksList = JSON.parse(JSON.stringify(networksList));
+
       this.dealnetworksList(this.orinetworksList);
     },
     dealnetworksList(oriList) {
@@ -322,8 +337,7 @@ export default {
           list.push(element);
         }
       });
-      this.$set(this, "orinetworksShowList", list);
-      this.$forceUpdate();
+      this.orinetworksShowList = list;
     },
     // 选择网卡
     changeSelectNetwork(index) {
@@ -338,6 +352,7 @@ export default {
     // 添加网卡
     addNetworkItem() {
       let length = this.orinetworksShowList.length;
+
       let networkNumMaxMsg = this.$t("common.networkNumMaxMsg"); // "磁盘数目已达上限";
       let networkpurpose = this.$t("common.networkpurpose"); // "请选择网络配置";
       if (length >= 4) {
@@ -361,7 +376,6 @@ export default {
     // 删除网卡
     deleteNetworkItem(deleteitem) {
       let { modifyType, applyId, index } = deleteitem;
-      //前端新增的没有提交的网卡 applyId = 0
       if (modifyType == "ADD" && applyId == 0) {
         this.orinetworksList[index].modifyType = "ADDDELETE";
       } else {
@@ -395,6 +409,7 @@ export default {
           return flag;
         }
       }
+
       let filtermodifyType = ["DELETE", "ADDDELETE"];
       let networks = this.orinetworksList;
       let networkList = [];
@@ -415,8 +430,6 @@ export default {
           network.networkId = networks[i].networkId;
           network.networkName = networks[i].networkName;
           network.id = networks[i].id || 0;
-          network.networkType = networks[i].networkType;
-
           if (networks[i].type === "custom") {
             if (
               networks[i].networkId === 0 &&
@@ -446,22 +459,7 @@ export default {
             network.dns1 = networkruleForm.dns1; // dns1
             network.dns2 = networkruleForm.dns2; // dns2
           }
-          if (network.networkType === "l3Network") {
-            const { l3NetworkId, l3DhcpType, l3NetworkName, l3Ip } =
-              networks[i];
-            network.l3NetworkId = l3NetworkId;
-            network.l3DhcpType = l3DhcpType;
-            network.l3NetworkName = l3NetworkName;
-            network.l3Ip = l3Ip;
-            network.ipBindMac = null;
-            network.manualSetIp = null;
-            network.automaticAcqIp = null;
-            network.ip = null;
-            network.mask = null; // 掩码
-            network.gw = null; // 网关
-            network.dns1 = null; // dns1
-            network.dns2 = null; // dns2
-          }
+
           network.securityStrategy = networks[i].securityStrategy; // 安全策略
           network.securityGroupUuid = networks[i].securityGroupUuid; // 安全组
           network.virtualFirewall = networks[i].virtualFirewall; // 虚拟防火墙
@@ -490,7 +488,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 .setNetWorkInfo-box {
   .applyDelete {
     margin-left: 10px;

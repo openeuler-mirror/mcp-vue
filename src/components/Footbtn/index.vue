@@ -22,7 +22,10 @@ export default {
 
 <style lang="scss" scoped>
 .footBtn {
-  border-top: 1px $borderColor dashed;
+  //position: absolute;bottom: 0;right: 0;left: 0;
+  padding: 25px 70px;
+
+  border-top: 1px $borderColor solid;
   .el-button {
     margin-right: 15px;
   }

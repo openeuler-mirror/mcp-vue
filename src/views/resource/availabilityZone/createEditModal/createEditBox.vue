@@ -1,7 +1,7 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content-steps">
-      <el-steps :active="activestep" class="kcp-steps">
+    <div class="create-new-form-steps">
+      <el-steps :active="activestep">
         <!-- 基本信息 -->
         <el-step :title="$t('resourceMgr.zoneBaseInfo')"></el-step>
         <!-- 关联集群 -->
@@ -12,7 +12,7 @@
     </div>
 
     <!-- 基本信息 -->
-    <div v-if="activestep == 0" class="drawer-body-content">
+    <div v-if="activestep == 0" class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -41,8 +41,6 @@
           <el-form-item :label="$t('resourceMgr.zoneRemark')" prop="remark">
             <el-input
               type="textarea"
-              maxlength="400"
-              show-word-limit
               :autosize="{ minRows: 2, maxRows: 4 }"
               v-model="createDataFormData.remark"
             />
@@ -68,7 +66,7 @@
       </div>
     </div>
     <!-- 关联集群 -->
-    <div v-if="activestep == 1" class="drawer-body-content">
+    <div v-if="activestep == 1" class="create-new-formtable">
       <div
         v-if="otherBtnShow('cluster', 'create_cluster')"
         class="flex align-center"
@@ -109,6 +107,7 @@
             :key="index"
             :label="item.label"
             :width="item.width"
+            :resizable="index != 0 && index != tableColumns.length - 1"
           >
             <template slot-scope="{ row }">
               <statuscell :status="row.status"></statuscell>
@@ -119,6 +118,7 @@
             v-else-if="item.prop == 'cpurate'"
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != tableColumns.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -137,6 +137,7 @@
             v-else-if="item.prop == 'memoryrate'"
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != tableColumns.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -155,6 +156,7 @@
             v-else-if="item.prop == 'storagerate'"
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != tableColumns.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -176,6 +178,7 @@
             v-else
             :key="index"
             :label="item.label"
+            :resizable="index != 0 && index != tableColumns.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -195,7 +198,7 @@
       </mc-table>
     </div>
     <!-- 确认信息 -->
-    <div v-if="activestep == 2" class="drawer-body-content">
+    <div v-if="activestep == 2" class="create-new-form">
       <div class="template-box flex">
         <div class="template-box-title">
           {{ $t("resourceMgr.zoneBaseInfo") }}
@@ -559,12 +562,18 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
-
-.drawer-body-content-steps {
-  padding: 20px 30px;
+@include DrawerRtl;
+.create-new-form-steps {
+  padding: 20px 50px;
 }
-.drawer-body-content {
+.create-new-form {
   @include formStyle;
+  display: flex;
+  flex: 1;
+  max-height: 82vh;
+  overflow: auto;
+  $input-width: 375px;
+  flex-direction: column;
   .template-box {
     .template-box-title {
       font-size: 16px;
@@ -577,9 +586,29 @@ export default {
       margin-right: 25px;
     }
   }
+  .el-input {
+    width: $input-width;
+  }
+
+  .el-textarea {
+    width: $input-width;
+  }
+}
+.create-new-formtable {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-height: 82vh;
+  padding: 0 50px;
 }
 .footBtn {
-  border-top: 1px $borderColor dashed;
+  //position: absolute;bottom: 0;right: 0;left: 0;
+  padding: 25px 70px;
+
+  border-top: 1px $borderColor solid;
   .el-button {
     margin-right: 15px;
   }

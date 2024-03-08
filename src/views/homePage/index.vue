@@ -46,122 +46,122 @@
 </template>
 
 <script>
-import vdclist from "./vdcListBox.vue";
-import reviewWorkorderAlerts from "./reviewWorkorderAlerts.vue"; // 审核工单、告警
-import physicalMachine from "./physicalMachine"; // 物理机
-import cloudHosting from "./cloudHosting"; // 云服务器
-import utilizationOverview from "./utilizationOverview"; // 利用率、总览
-import bus from "@/utils/eventBus";
-import { indexStatistic } from "@/api/homeApi";
+import vdclist from './vdcListBox.vue'
+import reviewWorkorderAlerts from './reviewWorkorderAlerts.vue' // 审核工单、告警
+import physicalMachine from './physicalMachine' // 物理机
+import cloudHosting from './cloudHosting' // 云服务器
+import utilizationOverview from './utilizationOverview' // 利用率、总览
+import bus from '@/utils/eventBus'
+import { indexStatistic } from '@/api/homeApi'
 export default {
-  name: "homePage",
+  name: 'homePage',
   components: {
     vdclist,
     reviewWorkorderAlerts,
     physicalMachine,
     cloudHosting,
-    utilizationOverview,
+    utilizationOverview
   },
   computed: {},
   data() {
     return {
-      homeText: this.$t("common.home.homeText"), // "资源池化与标准化，智能规划与管理",
-      homeSubText: this.$t("common.home.homeSubText"), // "单个中立的控制台对下纳管异构的基础设施，对接已有业务流程平台。将云上的资源进行逻辑池化，从而基于企业组织架构来实行资源分配，并提供标准的流程和规范的云服务",
+      homeText: this.$t('common.home.homeText'), // "资源池化与标准化，智能规划与管理",
+      homeSubText: this.$t('common.home.homeSubText'), // "单个中立的控制台对下纳管异构的基础设施，对接已有业务流程平台。将云上的资源进行逻辑池化，从而基于企业组织架构来实行资源分配，并提供标准的流程和规范的云服务",
       homeBtnList: [
         {
-          label: this.$t("common.home.createZone"), // "添加可用区",
-          pagekey: "resource",
-          routeKey: "zone",
-          key: "create_zone",
+          label: this.$t('common.home.createZone'), // "添加可用区",
+          pagekey: 'resource',
+          routeKey: 'zone',
+          key: 'create_zone'
         },
         {
-          label: this.$t("common.home.createCluster"), // "添加集群",
-          pagekey: "resource",
-          routeKey: "cluster",
-          key: "create_cluster",
+          label: this.$t('common.home.createCluster'), // "添加集群",
+          pagekey: 'resource',
+          routeKey: 'cluster',
+          key: 'create_cluster'
         },
-        { label: "添加物理机", pagekey: "", routeKey: "", key: "" },
+        { label: '添加物理机', pagekey: '', routeKey: '', key: '' },
         {
-          label: this.$t("common.home.createVdc"), // "添加VDC",
-          pagekey: "resource",
-          routeKey: "vdc",
-          key: "create_vdc",
+          label: this.$t('common.home.createVdc'), // "添加VDC",
+          pagekey: 'resource',
+          routeKey: 'vdc',
+          key: 'create_vdc'
         },
-        { label: "添加云服务器", pagekey: "", routeKey: "", key: "" },
+        { label: '添加云服务器', pagekey: '', routeKey: '', key: '' }
       ],
       homeShowBtnList: [],
-      pageData: {},
-    };
+      pageData: {}
+    }
   },
   created() {},
   mounted() {
-    this.getPageData();
-    this.getBtnList();
+    this.getPageData()
+    this.getBtnList()
   },
   methods: {
     getBtnList() {
-      let list = [];
+      let list = []
       this.homeBtnList.forEach((element) => {
-        let { routeKey, key } = element;
+        let { routeKey, key } = element
         if (this.otherBtnShow(routeKey, key)) {
-          list.push(element);
+          list.push(element)
         }
-      });
-      this.homeShowBtnList = list;
+      })
+      this.homeShowBtnList = list
     },
     toPage(pageItem) {
-      let { key } = pageItem;
+      let { key } = pageItem
       switch (key) {
         // 添加可用区
-        case "create_zone":
-          this.toCreateZone();
-          break;
+        case 'create_zone':
+          this.toCreateZone()
+          break
         // 添加集群
-        case "create_cluster":
-          this.toCreateCluster();
-          break;
+        case 'create_cluster':
+          this.toCreateCluster()
+          break
         // 添加VDC
-        case "create_vdc":
-          this.toCreateVdc();
-          break;
+        case 'create_vdc':
+          this.toCreateVdc()
+          break
 
         default:
-          break;
+          break
       }
     },
     // 添加可用区
     toCreateZone() {
-      bus.$emit("changeMenuNav", "resource");
+      bus.$emit('changeMenuNav', 'resource')
       this.$router.push({
-        name: "availabilityZone",
-        params: { create: true },
-      });
+        name: 'availabilityZone',
+        params: { create: true }
+      })
     },
     // 添加集群
     toCreateCluster() {
-      bus.$emit("changeMenuNav", "resource");
+      bus.$emit('changeMenuNav', 'resource')
       this.$router.push({
-        name: "physicalCluster",
-        params: { create: true },
-      });
+        name: 'physicalCluster',
+        params: { create: true }
+      })
     },
     // 添加VDC
     toCreateVdc() {
-      bus.$emit("changeMenuNav", "resource");
+      bus.$emit('changeMenuNav', 'resource')
       this.$router.push({
-        name: "vdcPage",
-        params: { create: true },
-      });
+        name: 'vdcPage',
+        params: { create: true }
+      })
     },
     getPageData() {
       indexStatistic()
         .then((res) => {
-          this.pageData = res;
+          this.pageData = res
         })
-        .catch((err) => {});
-    },
-  },
-};
+        .catch((err) => {})
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -205,8 +205,7 @@ export default {
       display: flex;
       flex-direction: row;
       .homeBtn-item {
-        min-width: 100px;
-        padding: 0 10px;
+        width: 100px;
         height: 36px;
         text-align: center;
         line-height: 36px;

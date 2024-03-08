@@ -191,87 +191,52 @@
             </div>
           </div>
         </div>
-        <el-collapse
-          class="basicInfo-content-network"
+
+        <div
+          class="basicInfo-content-info"
           v-for="(item, index) in pageInfo.networkList"
-          :key="'network1' + index"
+          :key="'network' + index"
         >
-          <el-collapse-item name="1" class="basicInfo-network-detail">
-            <template slot="title">
-              <div class="network-title">
-                <div>{{ $t("common.details.network") + (index + 1) }}</div>
-                <div>
-                  {{ $t("resourceMgr.network.networkName") }}:
-                  {{ item.networkName }}
-                </div>
+          <div class="chart-content-title">
+            {{ $t("resourceMgr.network.networkCard") + (index + 1) }}
+          </div>
+          <div class="info-content">
+            <div class="info-left">
+              <!-- 物理集群： -->
+              <div>
+                {{ $t("resourceMgr.network.cluster") }}：
+                {{ item.clusterName }}
               </div>
-            </template>
-            <div class="info-content">
-              <div class="info-left">
-                <!-- 物理集群： -->
-                <div>
-                  {{ $t("resourceMgr.network.cluster") }}：
-                  {{ item.clusterName }}
-                </div>
-                <!-- 网卡类型 -->
-                <div>
-                  {{ $t("resourceMgr.network.modelType") }}：
-                  {{ item.modelType }}
-                </div>
-                <!-- 地址池： -->
-                <div>
-                  {{ $t("resourceMgr.network.addressPool") }}：
-                  {{ item.addressPool }}
-                </div>
-                <!-- 端口组： -->
-                <div>
-                  {{ $t("resourceMgr.network.portGroup") }}：
-                  {{ item.portGroup || "-" }}
-                </div>
-                <!-- MTU -->
-                <div>
-                  MTU：
-                  {{ item.mtuValue }}
-                </div>
-                <!-- 创建时间： -->
-                <div>
-                  {{ $t("resourceMgr.zonecreateDate") }}：
-                  {{ item.createTime }}
-                </div>
+              <!-- 地址池： -->
+              <div>
+                {{ $t("resourceMgr.network.addressPool") }}：
+                {{ item.addressPool }}
               </div>
-              <div class="info-right">
-                <!-- 网络层级 -->
-                <div>
-                  {{ $t("resourceMgr.network.networkHierarchy") }}：
-                  {{
-                    item.networkLevelType === "LAYER_2_NETWORK" ? "2层" : "3层"
-                  }}
-                </div>
-                <!-- 网络类型 -->
-                <div>
-                  {{ $t("resourceMgr.network.networkType") }}：
-                  {{ item.interfaceType || "-" }}
-                </div>
-                <!-- 虚拟交换机： -->
-                <div>
-                  {{ $t("resourceMgr.network.virtualSwitch") }}：
-                  {{ item.virtualSwitch || "-" }}
-                </div>
-                <!-- 队列个数: -->
-                <div>
-                  {{ $t("resourceMgr.network.numberOfQueues") }}：
-                  {{ item.queueCount || "-" }}
-                </div>
-                <!-- 安全策略： -->
-                <div>
-                  {{ $t("resourceMgr.network.securityPolicy") }}：
-                  <!-- NONE(无) SECURITY_GROUP（安全组） VIRTUAL_FIREWALL（虚拟防火墙） -->
-                  {{ getsecurityPolicy(item) }}
-                </div>
+              <!-- 端口组： -->
+              <div>
+                {{ $t("resourceMgr.network.portGroup") }}：
+                {{ item.portGroup }}
               </div>
             </div>
-          </el-collapse-item>
-        </el-collapse>
+            <div class="info-right">
+              <!-- 网络名称： -->
+              <div>
+                {{ $t("resourceMgr.network.networkName") }}：
+                {{ item.networkName }}
+              </div>
+              <!-- 虚拟交换机： -->
+              <div>
+                {{ $t("resourceMgr.network.virtualSwitch") }}：
+                {{ item.virtualSwitch }}
+              </div>
+              <!-- 安全组： -->
+              <div>
+                {{ $t("resourceMgr.network.permission") }}：
+                {{ item.securityGroup }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -463,26 +428,7 @@ export default {
         this.architectureList = architectureListArr;
       }
     },
-    getsecurityPolicy(item) {
-      let text = "";
-      switch (item.securityPolicy) {
-        // 无
-        case "NONE":
-          text = this.$t("resourceMgr.network.none");
-          break;
-        case "SECURITY_GROUP":
-          text =
-            this.$t("resourceMgr.network.permission") +
-            `[${item.securityGroup}]`;
-          break;
-        case "VIRTUAL_FIREWALL":
-          text =
-            this.$t("resourceMgr.network.virtualFirewallName") +
-            `[${item.securityGroup}]`;
-          break;
-      }
-      return text;
-    },
+
     getbingoption(info) {
       let { name, data } = info;
       let option = {
@@ -533,28 +479,6 @@ export default {
       font-size: 20px;
       margin: 5px 0;
     }
-
-    .basicInfo-network-detail {
-      border: 1px solid #e5e5e5;
-      border-radius: 15px;
-      overflow: auto;
-      ::v-deep {
-        .el-collapse-item__wrap,
-        .el-collapse-item__header {
-          border: none;
-        }
-      }
-    }
-    .basicInfo-content-network {
-      border: 0 !important;
-    }
-    .network-title {
-      width: 100%;
-      padding: 0 17px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
     .basicInfo-content {
       @include nineStyle();
       width: 100%;
@@ -603,11 +527,12 @@ export default {
       .info-content {
         display: flex;
         flex: 1;
+        align-items: center;
         justify-content: space-between;
         padding: 0px 15px;
         .info-left,
         .info-right {
-          flex: 1;
+          flex-grow: 1;
           margin: 10px 0;
           line-height: 30px;
         }

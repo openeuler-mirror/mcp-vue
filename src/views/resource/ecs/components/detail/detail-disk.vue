@@ -12,6 +12,7 @@
         v-for="(item, index) in columnArr"
         :key="index"
         :width="item.width"
+        :resizable="index != 0 && index != columnArr.length - 1"
         :label="item.label"
       >
         <template slot-scope="{ row, column, $index }">
@@ -65,7 +66,6 @@ export default {
       ],
       tableData: [],
       serverVmUuid: this.$route.params.id,
-      clusterId: this.$route.params.cid,
       total: 0,
       // 分页数1开始
       pageNo: 1,
@@ -93,12 +93,9 @@ export default {
       let pageNo = this.pageNo;
       let pageSize = this.pageSize;
       let serverVmUuid = this.serverVmUuid;
-      let clusterId = this.clusterId;
-      serverVmDisk({ pageNo, pageSize, serverVmUuid, clusterId }).then(
-        (res) => {
-          this.tableData = res;
-        }
-      );
+      serverVmDisk({ pageNo, pageSize, serverVmUuid }).then((res) => {
+        this.tableData = res;
+      });
     },
   },
 };

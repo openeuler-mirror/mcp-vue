@@ -4,19 +4,15 @@
     <!-- <div class="title-box">{{ $t("authorityMgr.roleList") }}</div> -->
     <div class="content-box">
       <!-- 操作按钮 -->
-
-      <headerBox @refresh="refreshTable" :spinBol="tableLoading">
-        <template slot="headerLeft">
-          <el-button v-if="currentBtnShow('create_role')" @click="newlyBuild">
-            {{ $t("authorityMgr.createRole") }}
-          </el-button>
-        </template>
-      </headerBox>
+      <header-bar
+        ref="headerBar"
+        @newlyBuild="newlyBuild"
+        @refreshTable="refreshTable"
+      />
       <!-- 表格 -->
       <mc-table
         :data="tableData"
         :total="total"
-        :tableLoading="tableLoading"
         :pageSize="pageSize"
         :currentPage="pageNo"
         @current-change="handlePageChange"
@@ -31,6 +27,7 @@
             :label="item.label"
             :min-width="item.width || '200px'"
             className="tableoperation"
+            :resizable="index != 0 && index != columnArr.length - 1"
           >
             <template slot-scope="{ row }">
               <el-link
@@ -61,6 +58,7 @@
             v-else-if="item.prop == 'roleType'"
             :key="'roleType' + index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -71,6 +69,7 @@
             v-else
             :key="item.prop + index"
             :label="item.label"
+            :resizable="index != 0 && index != columnArr.length - 1"
             :width="item.width"
           >
             <template slot-scope="{ row }">
@@ -102,7 +101,7 @@
 </template>
 
 <script>
-import headerBox from "@/components/headerBox";
+import headerBar from "./header-bar";
 import mcTable from "@/components/MctablePro";
 import createRoleMadal from "./createRole/createRoleMadal";
 import showDetailRole from "./detailRole/detailRoleMadal.vue";
@@ -116,11 +115,10 @@ import {
 
 export default {
   name: "roleMgr",
-  components: { headerBox, mcTable, createRoleMadal, showDetailRole },
+  components: { headerBar, mcTable, createRoleMadal, showDetailRole },
   data() {
     return {
       rowkey: "id",
-      tableLoading: false,
       tableTreeProps: { children: "children", hasChildren: "hasChildren" },
       checkedColumns: [],
       columnArr: [
@@ -212,7 +210,9 @@ export default {
         });
     },
     renderTable() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
       let pramas = {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
@@ -221,12 +221,11 @@ export default {
         .then((res) => {
           this.tableData = res.list;
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
         .catch((err) => {
+          this.$hideFullScreenLoading();
           this.alertTips(err);
-        })
-        .finally(() => {
-          this.tableLoading = false;
         });
     },
 
