@@ -45,10 +45,6 @@ import operateRouter from './modules/operateRoute'
 import resourceRouter from './modules/resourceRoute'
 // 监控
 import monitorRoute from './modules/monitorRoute'
-// 外部云
-import externalCloud from './modules/externalCloud'
-// 可靠中心
-import reliableCenter from './modules/reliableCenter'
 export const constantRoutes = [
   {
     path: '/login',
@@ -77,8 +73,6 @@ export const constantRoutes = [
   ...operateRouter,
   ...resourceRouter,
   ...monitorRoute,
-  ...externalCloud,
-  ...reliableCenter,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/login', hidden: true }
 ]

@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    size="880px"
+    size="800px"
     :title="$t('workOrder.selectiso')"
     direction="rtl"
     :append-to-body="true"
@@ -64,4 +64,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

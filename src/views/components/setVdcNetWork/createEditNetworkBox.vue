@@ -259,7 +259,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style  lang="scss" scope>
 .create-new-form {
   @include formStyle;
   display: flex;

@@ -17,6 +17,7 @@
           :key="item.prop + index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
         >
           <template slot-scope="{ row }">
             <mcAllocationratio
@@ -31,6 +32,7 @@
           v-else-if="item.prop == 'status'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -40,6 +42,7 @@
         <el-table-column
           v-else-if="item.prop == 'type'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -51,6 +54,7 @@
           v-else-if="item.prop == 'usage'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -61,6 +65,7 @@
         <el-table-column
           v-else
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >

@@ -16,6 +16,7 @@
         <el-table-column
           v-if="item.prop == 'status'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -28,6 +29,7 @@
           v-else-if="item.prop == 'cpurate'"
           :key="'cpurate' + index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -47,6 +49,7 @@
           :key="'memoryrate' + index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
         >
           <template slot-scope="{ row }">
             <mcAllocationratio
@@ -64,6 +67,7 @@
           v-else-if="item.prop == 'storagerate'"
           :key="'storagerate' + index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -83,6 +87,7 @@
         <el-table-column
           v-else
           :key="item.prop"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >

@@ -1,7 +1,7 @@
 <template>
   <!-- 选择计算资源 -->
   <el-drawer
-    size="880px"
+    size="800px"
     :title="$t('workOrder.chooseComputingRes')"
     direction="rtl"
     custom-class="workorder-pass-drawer"
@@ -16,7 +16,7 @@
       <div class="drawer-content">
         <div class="service-modify">
           <mc-table
-            :data="clusterListTable"
+            :data="canClusterList"
             @selection-change="handlerSelectionClusterChange"
             ref="multiTable"
             :rowkey="rowkey"
@@ -26,6 +26,7 @@
             <template v-for="(item, index) in columnArr">
               <el-table-column
                 :key="index"
+                :resizable="index != 0 && index != columnArr.length - 1"
                 :label="item.label"
                 :width="item.width"
               >
@@ -121,20 +122,18 @@ export default {
           prop: "loadaverage",
         },
       ],
-      clusterListTable: [],
     };
   },
   watch: {
     visible(isvis) {
       this.drawerVisible = isvis;
-      this.clusterListTable = this.canClusterList;
     },
   },
   methods: {
     setTableSelectedCluster() {
       let selected = this.selectedClusterIds.split(",");
       for (let i = 0; i < selected.length; i++) {
-        let row = this.clusterListTable.find(
+        let row = this.canClusterList.find(
           (item) => item.serverId === selected[i]
         );
         if (row) {
@@ -186,9 +185,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
 
+
+<style lang="scss" scope >
+@import "~@/styles/mixin.scss";
+@include DrawerRtl;
 .service-modify {
   display: flex;
   flex-direction: column;

@@ -106,8 +106,6 @@ export default {
               break;
           }
           // applyServerVmType: "TEMPLATE";
-
-          res.serverClusterType = "AUTO";
           this.passApplyFormData = res;
           this.$hideFullScreenLoading();
         })
@@ -126,4 +124,5 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+</style>

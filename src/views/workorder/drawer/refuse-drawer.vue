@@ -11,7 +11,7 @@
   >
     <template>
       <div class="drawer-content">
-        <div class="drawer-body-content">
+        <div class="service-modify">
           <div class="template-box">
             <el-form
               ref="refuseForm"
@@ -27,10 +27,10 @@
                 <el-input
                   v-model="refuseFormData.auditOpinion"
                   type="textarea"
+                  :rows="3"
                   placeholder=""
-                  maxlength="400"
+                  maxlength="50"
                   show-word-limit
-                  :autosize="{ minRows: 2, maxRows: 4 }"
                 />
               </el-form-item>
             </el-form>
@@ -128,6 +128,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope >
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
+.service-modify {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  max-height: 82vh;
+  padding: 0 50px;
+}
 </style>

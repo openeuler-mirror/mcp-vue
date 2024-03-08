@@ -17,6 +17,7 @@
           v-if="item.prop == 'name'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -35,6 +36,7 @@
           v-else-if="item.prop == 'status'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -46,6 +48,7 @@
           v-else-if="item.prop == 'cpurate'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -61,6 +64,7 @@
           v-else-if="item.prop == 'memoryrate'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -75,6 +79,7 @@
         <el-table-column
           v-else
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >

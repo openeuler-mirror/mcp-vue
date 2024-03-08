@@ -3,7 +3,6 @@
     <!-- 头部菜单栏 -->
     <header-bar
       ref="headerBar"
-      :spinBol="tableLoading"
       :selectData="selectTable"
       @refreshTable="refreshTable"
     />
@@ -13,7 +12,6 @@
       :data="tableData"
       :total="total"
       :pageSize="pageSize"
-      :tableLoading="tableLoading"
       :currentPage="pageNo"
       @current-change="handlePageChange"
       @selection-change="handlerSelectionChange"
@@ -34,6 +32,7 @@
           :key="index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -53,6 +52,7 @@
         fixed="right"
         min-width="150px"
         className="tableoperation"
+        :resizable="false"
       >
         <template slot-scope="{ row }">
           <!-- 非申请云服务器  非变更云服务器的  审核通过    -->
@@ -172,7 +172,6 @@ export default {
   data() {
     return {
       rowkey: "workOrderId",
-      tableLoading: false,
       selectionType: "multipleTable",
       columnArr: [
         {
@@ -361,7 +360,9 @@ export default {
       let organizationId = this.organizationId;
       let startTime = this.startTime;
       let endTime = this.endTime;
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
       getWorkOrderList({
         searchOrderStatus,
         searchOrderType,
@@ -375,9 +376,10 @@ export default {
         .then((res) => {
           this.tableData = res.list;
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
-        .finally(() => {
-          this.tableLoading = false;
+        .catch((err) => {
+          this.$hideFullScreenLoading();
         });
     },
     // 审核通过弹窗控制

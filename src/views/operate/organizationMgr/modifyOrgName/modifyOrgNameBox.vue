@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content">
+    <div class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -134,9 +134,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
-.drawer-body-content {
+@include DrawerRtl;
+
+.create-new-form {
   @include formStyle;
+  flex: 1;
+  max-height: 82vh;
+  overflow: auto;
+  $input-width: 375px;
+
+  .el-input {
+    width: $input-width;
+  }
 }
 </style>

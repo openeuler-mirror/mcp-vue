@@ -6,7 +6,11 @@
       </el-button>
     </div>
     <div class="header-right">
-      <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+      <i
+        class="el-icon-refresh setting-icon"
+        :title="$t('common.refresh')"
+        @click="refresh"
+      />
     </div>
   </div>
 </template>

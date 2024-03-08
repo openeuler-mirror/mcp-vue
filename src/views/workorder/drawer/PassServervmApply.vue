@@ -1,6 +1,6 @@
 <template>
-  <div class="drawer-content" v-loading="loading">
-    <div class="drawer-body-content">
+  <div class="drawer-content">
+    <div class="check-apply-servervm">
       <div class="template-box">
         <el-form
           ref="passApplyServervmForm"
@@ -14,23 +14,6 @@
                 applyServerVmType[passApplyServervmFormData.applyServerVmType]
               }}
             </span>
-          </el-form-item>
-
-          <!-- 集群 -->
-          <el-form-item label="集群" prop="imageCluster">
-            <el-select
-              v-model="passApplyServervmFormData.imageCluster"
-              placeholder="请选择"
-              @change="imageClusterchange"
-            >
-              <el-option
-                v-for="item in imageClusterOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
           </el-form-item>
           <!-- 名称 -->
           <el-form-item :label="$t('workOrder.aliasName')" prop="aliasName">
@@ -84,7 +67,7 @@
           <computResources
             v-if="!passApplyServervmFormData.autoConfiguration"
             ref="computResources"
-            :formData="computResourcesformData"
+            :formData="formData"
           ></computResources>
           <!-- 存储位置  -->
           <el-form-item
@@ -137,10 +120,11 @@
           >
             <el-input
               v-model="passApplyServervmFormData.auditOpinion"
-              maxlength="400"
-              show-word-limit
-              :autosize="{ minRows: 2, maxRows: 4 }"
+              type="textarea"
+              :rows="3"
               placeholder=""
+              maxlength="500"
+              show-word-limit
             />
           </el-form-item>
         </el-form>
@@ -156,7 +140,7 @@
 <script>
 import footBtn from "@/components/Footbtn";
 import ReMessage from "@/utils/message";
-import { passApplyServerVm, refreshMcBaseInfo } from "@/api/workOrder";
+import { passApplyServerVm } from "@/api/workOrder";
 import validate from "@/utils/validate";
 import computResources from "./computResources.vue"; // 计算资源
 import setDiskInfo from "./setDiskInfo.vue"; // 设置磁盘信息
@@ -185,9 +169,7 @@ export default {
         ISO: this.$t("workOrder.serverVmType.ISO"), // ISO镜像
         TEMPLATE: this.$t("workOrder.serverVmType.TEMPLATE"), // 模板
       },
-      loading: false,
       passApplyServervmFormData: {
-        imageCluster: "", // 镜像集群
         auditOpinion: "",
         osMachine: "",
         architecture: "",
@@ -208,13 +190,6 @@ export default {
       },
       storageLocationList: [],
       rulesTemplate: {
-        imageCluster: [
-          {
-            required: true,
-            message: this.$t("resourceMgr.plccluster"), // "请选择集群",
-            trigger: "blur",
-          },
-        ],
         aliasName: [
           {
             required: true,
@@ -262,10 +237,6 @@ export default {
 
       // 克隆
       cloneTypeList: dictionary.cloneTypeArr,
-
-      imageClusterOptions: [],
-
-      computResourcesformData: {},
     };
   },
 
@@ -273,42 +244,12 @@ export default {
     this.getApplyDetail();
   },
   methods: {
-    imageClusterchange(val) {
-      this.loading = true;
-      let params = {
-        workOrderId: this.passApplyData.workOrderId, //	工单ID
-        clusterId: val, //	集群ID
-      };
-      refreshMcBaseInfo(params)
-        .then((res) => {
-          let oldData = JSON.parse(JSON.stringify(this.formData));
-          this.computResourcesformData = JSON.parse(JSON.stringify(res));
-          let network = {
-            interfaceList: oldData.interfaceList,
-            canSelectedNetworkList: res.canSelectedNetworkList,
-            applyNum: this.passApplyServervmFormData.applyNum,
-            networkConfigList: res.interfaceList,
-          };
-          this.$set(
-            this,
-            "networksformData",
-            JSON.parse(JSON.stringify(network))
-          );
-
-          this.passApplyServervmFormData.templateId = res.templateId;
-        })
-        .finally((err) => {
-          this.loading = false;
-        });
-    },
     //获取模板详情
     getApplyDetail() {
       let res = this.formData;
-      this.computResourcesformData = this.formData;
       this.passApplyServervmFormData.applyServerVmType = res.applyServerVmType;
       this.passApplyServervmFormData.aliasName = res.aliasName;
       this.passApplyServervmFormData.applyNum = res.applyNum;
-      this.passApplyServervmFormData.templateId = res.templateId;
       this.passApplyServervmFormData.templateName = res.templateName;
       this.passApplyServervmFormData.osMachine = res.osMachine;
       this.passApplyServervmFormData.architecture = res.architecture;
@@ -326,22 +267,6 @@ export default {
       this.networksformData = JSON.parse(JSON.stringify(this.formData));
       // 处理磁盘数据
       this.disksformData = JSON.parse(JSON.stringify(this.formData));
-
-      // 处理集群数据
-      this.imageClusterOptions = this.getimageClusterList(res.imageClusterList);
-      this.passApplyServervmFormData.imageCluster =
-        this.imageClusterOptions[0].value;
-    },
-    getimageClusterList(imageClusterList) {
-      let list = [];
-      imageClusterList.forEach((element) => {
-        list.push({
-          label: element.clusterName,
-          value: element.clusterId,
-          ...element,
-        });
-      });
-      return list;
     },
     // 提交
     handlerConfirm() {
@@ -428,10 +353,6 @@ export default {
 
       let cloneType = this.passApplyServervmFormData.cloneType;
 
-      let templateId = this.passApplyServervmFormData.templateId;
-
-      let clusterId = this.passApplyServervmFormData.imageCluster;
-
       let commitData = {
         workOrderId,
         auditOpinion,
@@ -450,9 +371,8 @@ export default {
         applyServerVmType,
         ...computResourcesFormData,
         cloneType,
-        templateId,
-        clusterId,
       };
+
       //申请云服务器
       passApplyServerVm(commitData).then((res) => {
         this.passSuccess();
@@ -550,7 +470,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
 
 .check-apply-servervm {

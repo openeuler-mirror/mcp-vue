@@ -63,7 +63,12 @@
       </div>
       <div class="header-right">
         <searchInput @change="searchInputChange" />
-        <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+        <i
+          class="el-icon-refresh setting-icon"
+          style="margin-left: 15px"
+          :title="$t('common.refresh')"
+          @click="refresh"
+        />
         <!-- <i
           v-if="currentBtnShow('ecportServerEvent')"
           class="el-icon-download setting-icon"
@@ -77,21 +82,14 @@
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 import searchInput from "@/components/SearchInput";
 import { getLoginUserCluster } from "@/api/clusterapi";
 import { serverEventTypeList } from "@/api/monitoringApi";
 export default {
   components: {
     searchInput,
-    utilsButton,
   },
-  props: {
-    spinBol: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: {},
   data() {
     return {
       // 集群

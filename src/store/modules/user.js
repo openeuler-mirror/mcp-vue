@@ -32,7 +32,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { name, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userName: name.trim(), password: md5(password) }).then(response => {
+      login({ userName: name.trim(), password: md5(password)}).then(response => {
         const { token } = response
         commit('SET_TOKEN', token)
         setToken(token)
@@ -50,7 +50,7 @@ const actions = {
   //       if (!data) {
   //         return reject('验证失败，请重新登录。')
   //       }
-
+  
   //       const { name, avatar } = data
 
   //       commit('SET_NAME', name)

@@ -97,11 +97,3 @@ export function deleteCluster(data) {
         data
     })
 }
-// 启用禁用 
-export function changeClusterUse(data) {
-    return request({
-        url: '/cluster/updateClusterStorageForbadeStatus',
-        method: 'post',
-        data
-    })
-}

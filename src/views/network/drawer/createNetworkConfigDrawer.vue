@@ -259,7 +259,7 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
-
+@include DrawerRtl;
 .create-new-network {
   @include formStyle;
   flex: 1;

@@ -1,7 +1,7 @@
 <template>
   <el-drawer
-    size="880px"
-    :title="$t('workOrder.choseRole')"
+    size="800px"
+    title="选择角色"
     direction="rtl"
     :append-to-body="true"
     :modal="false"
@@ -63,4 +63,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

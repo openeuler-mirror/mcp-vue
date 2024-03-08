@@ -13,6 +13,7 @@
           :key="item.prop"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != columnArr.length - 1"
         >
           <template slot-scope="{ row }">
             <span>{{ row[item.prop] }}</span>
@@ -24,6 +25,7 @@
           fixed="right"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :min-width="item.width || '200px'"
         >
           <template slot-scope="{ row }">
@@ -47,6 +49,7 @@
           :key="item.prop"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != columnArr.length - 1"
         >
           <template slot-scope="{ row }">
             <div class="input-box">

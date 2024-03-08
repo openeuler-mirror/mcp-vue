@@ -6,27 +6,21 @@
       </el-button>
     </div>
     <div class="header-right">
-      <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+      <i
+        class="el-icon-refresh setting-icon"
+        :title="$t('common.refresh')"
+        @click="refresh"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 export default {
   data() {
     return {};
   },
-  props: {
-    spinBol: {
-      type: Boolean,
-      default: false,
-    },
-  },
   created() {},
-  components: {
-    utilsButton,
-  },
   methods: {
     // 刷新
     refresh() {

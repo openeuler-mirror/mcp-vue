@@ -68,8 +68,7 @@ export default {
 .networkIpinfo {
   margin-left: 40px;
   line-height: 20px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
   color: #606266;
   display: block;
 }

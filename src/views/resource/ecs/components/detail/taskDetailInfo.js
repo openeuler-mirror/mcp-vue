@@ -947,7 +947,7 @@ KSVD.taskDetailInfo.isJSON = function (str) {
             }
 
         } catch (e) {
-          console.error('error：' + str + '!!!' + e);
+            console.log('error：' + str + '!!!' + e);
             return false;
         }
     }

@@ -82,30 +82,8 @@ const monitorRoute = [
             },
         ]
     },
-    {
-        path: '/taskcenter',
-        component: Layout,
-        meta: {
-            title: i18n.t('common.route.taskcenter'), // '任务中心'
-        },
-        redirect: '/monitor/taskcenter/index',
-        pagekey: 'monitor',
-        routeKey: 'taskcenter',
-        hidden: false,
-        children: [
-            {
-                path: '/monitor/taskcenter/index',
-                name: 'taskcenter',
-                routeKey: 'taskcenter',
-                hidden: false,
-                noRedirect: '',
-                component: () => import('@/views/monitor/taskcenter/index.vue'),
-                meta: {
-                    title: i18n.t('common.route.taskcenter'), // '任务中心'
-                    icon: 'gdgl-icon', default: true, routeKey: 'taskcenter'
-                }
-            }
-        ]
-    },
+
+
+
 ]
 export default monitorRoute

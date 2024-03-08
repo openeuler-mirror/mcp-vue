@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    size="880px"
+    size="800px"
     :title="title"
     direction="rtl"
     :append-to-body="true"
@@ -66,7 +66,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+
+<style lang="scss" scope>
 .setVirtualFirewall {
   .el-drawer__body {
     display: flex;

@@ -1,15 +1,10 @@
 <template>
   <div class="platformAlarmlog">
     <!-- 头部菜单栏 -->
-    <header-bar
-      ref="headerBar"
-      @refreshTable="refreshTable"
-      :spin="tableLoading"
-    />
+    <header-bar ref="headerBar" @refreshTable="refreshTable" />
 
     <mc-table
       ref="platformAlarmlogTable"
-      :tableLoading="tableLoading"
       :data="tableData"
       :total="total"
       :pageSize="pageSize"
@@ -22,6 +17,7 @@
       <template v-for="(item, index) in columnArr">
         <el-table-column
           :prop="item.prop"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :key="item.prop + index"
           :label="item.label"
           :width="item.width"
@@ -59,7 +55,6 @@ export default {
   data() {
     return {
       rowkey: "",
-      tableLoading: false,
       columnArr: [
         {
           label: this.$t("monitoring.alarmEvtMap.severity"), // "告警级别",
@@ -138,8 +133,10 @@ export default {
       this.pageSize = pageSize;
       this.renderTable();
     },
-    renderTable(data) {
-      this.tableLoading = true;
+    renderTable() {
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".mc-table");
+      });
       let params = {
         pageSize: this.pageSize, //	string	非必须 分页数量
         pageNo: this.pageNo, // 非必须 页面
@@ -147,15 +144,15 @@ export default {
         endDate: this.endDate, // 结束时间(YYYY-MM-DD)
         zoneId: this.zoneId, // 可用区ID（全部可用时传0）
         orgId: this.orgId, // 组织ID （全部组织时传0）
-        alarmType: data ? data.alarmType : "",
       };
       pageKcpAlarmLog(params)
         .then((res) => {
           this.tableData = this.totableData(res.list);
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
-        .finally(() => {
-          this.tableLoading = false;
+        .catch((err) => {
+          this.$hideFullScreenLoading();
         });
     },
     totableData(list) {

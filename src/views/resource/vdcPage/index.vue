@@ -2,16 +2,13 @@
   <!-- 虚拟数据中心 vdcPage -->
   <div class="vdcPage-home app-container">
     <!-- 操作按钮 -->
-    <headerBox @refresh="refreshTable" :spinBol="tableLoading">
-      <template slot="headerLeft">
-        <el-button v-if="currentBtnShow('create_vdc')" @click="newlyBuild">
-          {{ $t("common.create") }}
-        </el-button>
-      </template>
-    </headerBox>
+    <header-bar
+      ref="headerBar"
+      @newlyBuild="newlyBuild"
+      @refreshTable="refreshTable"
+    />
     <mc-table
       ref="vdcPageTable"
-      :tableLoading="tableLoading"
       :data="tableData"
       :total="total"
       :pageSize="pageSize"
@@ -30,6 +27,7 @@
           :key="index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           class-name="vdcNameClass"
         >
           <template slot-scope="{ row }">
@@ -57,6 +55,7 @@
         <el-table-column
           v-else-if="item.prop == 'CPUallocationratio'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -75,6 +74,7 @@
         <el-table-column
           v-else-if="item.prop == 'memoryallocationratio'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -93,6 +93,7 @@
         <el-table-column
           v-else-if="item.prop == 'Storageallocationratio'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -114,7 +115,8 @@
         <el-table-column
           v-else-if="item.prop == 'operation'"
           fixed="right"
-          :key="'operation' + index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
+          :key="index"
           :label="item.label"
           min-width="250px"
           className="tableoperation"
@@ -148,6 +150,7 @@
         <el-table-column
           v-else
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -185,7 +188,7 @@
 </template>
 
 <script>
-import headerBox from "@/components/headerBox";
+import headerBar from "./header-bar";
 import mcTable from "@/components/MctablePro";
 import mcAllocationratio from "@/components/Mcallocationratio";
 import createEditModal from "./createEditModal/createEditModal";
@@ -202,7 +205,7 @@ import transformat from "@/utils/transformat";
 export default {
   name: "vdcPage",
   components: {
-    headerBox,
+    headerBar,
     mcTable,
     mcAllocationratio,
     createEditModal,
@@ -272,7 +275,6 @@ export default {
       ],
       tableColumns: [],
       tableData: [],
-      tableLoading: false,
 
       total: 0,
       // 分页数1开始
@@ -380,17 +382,18 @@ export default {
       this.renderTable();
     },
     renderTable() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".page-wrapper-content");
+      });
       vdcTree()
         .then((res) => {
           this.tableData = res;
+          this.$hideFullScreenLoading();
         })
         .catch((err) => {
           this.alertTips(err);
           this.tableData = [];
-        })
-        .finally(() => {
-          this.tableLoading = false;
+          this.$hideFullScreenLoading();
         });
     },
     handlePageChange(page) {
@@ -433,3 +436,5 @@ export default {
   }
 }
 </style>
+
+

@@ -1,114 +1,118 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content">
-      <el-form
-        ref="createDataForm"
-        label-width="auto"
-        :model="createDataFormData"
-        :rules="rulesTemplate"
-      >
-        <el-form-item :label="$t('authorityMgr.roleType')" prop="roleType">
-          <el-radio-group
-            v-if="formOptions.editflag"
-            disabled
-            v-model="createDataFormData.roleType"
-          >
-            <!-- ORG(组织管理) SELF_SERVICE(自服务) PLATFORM(平台管理) -->
-
-            <el-radio label="ORG"> {{ getroleTypeLabel("ORG") }}</el-radio>
-            <el-radio label="SELF_SERVICE">
-              {{ getroleTypeLabel("SELF_SERVICE") }}
-            </el-radio>
-            <el-radio label="PLATFORM">
-              {{ getroleTypeLabel("PLATFORM") }}
-            </el-radio>
-          </el-radio-group>
-          <el-radio-group v-else disabled v-model="createDataFormData.roleType">
-            <el-radio label="PLATFORM">
-              {{ getroleTypeLabel("PLATFORM") }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item :label="$t('authorityMgr.roleName')" prop="roleName">
-          <el-input
-            v-model="createDataFormData.roleName"
-            :placeholder="$t('authorityMgr.roleNameplaceholder')"
-          />
-          <el-tooltip
-            class="item"
-            effect="light"
-            :content="$t('authorityMgr.roleNametooltip')"
-            placement="top"
-          >
-            <i class="kcp-infoQues icon-infoQues"></i>
-          </el-tooltip>
-        </el-form-item>
-        <el-form-item
-          :label="$t('authorityMgr.setPermission')"
-          prop="permissionset"
+    <div class="create-new-form">
+      <div class="template-box">
+        <el-form
+          ref="createDataForm"
+          label-width="auto"
+          :model="createDataFormData"
+          :rules="rulesTemplate"
         >
-          <div class="jurisdiction-box">
-            <div class="left-jurisdiction">
-              <div class="jurisdiction-title">
-                {{ $t("authorityMgr.optionalPermissions") }}
-              </div>
-              <div class="jurisdiction-content kcp-el-tree">
-                <el-tree
-                  ref="lefttree"
-                  show-checkbox
-                  default-expand-all
-                  :data="lefttreeData"
-                  :props="lefttreeProps"
-                  :node-key="leftnodeKey"
-                  :default-expanded-keys="leftdefaultExpandedkeys"
-                  @node-click="lefthandleNodeClick"
-                >
-                </el-tree>
-              </div>
-            </div>
-            <div class="cneter-jurisdiction">
-              <div class="jurisdiction-toright">
-                <div class="jurisdiction-btn" @click="getLeftCheckedKeys">
-                  {{ btniconLeft }}
-                </div>
-              </div>
-              <div class="jurisdiction-toleft">
-                <div class="jurisdiction-btn" @click="getRightCheckedKeys">
-                  {{ btniconRight }}
-                </div>
-              </div>
-            </div>
-            <div class="right-jurisdiction">
-              <div class="jurisdiction-title">
-                {{ $t("authorityMgr.selectedPermissions") }}
-              </div>
-              <div class="jurisdiction-content kcp-el-tree">
-                <el-tree
-                  ref="righttree"
-                  show-checkbox
-                  default-expand-all
-                  :data="righttreeData"
-                  :props="righttreeProps"
-                  :node-key="rightnodeKey"
-                  :default-expanded-keys="rightdefaultExpandedkeys"
-                  @node-click="righthandleNodeClick"
-                >
-                </el-tree>
-              </div>
-            </div>
-          </div>
-        </el-form-item>
+          <el-form-item :label="$t('authorityMgr.roleType')" prop="roleType">
+            <el-radio-group
+              v-if="formOptions.editflag"
+              disabled
+              v-model="createDataFormData.roleType"
+            >
+              <!-- ORG(组织管理) SELF_SERVICE(自服务) PLATFORM(平台管理) -->
 
-        <el-form-item :label="$t('authorityMgr.remark')" prop="remark">
-          <el-input
-            type="textarea"
-            maxlength="400"
-            show-word-limit
-            :autosize="{ minRows: 2, maxRows: 4 }"
-            v-model="createDataFormData.remark"
-          />
-        </el-form-item>
-      </el-form>
+              <el-radio label="ORG"> {{ getroleTypeLabel("ORG") }}</el-radio>
+              <el-radio label="SELF_SERVICE">
+                {{ getroleTypeLabel("SELF_SERVICE") }}
+              </el-radio>
+              <el-radio label="PLATFORM">
+                {{ getroleTypeLabel("PLATFORM") }}
+              </el-radio>
+            </el-radio-group>
+            <el-radio-group
+              v-else
+              disabled
+              v-model="createDataFormData.roleType"
+            >
+              <el-radio label="PLATFORM">
+                {{ getroleTypeLabel("PLATFORM") }}
+              </el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item :label="$t('authorityMgr.roleName')" prop="roleName">
+            <el-input
+              v-model="createDataFormData.roleName"
+              :placeholder="$t('authorityMgr.roleNameplaceholder')"
+            />
+            <el-tooltip
+              class="item"
+              effect="light"
+              :content="$t('authorityMgr.roleNametooltip')"
+              placement="top"
+            >
+              <i class="kcp-infoQues icon-infoQues"></i>
+            </el-tooltip>
+          </el-form-item>
+          <el-form-item
+            :label="$t('authorityMgr.setPermission')"
+            prop="permissionset"
+          >
+            <div class="jurisdiction-box">
+              <div class="left-jurisdiction">
+                <div class="jurisdiction-title">
+                  {{ $t("authorityMgr.optionalPermissions") }}
+                </div>
+                <div class="jurisdiction-content kcp-el-tree">
+                  <el-tree
+                    ref="lefttree"
+                    show-checkbox
+                    default-expand-all
+                    :data="lefttreeData"
+                    :props="lefttreeProps"
+                    :node-key="leftnodeKey"
+                    :default-expanded-keys="leftdefaultExpandedkeys"
+                    @node-click="lefthandleNodeClick"
+                  >
+                  </el-tree>
+                </div>
+              </div>
+              <div class="cneter-jurisdiction">
+                <div class="jurisdiction-toright">
+                  <div class="jurisdiction-btn" @click="getLeftCheckedKeys">
+                    {{ btniconLeft }}
+                  </div>
+                </div>
+                <div class="jurisdiction-toleft">
+                  <div class="jurisdiction-btn" @click="getRightCheckedKeys">
+                    {{ btniconRight }}
+                  </div>
+                </div>
+              </div>
+              <div class="right-jurisdiction">
+                <div class="jurisdiction-title">
+                  {{ $t("authorityMgr.selectedPermissions") }}
+                </div>
+                <div class="jurisdiction-content kcp-el-tree">
+                  <el-tree
+                    ref="righttree"
+                    show-checkbox
+                    default-expand-all
+                    :data="righttreeData"
+                    :props="righttreeProps"
+                    :node-key="rightnodeKey"
+                    :default-expanded-keys="rightdefaultExpandedkeys"
+                    @node-click="righthandleNodeClick"
+                  >
+                  </el-tree>
+                </div>
+              </div>
+            </div>
+          </el-form-item>
+
+          <el-form-item :label="$t('authorityMgr.remark')" prop="remark">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4 }"
+              v-model="createDataFormData.remark"
+            />
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
 
     <foot-btn
@@ -208,9 +212,6 @@ export default {
       orgSelectedKeys: [],
     };
   },
-  watch: {},
-  created() {},
-  computed: {},
   mounted() {
     this.setPageData();
   },
@@ -224,7 +225,7 @@ export default {
         this.createDataFormData.roleId = formData.roleId;
         this.createDataFormData.roleName = formData.roleName;
         this.createDataFormData.remark = formData.remark;
-        this.createDataFormData.permissions = formData.permissions;
+        this.createDataFormData.permissions = formData.permissions
         // 获取左侧节点树
         this.getLeftTree(0);
         // 获取右侧节点树
@@ -320,22 +321,12 @@ export default {
             }
           });
           this.lefttreeData = JSON.parse(JSON.stringify(treeList));
-          let permissions = this.createDataFormData.permissions;
+          let permissions = dealtree.getKeyWihoutParent(this.createDataFormData.permissions.slice(),this.lefttreeData)
           let { editflag } = this.formOptions;
           if (editflag) {
             // 编辑
-            const lsit = dealtree.treeToList(treeList);
-            const leftCheckedKeys = [];
-            lsit.forEach((data) => {
-              if (
-                permissions.indexOf(data.permissionId) > -1 &&
-                !data.isfather
-              ) {
-                leftCheckedKeys.push(data.permissionId);
-              }
-            });
             this.$nextTick(() => {
-              this.$refs.lefttree.setCheckedKeys(leftCheckedKeys, false);
+              this.$refs.lefttree.setCheckedKeys(permissions, false);
               // this.getLeftCheckedKeys();
             });
           } else {
@@ -370,12 +361,13 @@ export default {
               treeLsit.push(element);
             }
           });
+
           this.righttreeData = dealtree.listToTree(
             "permissionId",
             "parentId",
             treeLsit
           );
-
+          
           this.$nextTick(() => {
             this.$refs.righttree.setCheckedKeys(permissions, false);
             // this.getRightCheckedKeys();
@@ -407,7 +399,7 @@ export default {
     },
 
     getRightCheckedKeys() {
-      let rightCheckedKeys = this.$refs.righttree.getCheckedKeys(true, true);
+      let rightCheckedKeys = this.$refs.righttree.getCheckedKeys(true);
       this.$refs.lefttree.setCheckedKeys(rightCheckedKeys);
       this.getLeftCheckedKeys();
     },
@@ -418,16 +410,21 @@ export default {
       let permissions = leftHalfCheckedKeys.concat(leftCheckedKeys);
       return permissions;
     },
-    lefthandleNodeClick() {},
-    righthandleNodeClick() {},
+    lefthandleNodeClick() {
+      console.log("lefthandleNodeClick");
+    },
+    righthandleNodeClick() {
+      console.log("lefthandleNodeClick");
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
 
-.drawer-body-content {
+.create-new-form {
   @include formStyle;
   flex: 1;
   max-height: 82vh;

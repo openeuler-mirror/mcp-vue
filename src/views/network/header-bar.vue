@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
 .header-box {
   @include headerBarStyle;

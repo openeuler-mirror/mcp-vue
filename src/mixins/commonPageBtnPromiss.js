@@ -32,6 +32,7 @@ export default {
                 }
             });
             this.pageBtntKeys = currentPageBtnList
+            console.log('this.pageBtntKeys', this.pageBtntKeys)
         },
         currentBtnShow(btnKey) {
             if (this.pageBtntKeys.length == 0) {

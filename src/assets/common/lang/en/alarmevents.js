@@ -65,8 +65,6 @@ export default {
     'monitoring.alarmEvent.type.RABBIT_CONNECT_FAIL': 'RabbitMQ Connect Failed',
     'monitoring.alarmEvent.type.VIRTUALSERVER_KYLINTOOL': 'qga version',
     'monitoring.alarmEvent.type.VIRTUALSERVER_KSVDTOOL_EVENT': 'set ip/user/passwd',
-    'monitoring.alarmEvent.type.MARIADB': 'Database alarm',
-    'monitoring.alarmEvent.type.RESOURCE_ALLOCATION': 'Resource has reached quota threshold',
 
     alarmSetting: {
         type: 'Alarm Name',
@@ -83,8 +81,7 @@ export default {
         'thresholdInput': 'Invalid input! please input a integer between 0~99!',
         cloudServerAlarmPolicy: 'Cloud server alarm policy', // 云服务器告警策略
         physicalServerAlertPolicy: 'Physical Server Alert Policy', // 物理服务器告警策略
-        siteLickCheck:' Remote Dr - Link detection',
-        machineExpire:' cloud server expire ',
+
         clusterAlarmSettings: 'Cluster Alarm Settings', // 集群告警设置
         platformAlarmSettings: 'Platform Alarm Settings', // 平台告警设置
         clusterAlarmlog: 'Cluster alarm log', // 集群告警日志

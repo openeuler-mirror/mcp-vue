@@ -21,24 +21,23 @@
         v-if="currentBtnShow('search_user')"
         @change="searchInputChange"
       />
-      <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+      <i
+        style="margin-left: 15px"
+        class="el-icon-refresh setting-icon"
+        :title="$t('common.refresh')"
+        @click="refresh"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 import searchInput from "@/components/SearchInput";
 export default {
   components: {
     searchInput,
-    utilsButton,
   },
   props: {
-    spinBol: {
-      type: Boolean,
-      default: false,
-    },
     // 选中的数组
     selectData: {
       type: Array,

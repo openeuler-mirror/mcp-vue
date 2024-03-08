@@ -47,11 +47,6 @@
   a {
     display: block
   }
-
-  .el-link--inner {
-    width: max-content;
-    display: block;
-  }
 }
 
 // to fix el-date-picker css style
@@ -59,6 +54,12 @@
   box-sizing: content-box;
 }
 
+// form表单星号位置
+.el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before,
+.el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+  content: '';
+  margin: 0;
+}
 
 .el-form-item {
   .el-form-item__label-wrap {
@@ -66,6 +67,12 @@
   }
 }
 
+.el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:after,
+.el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:after {
+  content: '*';
+  color: #F56C6C;
+  margin-left: 4px;
+}
 
 // form labe 粗细
 .el-form-item .el-form-item__label {
@@ -98,18 +105,6 @@
     color: #409eff;
   }
 
-  .el-select .el-tag__close[class*="el-icon-"] {
-    cursor: pointer;
-    margin-left: 0px;
-    font-size: 10px;
-    color: #909399;
-  }
-
-  .el-select .el-tag__close[class*="el-icon-"]:hover {
-    color: #FFF;
-    background-color: #909399;
-  }
-
   .el-input.is-disabled .el-input__inner,
   .el-input-group input[qlinput-readonly] {
     // background-color: transparent;
@@ -135,7 +130,7 @@
 
   .input-with-select {
     .el-input-group__append {
-      background-color: #fff;
+      background-color: transparent;
       padding: 0;
       width: 70px;
       height: 30px;
@@ -143,7 +138,7 @@
     }
 
     .el-input-group__append button.el-button {
-      background-color: #fff;
+      background-color: transparent;
       padding: 0;
       margin: 0;
       width: 100%;
@@ -162,9 +157,8 @@
   }
 }
 
-.el-input-group__append,
-.el-input-group__prepend {
-  background-color: #fff;
+.el-button+.el-button {
+  margin: 0;
 }
 
 .el-button--primary {
@@ -260,7 +254,7 @@
   }
 }
 
-// tree
+// tree 
 .el-tree {
 
   background-color: transparent !important;
@@ -312,24 +306,6 @@
       position: absolute;
       border-color: inherit;
       background-color: $step-color;
-    }
-  }
-}
-
-.el-tooltip__popper {
-  max-width: 200px;
-}
-
-
-.el-dialog__body {
-  padding: 20px;
-  line-height: 20px;
-}
-
-.el-dialog__footer {
-  .dialog-footer {
-    .el-button+.el-button {
-      margin-left: 15px;
     }
   }
 }

@@ -2,7 +2,6 @@
 export default {
 
     workOrder: {
-      choseRole:'选择角色',
         workOrderId: '工单ID', // 工单ID
         applyUser: '申请人', // 申请人
         organizationName: '所属组织', // 所属组织

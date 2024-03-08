@@ -4,30 +4,22 @@
       <div class="mc-table-box-abs" ref="elTableabs">
         <el-table
           ref="elTable"
-          border
           :data="tableData"
           style="width: 100%; height: 100%"
           :height="tableHeight"
+          border
           :class="[total > 0 ? 'hasPagination' : '', selectionType]"
           @select="handleSelectione"
-          @select-all="handleSelectione"
           @selection-change="handleSelectionChange"
           @sort-change="handleSortChange"
           @row-click="rowSelect"
           @filter-change="filterChange"
-          v-loading.lock="tableLoading"
-          :element-loading-text="$t('common.loadingText')"
-          element-loading-spinner="el-icon-loading"
-          element-loading-background="rgba(0, 0, 0, 0.2)"
           :tree-props="treeProps"
-          :row-key="getRowKey"
+          :row-key="rowkey"
           :default-expand-all="defaultExpandAll"
-          :lazy="lazy"
-          :load="load"
         >
           <el-table-column
             v-if="selectionType && selectionType !== 'ownSelect'"
-            :selectable="getSelectBolFnc"
             type="selection"
             width="40"
           >
@@ -42,10 +34,9 @@
       @size-change="handleSizeChange"
       @current-change="handlePageChange"
       :current-page="currentPage"
-      :page-sizes="[5, 10, 20, 50, 100, 200]"
+      :page-sizes="[10, 20, 50, 100, 200]"
       :page-size="pageSize"
-      background
-      :layout="paginationLayout"
+      layout="total, sizes, prev, pager, next, jumper"
       :total="total"
       :hide-on-single-page="hideOnSinglePage"
     >
@@ -76,21 +67,11 @@ export default {
       type: Number,
       default: 0,
     },
-    tableLoading: {
-      type: Boolean,
-      default: false,
-    },
     // 渲染嵌套数据的配置选项
     treeProps: {
       type: Object,
       default() {
         return { children: "children", hasChildren: "hasChildren" };
-      },
-    },
-    getSelectBolFnc: {
-      type: Function,
-      default: (row, index) => {
-        return true;
       },
     },
     // 行数据的 Key，用来优化 Table 的渲染
@@ -106,21 +87,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    lazy: {
-      type: Boolean,
-      default: false,
-    },
-    load: {
-      type: Function,
-    },
     // 只有一页时是否隐藏
     hideOnSinglePage: {
       type: Boolean,
       default: false,
-    },
-    paginationLayout: {
-      type: String,
-      default: "total, sizes, prev, pager, next",
     },
   },
   data() {
@@ -164,9 +134,6 @@ export default {
     };
   },
   methods: {
-    getRowKey(row) {
-      return row[this.rowkey];
-    },
     toggleSelection() {
       let list = this.defaultSelectedKeys;
       list = list.filter((n) => n);
@@ -180,9 +147,7 @@ export default {
       this.$refs.elTable.doLayout();
     },
     calcTableHeight() {
-      if (this.$refs.elTableabs) {
-        this.tableHeight = this.$refs.elTableabs.offsetHeight;
-      }
+      this.tableHeight = this.$refs.elTableabs.offsetHeight;
     },
     handlePageChange(page) {
       this.$emit("current-change", page);
@@ -260,11 +225,9 @@ export default {
               hasrowFlag = true;
             }
           });
-          if (hasrowFlag || !this.getSelectBolFnc(row)) {
+          if (hasrowFlag) {
             this.$refs.elTable.toggleRowSelection(row, false);
-          }
-          //判断是否符合传入规则以及选中改行 才进行选中行更改
-          if (!hasrowFlag && this.getSelectBolFnc(row)) {
+          } else {
             this.$refs.elTable.clearSelection();
             this.$refs.elTable.toggleRowSelection(row, true);
           }

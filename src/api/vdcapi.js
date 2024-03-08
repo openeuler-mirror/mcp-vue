@@ -143,35 +143,3 @@ export function listNetworkListByVdcId(data) {
         data
     })
 }
-// 创建网络规格
-export function handelSubmitSpec(data) {
-    return request({
-        url: '/network/specification/create',
-        method: 'post',
-        data
-    })
-}
-//删除规格
-export function handelDelSpec(data) {
-    return request({
-        url: '/network/specification/delete',
-        method: 'post',
-        data
-    })
-}
-//获取网卡详情
-export function handelGetSpecDetail(data) {
-    return request({
-        url: '/network/specification/detail',
-        method: 'post',
-        data
-    })
-}
-//获取网卡详情
-export function handelmodifySpecDetail(data) {
-    return request({
-        url: '/network/specification/modify',
-        method: 'post',
-        data
-    })
-}

@@ -36,7 +36,6 @@ const actbtnPms = {
         'EXPORTING', // '正在导出(EXPORTING)',
         'CLONING', // '正在克隆(CLONING)',
         'DISK_COPYING', // '正在磁盘复制(DISK_COPYING)',
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
     ],
 
     // 控制台按钮 vnc 
@@ -76,7 +75,6 @@ const actbtnPms = {
         'EXPORTING',// 正在导出(EXPORTING)
         'CLONING',// 正在克隆(CLONING)
         'DISK_COPYING',// 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
     ],
 
 
@@ -118,7 +116,6 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
 
     ],
 
@@ -159,7 +156,6 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
     ],
     // 重启 reboot
     rebootstatusShowList: [
@@ -196,7 +192,6 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
     ],
 
     // 强制重启 forcereboot
@@ -237,7 +232,6 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
 
     ],
 
@@ -279,7 +273,6 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
 
     ],
 
@@ -320,7 +313,6 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
     ],
 
     // 申请延期按钮 applyDeferred
@@ -360,7 +352,6 @@ const actbtnPms = {
 
     ],
     applyDeferredtaskStatusunShowList: [
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
     ],
 
 
@@ -376,6 +367,7 @@ const actbtnPms = {
         'INSTALLING', // 安装(INSTALLING)
         'SUSPEND', // 暂停(SUSPEND)
         'UNKNOWN', // 其他(UNKNOWN)
+
     ],
     deletetaskStatusShowList: [
         'NEW', // 新建(NEW)
@@ -401,47 +393,7 @@ const actbtnPms = {
         'EXPORTING', // 正在导出(EXPORTING)
         'CLONING', // 正在克隆(CLONING)
         'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
-    ],
-
-    // 制作镜像按钮 makeImage
-    makeImagestatusShowList: [
-        'OVERDUE', // 已过期(OVERDUE)
-        'OFFLINE', // 离线(OFFLINE)
-    ],
-    makeImagestatusunShowList: [
-        'AVAILABLE', // 在线(AVAILABLE)
-        'CONNECTED', // 已连接(CONNECTED)
-        'INSTALLING', // 安装(INSTALLING)
-        'SUSPEND', // 暂停(SUSPEND)
-        'UNKNOWN', // 其他(UNKNOWN)
-    ],
-    deletetaskStatusShowList: [
 
     ],
-    deletetaskStatusunShowList: [
-        'NEW', // 新建(NEW)
-        'NEWFAILED', // 新建失败(NEWFAILED)
-        'INSTALLFAILED', // 安装失败(INSTALLFAILED)
-        'INSTALLING', // 安装中(INSTALLING)
-        'CREATING', // 正在创建(CREATING)
-        'STARTING', // 正在开机(STARTING)
-        'SHUTDOWNING', // 正在关机(SHUTDOWNING)
-        'REBOOTING', // 正在重启(REBOOTING)
-        'SUSPENDING', // 正在暂停(SUSPENDING)
-        'RESUMING', // 正在唤醒(RESUMING)
-        'VOLUME_MIGRATING', // 正在存储迁移(VOLUME_MIGRATING)
-        'HOST_MIGRATING', // 正在主机迁移(HOST_MIGRATING)
-        'BACKUP_RUNNING', // 正在备份(BACKUP_RUNNING)
-        'BACKUP_RECOVERING', // 正在备份恢复(BACKUP_RECOVERING)
-        'SNAPSHOT_RUNNING', // 正在快照(SNAPSHOT_RUNNING)
-        'SNAPSHOT_RECOVERING', // 正在快照恢复(SNAPSHOT_RECOVERING)
-        'IMPORTING', // 正在导入(IMPORTING)
-        'EXPORTING', // 正在导出(EXPORTING)
-        'CLONING', // 正在克隆(CLONING)
-        'DISK_COPYING', // 正在磁盘复制(DISK_COPYING)
-        'CREATE_KCP_IMAGE', // 正在磁盘复制(CREATE_KCP_IMAGE)
-    ],
-
 }
 export default actbtnPms

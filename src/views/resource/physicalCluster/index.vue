@@ -2,16 +2,14 @@
   <!-- 物理集群 physicalCluster -->
   <div class="physicalCluster-home app-container">
     <!-- 操作按钮 -->
-    <headerBox @refresh="refreshTable" :spinBol="tableLoading">
-      <template slot="headerLeft">
-        <el-button v-if="currentBtnShow('create_cluster')" @click="newlyBuild">
-          {{ $t("common.add") }}
-        </el-button>
-      </template>
-    </headerBox>
+    <header-bar
+      ref="headerBar"
+      @newlyBuild="newlyBuild"
+      @refreshTable="refreshTable"
+    />
+
     <mc-table
       ref="physicalClusterTable"
-      :tableLoading="tableLoading"
       :data="tableData"
       :total="total"
       :pageSize="pageSize"
@@ -28,6 +26,7 @@
           :key="index"
           :label="item.label"
           :width="item.width"
+          :resizable="index != 0 && index != tableColumns.length - 1"
         >
           <template slot-scope="{ row }">
             <router-link
@@ -46,6 +45,7 @@
         <el-table-column
           v-else-if="item.prop == 'status'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -57,6 +57,7 @@
         <el-table-column
           v-else-if="item.prop == 'cpurate'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -75,6 +76,7 @@
         <el-table-column
           v-else-if="item.prop == 'memoryrate'"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :width="item.width"
         >
@@ -94,6 +96,7 @@
           v-else-if="item.prop == 'storagerate'"
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -115,6 +118,7 @@
           v-else-if="item.prop == 'operation'"
           fixed="right"
           :key="index"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :label="item.label"
           :min-width="item.width || '200px'"
           className="tableoperation"
@@ -151,6 +155,7 @@
           v-else
           :key="index"
           :label="item.label"
+          :resizable="index != 0 && index != tableColumns.length - 1"
           :width="item.width"
         >
           <template slot-scope="{ row }">
@@ -179,7 +184,7 @@
 </template>
 
 <script>
-import headerBox from "@/components/headerBox";
+import headerBar from "./header-bar";
 import mcTable from "@/components/MctablePro";
 import mcAllocationratio from "@/components/Mcallocationratio";
 import createEditModal from "./createEditModal/createEditModal";
@@ -194,7 +199,7 @@ import transformat from "@/utils/transformat";
 export default {
   name: "physicalCluster",
   components: {
-    headerBox,
+    headerBar,
     mcTable,
     mcAllocationratio,
     createEditModal,
@@ -260,7 +265,7 @@ export default {
       ],
       tableColumns: [],
       tableData: [],
-      tableLoading: false,
+
       total: 0,
       // 分页数1开始
       pageNo: 1,
@@ -349,7 +354,9 @@ export default {
       this.getTableData();
     },
     getTableData() {
-      this.tableLoading = true;
+      this.$nextTick(() => {
+        this.$showFullScreenLoading(".page-wrapper-content");
+      });
       let pramas = {
         pageNo: this.pageNo,
         pageSize: this.pageSize,
@@ -358,14 +365,12 @@ export default {
         .then((res) => {
           this.tableData = res.list;
           this.total = res.pageInfo.total;
+          this.$hideFullScreenLoading();
         })
         .catch((err) => {
           this.alertTips(err);
           this.tableData = [];
-          this.total = 0;
-        })
-        .finally(() => {
-          this.tableLoading = false;
+          this.$hideFullScreenLoading();
         });
     },
     handlePageChange(page) {
@@ -385,3 +390,4 @@ export default {
   },
 };
 </script>
+

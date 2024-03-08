@@ -4,7 +4,7 @@
       <div class="header-left">
         <el-select
           v-model="clusterValue"
-          :placeholder="$t('resourceMgr.plccluster')"
+          placeholder="请选择集群"
           @change="clusterChange"
         >
           <el-option
@@ -17,25 +17,21 @@
         </el-select>
       </div>
       <div class="header-right">
-        <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+        <i
+          class="el-icon-refresh setting-icon"
+          :title="$t('common.refresh')"
+          @click="refresh"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 import { getLoginUserCluster } from "@/api/clusterapi";
 export default {
-  components: {
-    utilsButton,
-  },
-  props: {
-    spinBol: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  components: {},
+  props: {},
   data() {
     return {
       // 集群

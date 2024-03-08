@@ -15,22 +15,8 @@
           @change="timeDatachange"
         >
         </el-date-picker>
-        <el-select
-          style="margin-left: 15px"
-          v-model="alarmType"
-          placeholder="请选择告警类型"
-          @change="refresh"
-        >
-          <el-option
-            v-for="item in alertList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
         <!-- 可用区 -->
-        <!-- <el-select
+        <el-select
           style="margin-left: 15px"
           v-model="zoneValue"
           placeholder="请选择可用区"
@@ -52,11 +38,16 @@
           :props="cascaderprops"
           @change="cascaderChange"
         >
-        </el-cascader> -->
+        </el-cascader>
       </div>
       <div class="header-right">
         <!-- <searchInput @change="searchInputChange" /> -->
-        <utilsButton type="fresh" :spinBol="spinBol" @refresh="refresh" />
+        <i
+          class="el-icon-refresh setting-icon"
+          style="margin-left: 15px"
+          :title="$t('common.refresh')"
+          @click="refresh"
+        />
         <!-- <i
           v-if="currentBtnShow('exportAlarmLog')"
           class="el-icon-download setting-icon"
@@ -70,21 +61,14 @@
 </template>
 
 <script>
-import utilsButton from "@/components/utilsButton";
 import searchInput from "@/components/SearchInput";
 import { zoneList } from "@/api/vdcapi";
 import { queryOrgTree } from "@/api/organization";
 export default {
   components: {
-    utilsButton,
     searchInput,
   },
-  props: {
-    spinBol: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: {},
   data() {
     return {
       timeData: "",
@@ -93,33 +77,6 @@ export default {
         endTime: "",
       },
       zoneValue: 0,
-      alarmType: "",
-      alertList: [
-        {
-          label: "全部",
-          value: "",
-        },
-        {
-          label: "VDC-CPU使用率",
-          value: "VDC_CPU",
-        },
-        {
-          label: "VDC-内存使用率",
-          value: "VDC_MEM",
-        },
-        {
-          label: "VDC-存储使用率",
-          value: "VDC_STORAGE",
-        },
-        {
-          label: "异地容灾-链路检测",
-          value: "SITE_LICK_CHECK",
-        },
-        {
-          label: "云服务器使用到期",
-          value: "MACHINE_EXPIRE",
-        },
-      ],
       zoneList: [],
       cascaderValue: 0,
       cascaderprops: {
@@ -191,9 +148,8 @@ export default {
       let params = {
         startDate: this.timeDataObj.startTime, // 开始时间(YYYY-MM-DD)
         endDate: this.timeDataObj.endTime, // 结束时间(YYYY-MM-DD)
-        alarmType: this.alarmType,
-        // zoneId: this.zoneValue, // 可用区ID（全部可用时传0）
-        // orgId: this.cascaderValue, // 组织ID （全部组织时传0）
+        zoneId: this.zoneValue, // 可用区ID（全部可用时传0）
+        orgId: this.cascaderValue, // 组织ID （全部组织时传0）
         // inputValue: this.inputValue,
       };
       this.$emit("refreshTable", params);

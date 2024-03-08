@@ -156,9 +156,7 @@ export default {
     getPushInfo() {
       if (this.pushWorkorder) {
         // 获取待审核工单数量
-
-        let headers = { TIME_REFRESH: "TIME_REFRESH" };
-        getWaitCheckCount({}, headers)
+        getWaitCheckCount()
           .then((res) => {
             let { waitCheckCount } = res;
             this.workorderValue = waitCheckCount;
@@ -172,8 +170,7 @@ export default {
       }
       if (this.pushAlarmLog) {
         // 获取告警数量
-        let headers = { TIME_REFRESH: "TIME_REFRESH" };
-        alarmNotifications({}, headers)
+        alarmNotifications()
           .then((res) => {
             let { notificationsCount } = res;
             this.alarmLogValue = notificationsCount;
@@ -212,8 +209,8 @@ export default {
       // 获取用户信息
       getInfo()
         .then((data) => {
-          this.loginUserInfo =
-            data.kcpRole === "slave" ? this.getSlaveData(data) : data;
+          this.loginUserInfo = data;
+
           localStorage.setItem("userInfo", JSON.stringify(this.loginUserInfo));
           this.hasUserInfo = true;
           let realName = data.realName || data.userName;
@@ -229,17 +226,6 @@ export default {
     },
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
-    },
-    getSlaveData(data) {
-      const { permissions } = data;
-      const newSlavePermission = [];
-      permissions.forEach((e) => {
-        if (e.routeKey === "reliableCenter" || e.routeKey === "kcpha") {
-          newSlavePermission.push(e);
-        }
-      });
-      data.permissions = newSlavePermission;
-      return data;
     },
     async logout() {
       await this.$store.dispatch("user/logout");
@@ -289,7 +275,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style  lang="scss">
 // 退出下拉面板边框颜色
 .el-popper[x-placement^="bottom"] .popper__arrow {
   border-bottom-color: #b5b4b4;

@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-content">
-    <div class="drawer-body-content">
+    <div class="create-new-form">
       <div class="template-box">
         <el-form
           ref="createDataForm"
@@ -29,8 +29,6 @@
           <el-form-item :label="$t('authorityMgr.remark')" prop="remark">
             <el-input
               type="textarea"
-              maxlength="400"
-              show-word-limit
               :autosize="{ minRows: 2, maxRows: 4 }"
               v-model="createDataFormData.remark"
             />
@@ -553,4 +551,21 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/mixin.scss";
+@include DrawerRtl;
+
+.create-new-form {
+  @include formStyle;
+  flex: 1;
+  max-height: 82vh;
+  overflow: auto;
+  $input-width: 375px;
+
+  .el-input {
+    width: $input-width;
+  }
+
+  .el-textarea {
+    width: $input-width;
+  }
+}
 </style>

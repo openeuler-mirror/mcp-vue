@@ -112,10 +112,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 .setVdcNetWorkModal {
   .el-drawer__body {
     display: flex;
+    padding-top: 0;
   }
   .vdccreate-network {
     display: flex;

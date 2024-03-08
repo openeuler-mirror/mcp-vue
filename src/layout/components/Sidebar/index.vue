@@ -78,10 +78,10 @@ export default {
       }
     },
     getRoutes() {
-      const info = JSON.parse(localStorage.getItem("userInfo"));
-      let permissions = [...info.permissions];
-      // let permissionsList = [];
-      let permissionsList = ["taskcenter"];
+      let info = JSON.parse(localStorage.getItem("userInfo"));
+      let permissions = info.permissions;
+      let permissionsList = [];
+      // let permissionsList = ["vMwareMgr"];
       permissions.forEach((element) => {
         let { routeKey } = element;
         permissionsList.push(routeKey);
@@ -91,7 +91,6 @@ export default {
       let routes = JSON.parse(JSON.stringify(this.$router.options.routes));
       let routeLsit = [];
       let currentRoutes = [];
-      const kcpRole = info.kcpRole;
       routes.forEach((element) => {
         let { pagekey } = element;
         if (pagekey == "") {

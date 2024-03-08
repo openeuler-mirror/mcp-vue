@@ -55,6 +55,12 @@ export default {
 <style lang="scss" scoped>
 .search-box {
   display: inline-block;
+  margin-left: 15px;
+  .el-button--mini,
+  .el-button--small {
+    font-size: 13px;
+  }
+
   .small-input-box {
     width: 60px;
   }

@@ -11,6 +11,7 @@
         <el-table-column
           v-if="item.prop == 'type'"
           :key="item.prop"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :label="item.label"
           :width="item.width || '400px'"
         >
@@ -20,6 +21,7 @@
         </el-table-column>
         <!-- 操作 -->
         <el-table-column
+          :resizable="index != 0 && index != columnArr.length - 1"
           v-else-if="item.prop == 'operation'"
           fixed="right"
           :key="index"
@@ -45,6 +47,7 @@
         <el-table-column
           v-else
           :key="item.prop"
+          :resizable="index != 0 && index != columnArr.length - 1"
           :label="item.label"
           :width="item.width"
         >

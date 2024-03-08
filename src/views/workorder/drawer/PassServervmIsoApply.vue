@@ -1,189 +1,192 @@
 <template>
-  <div class="drawer-content" v-loading="loading">
-    <div class="drawer-body-content">
-      <el-form
-        ref="passApplyServervmForm"
-        label-width="80px"
-        :model="passApplyServervmFormData"
-        :rules="rulesTemplate"
-      >
-        <el-form-item :label="$t('workOrder.howtocreate')">
-          <span>
-            {{ applyServerVmType[passApplyServervmFormData.applyServerVmType] }}
-          </span>
-        </el-form-item>
-        <!-- 集群 -->
-        <el-form-item label="集群" prop="imageCluster">
-          <el-select
-            v-model="passApplyServervmFormData.imageCluster"
-            placeholder="请选择"
-            @change="imageClusterchange"
-          >
-            <el-option
-              v-for="item in imageClusterOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <!-- 镜像名称 -->
-        <el-form-item
-          class="selectTemplateBtn"
-          label="镜像名称"
-          prop="templateName"
+  <div class="drawer-content">
+    <div class="check-applyiso-servervm">
+      <div class="template-box">
+        <el-form
+          ref="passApplyServervmForm"
+          label-width="80px"
+          :model="passApplyServervmFormData"
+          :rules="rulesTemplate"
         >
-          <el-input
-            v-model="passApplyServervmFormData.templateName"
-            :placeholder="$t('workOrder.pserverVmTypeISO')"
-            disabled
-            readonly
-          >
-          </el-input>
-        </el-form-item>
-        <!-- 名称 -->
-        <el-form-item :label="$t('workOrder.aliasName')" prop="aliasName">
-          <el-input v-model="passApplyServervmFormData.aliasName" />
-        </el-form-item>
+          <el-form-item :label="$t('workOrder.howtocreate')">
+            <span>
+              {{
+                applyServerVmType[passApplyServervmFormData.applyServerVmType]
+              }}
+            </span>
+          </el-form-item>
+          <!-- 名称 -->
+          <el-form-item :label="$t('workOrder.aliasName')" prop="aliasName">
+            <el-input v-model="passApplyServervmFormData.aliasName" />
+          </el-form-item>
 
-        <!-- <el-form-item label="系统">
+          <!-- <el-form-item label="系统">
             <span>{{ passApplyServervmFormData.osMachine }}</span>
           </el-form-item> -->
 
-        <!-- 架构 -->
-        <el-form-item :label="$t('workOrder.architecture')" prop="architecture">
-          <el-select
-            v-model="passApplyServervmFormData.architecture"
-            :placeholder="$t('workOrder.parchitecture')"
-            disabled
+          <!-- 架构 -->
+          <el-form-item
+            :label="$t('workOrder.architecture')"
+            prop="architecture"
           >
-            <el-option
-              v-for="item in architectureoptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <!-- 操作系统  -->
-        <el-form-item :label="$t('workOrder.osMachine')" prop="osMachine">
-          <el-select
-            v-model="passApplyServervmFormData.osMachine"
-            :placeholder="$t('workOrder.posMachine')"
-            disabled
-          >
-            <el-option-group
-              v-for="group in machineoptions"
-              :key="group[0].osType"
-              :label="group[0].osTypeAlias"
+            <el-select
+              v-model="passApplyServervmFormData.architecture"
+              :placeholder="$t('workOrder.parchitecture')"
+              disabled
             >
               <el-option
-                v-for="item in group"
-                :key="item.systemName"
-                :label="item.systemName"
-                :value="item.systemName"
+                v-for="item in architectureoptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               >
               </el-option>
-            </el-option-group>
-          </el-select>
-        </el-form-item>
-        <!-- <el-form-item label="ISO镜像">
+            </el-select>
+          </el-form-item>
+
+          <!-- 操作系统  -->
+          <el-form-item :label="$t('workOrder.osMachine')" prop="osMachine">
+            <el-select
+              v-model="passApplyServervmFormData.osMachine"
+              :placeholder="$t('workOrder.posMachine')"
+              disabled
+            >
+              <el-option-group
+                v-for="group in machineoptions"
+                :key="group[0].osType"
+                :label="group[0].osTypeAlias"
+              >
+                <el-option
+                  v-for="item in group"
+                  :key="item.systemName"
+                  :label="item.systemName"
+                  :value="item.systemName"
+                >
+                </el-option>
+              </el-option-group>
+            </el-select>
+          </el-form-item>
+          <!-- <el-form-item label="ISO镜像">
             <span>{{ passApplyServervmFormData.templateName }}</span>
           </el-form-item> -->
-
-        <!-- 自动安置 -->
-        <el-form-item :label="$t('workOrder.autoConfiguration')">
-          <el-switch
-            class="switchStyle"
-            v-model="passApplyServervmFormData.autoConfiguration"
-            :active-value="true"
-            :inactive-value="false"
-            :active-text="$t('workOrder.autoConfigurationOn')"
-            :inactive-text="$t('workOrder.autoConfigurationOff')"
+          <el-form-item
+            class="selectTemplateBtn"
+            :label="$t('workOrder.serverVmType.ISO')"
+            prop="templateName"
           >
-          </el-switch>
-        </el-form-item>
+            <el-input
+              v-model="passApplyServervmFormData.templateName"
+              :placeholder="$t('workOrder.pserverVmTypeISO')"
+              disabled
+            >
+              <template #append>
+                <el-button @click="openSelectModal('isotemplate')">
+                  {{ $t("common.select") }}
+                </el-button>
+              </template>
+            </el-input>
+          </el-form-item>
+          <!-- 自动安置 -->
+          <el-form-item :label="$t('workOrder.autoConfiguration')">
+            <el-switch
+              class="switchStyle"
+              v-model="passApplyServervmFormData.autoConfiguration"
+              :active-value="true"
+              :inactive-value="false"
+              :active-text="$t('workOrder.autoConfigurationOn')"
+              :inactive-text="$t('workOrder.autoConfigurationOff')"
+            >
+            </el-switch>
+          </el-form-item>
 
-        <!-- 计算资源 -->
-        <computResources
-          v-if="!passApplyServervmFormData.autoConfiguration"
-          ref="computResources"
-          :formData="computResourcesformData"
-        ></computResources>
-        <!-- 存储位置  -->
-        <el-form-item
-          :label="$t('workOrder.storageLocation')"
-          prop="storageLocationId"
-          v-if="!passApplyServervmFormData.autoConfiguration"
-        >
-          <el-select
-            v-model="passApplyServervmFormData.storageLocationId"
-            :placeholder="$t('workOrder.placstorageLocation')"
+          <!-- 计算资源 -->
+          <computResources
+            v-if="!passApplyServervmFormData.autoConfiguration"
+            ref="computResources"
+            :formData="formData"
+          ></computResources>
+          <!-- 存储位置  -->
+          <el-form-item
+            :label="$t('workOrder.storageLocation')"
+            prop="storageLocationId"
+            v-if="!passApplyServervmFormData.autoConfiguration"
           >
-            <el-option
-              v-for="item in storageLocationList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+            <el-select
+              v-model="passApplyServervmFormData.storageLocationId"
+              :placeholder="$t('workOrder.placstorageLocation')"
+            >
+              <el-option
+                v-for="item in storageLocationList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="CPU" prop="cpu">
+            <el-input-number v-model="passApplyServervmFormData.cpu" />
+          </el-form-item>
+
+          <el-form-item :label="$t('common.mem')" prop="mem">
+            <el-input v-model="passApplyServervmFormData.mem" v-only-num>
+              <template slot="append">GB</template>
+            </el-input>
+          </el-form-item>
+          <!-- 磁盘 -->
+          <setDiskInfo
+            ref="setDiskInfo"
+            :formData="disksformData"
+            pageMode="ISOADD"
+          >
+          </setDiskInfo>
+
+          <!-- 网卡 -->
+          <setNetWorkInfo
+            ref="setNetWorkInfo"
+            :formData="networksformData"
+            pageMode="ISOADD"
+          >
+          </setNetWorkInfo>
+
+          <!-- 审核意见 -->
+          <el-form-item
+            :label="$t('workOrder.reviewComments')"
+            prop="auditOpinion"
+          >
+            <el-input
+              v-model="passApplyServervmFormData.auditOpinion"
+              type="textarea"
+              :rows="3"
+              placeholder=""
+              maxlength="500"
+              show-word-limit
             />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="CPU" prop="cpu">
-          <el-input-number v-model="passApplyServervmFormData.cpu" />
-        </el-form-item>
-
-        <el-form-item :label="$t('common.mem')" prop="mem">
-          <el-input v-model="passApplyServervmFormData.mem" v-only-num>
-            <template slot="append">GB</template>
-          </el-input>
-        </el-form-item>
-        <!-- 磁盘 -->
-        <setDiskInfo
-          ref="setDiskInfo"
-          :formData="disksformData"
-          pageMode="ISOADD"
-        >
-        </setDiskInfo>
-
-        <!-- 网卡 -->
-        <setNetWorkInfo
-          ref="setNetWorkInfo"
-          :formData="networksformData"
-          pageMode="ISOADD"
-        >
-        </setNetWorkInfo>
-
-        <!-- 审核意见 -->
-        <el-form-item
-          :label="$t('workOrder.reviewComments')"
-          prop="auditOpinion"
-        >
-          <el-input
-            v-model="passApplyServervmFormData.auditOpinion"
-            type="textarea"
-            placeholder=""
-            maxlength="400"
-            show-word-limit
-            :autosize="{ minRows: 2, maxRows: 4 }"
-          />
-        </el-form-item>
-      </el-form>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
     <foot-btn
       class="drawer-foot"
       @confirm="handlerConfirm"
       @cancel="handlerCancel"
     />
+
+    <!-- bindTemplateModal -->
+    <bindTemplateModal
+      :visible.sync="showbindisotemplateModal"
+      :defaultSelectedKeys="defaultSelectedKeys"
+      :allIsoList="allIsoList"
+      @confirm="templateConfirm"
+    >
+    </bindTemplateModal>
   </div>
 </template>
 <script>
 import footBtn from "@/components/Footbtn";
 import ReMessage from "@/utils/message";
-import { passApplyServerVm, refreshMcBaseInfo } from "@/api/workOrder";
+import { passApplyServerVm } from "@/api/workOrder";
+import bindTemplateModal from "../bindIsoTempModal/bindTemplateModal.vue";
 import validate from "@/utils/validate";
 import computResources from "./computResources.vue"; // 计算资源
 import setDiskInfo from "./setDiskInfo.vue"; // 设置磁盘信息
@@ -191,6 +194,7 @@ import setNetWorkInfo from "./setNetWorkInfo.vue"; // 设置网卡信息
 export default {
   components: {
     footBtn,
+    bindTemplateModal,
     computResources,
     setDiskInfo,
     setNetWorkInfo,
@@ -218,9 +222,7 @@ export default {
         { value: "mips", label: "MIPS" },
       ],
       machineoptions: [],
-      loading: false,
       passApplyServervmFormData: {
-        imageCluster: "", // 镜像集群
         auditOpinion: "",
         osMachine: "",
         architecture: "",
@@ -240,13 +242,6 @@ export default {
       },
       storageLocationList: [],
       rulesTemplate: {
-        imageCluster: [
-          {
-            required: true,
-            message: this.$t("resourceMgr.plccluster"), // "请选择集群",
-            trigger: "blur",
-          },
-        ],
         aliasName: [
           {
             required: true,
@@ -292,9 +287,9 @@ export default {
       // 网卡信息
       networksformData: {},
 
-      imageClusterOptions: [],
-
-      computResourcesformData: {},
+      showbindisotemplateModal: false,
+      allIsoList: [],
+      defaultSelectedKeys: [],
     };
   },
 
@@ -302,32 +297,23 @@ export default {
     this.getApplyDetail();
   },
   methods: {
-    imageClusterchange(val) {
-      this.loading = true;
-      let params = {
-        workOrderId: this.passApplyData.workOrderId, //	工单ID
-        clusterId: val, //	集群ID
-      };
-      refreshMcBaseInfo(params)
-        .then((res) => {
-          let oldData = JSON.parse(JSON.stringify(this.formData));
-          this.computResourcesformData = JSON.parse(JSON.stringify(res));
-          let network = {
-            interfaceList: oldData.interfaceList,
-            canSelectedNetworkList: res.canSelectedNetworkList,
-            applyNum: this.passApplyServervmFormData.applyNum,
-            networkConfigList: res.interfaceList,
-          };
-          this.$set(
-            this,
-            "networksformData",
-            JSON.parse(JSON.stringify(network))
-          );
-          this.passApplyServervmFormData.templateId = res.templateId;
-        })
-        .finally((res) => {
-          this.loading = false;
-        });
+    openSelectModal(key) {
+      switch (key) {
+        case "isotemplate":
+          this.defaultSelectedKeys = [
+            { isoKey: this.passApplyServervmFormData.templateName },
+          ];
+          this.showbindisotemplateModal = true;
+          break;
+
+        default:
+          this.showbindisotemplateModal = false;
+          break;
+      }
+    },
+    templateConfirm(rows) {
+      let template = rows[0];
+      this.passApplyServervmFormData.templateName = template.isoLabel;
     },
     //获取模板详情
     getApplyDetail() {
@@ -335,8 +321,8 @@ export default {
       this.passApplyServervmFormData.applyServerVmType = res.applyServerVmType;
       this.passApplyServervmFormData.aliasName = res.aliasName;
       this.passApplyServervmFormData.applyNum = res.applyNum;
-      this.passApplyServervmFormData.templateId = res.templateId;
-      this.passApplyServervmFormData.templateName = res.imageName;
+      this.passApplyServervmFormData.templateName = res.applyIsoList[0].isoFile;
+      this.allIsoList = res.allIsoList;
       this.passApplyServervmFormData.osMachine = res.osMachine;
       this.passApplyServervmFormData.architecture = res.architecture;
       this.passApplyServervmFormData.systemType = res.systemType;
@@ -344,7 +330,7 @@ export default {
       this.passApplyServervmFormData.mem = res.mem;
       this.passApplyServervmFormData.memUnit = res.memUnit;
       this.passApplyServervmFormData.storageLocationId = res.storageLocationId;
-      this.computResourcesformData = JSON.parse(JSON.stringify(res));
+
       this.storageLocationList = res.storageLocationList;
       // 处理网卡数据
       this.networksformData = JSON.parse(JSON.stringify(this.formData));
@@ -353,22 +339,6 @@ export default {
 
       // 处理磁盘数据
       this.passApplyServervmFormData.disks = res.disks;
-
-      // 处理集群数据
-      this.imageClusterOptions = this.getimageClusterList(res.imageClusterList);
-      this.passApplyServervmFormData.imageCluster =
-        this.imageClusterOptions[0].value;
-    },
-    getimageClusterList(imageClusterList) {
-      let list = [];
-      imageClusterList.forEach((element) => {
-        list.push({
-          label: element.clusterName,
-          value: element.clusterId,
-          ...element,
-        });
-      });
-      return list;
     },
     // 提交
     handlerConfirm() {
@@ -420,6 +390,8 @@ export default {
       let vmNumber = this.passApplyServervmFormData.applyNum;
 
       let remotePassword = this.createRemotePassword();
+      let isoList = this.formData.applyIsoList;
+      isoList[0].isoFile = this.passApplyServervmFormData.templateName; // iso名
 
       // 枚举: TEMPLATE,ISO
       // 枚举备注: TEMPLATE(基于模板创建) ISO(ISO创建)
@@ -454,10 +426,6 @@ export default {
       //磁盘处理
       let diskList = this.$refs.setDiskInfo.cmtdiskList;
 
-      let templateId = 0;
-
-      let clusterId = this.passApplyServervmFormData.imageCluster;
-
       let commitData = {
         workOrderId,
         auditOpinion,
@@ -473,10 +441,9 @@ export default {
         diskList,
         networkList,
         remotePassword,
+        isoList,
         applyServerVmType,
         ...computResourcesFormData,
-        templateId,
-        clusterId,
       };
       //申请云服务器
       passApplyServerVm(commitData).then((res) => {
@@ -575,7 +542,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 @import "~@/styles/mixin.scss";
 
 .check-applyiso-servervm {
