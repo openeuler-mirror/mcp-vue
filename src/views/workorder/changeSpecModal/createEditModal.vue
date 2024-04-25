@@ -1,54 +1,54 @@
 <template>
   <el-drawer
+    v-if="drawerVisible"
     size="900px"
     :title="options.title"
     direction="rtl"
     custom-class=""
     :wrapper-closable="false"
-    v-if="drawerVisible"
     :visible.sync="drawerVisible"
     :before-close="handleCloseCreate"
     :destroy-on-close="true"
   >
-    <createEditBox :formOptions="formOptions" ref="createEditBox" />
+    <createEditBox ref="createEditBox" :form-options="formOptions" />
   </el-drawer>
 </template>
 
 <script>
-import createEditBox from "./createEditBox.vue";
+import createEditBox from './createEditBox.vue'
 export default {
   components: {
-    createEditBox,
+    createEditBox
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     options: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   data() {
     return {
       drawerVisible: this.visible,
-      formOptions: this.options,
-    };
+      formOptions: this.options
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
-    },
+      this.drawerVisible = isvis
+    }
   },
   created() {},
   methods: {
     handleCloseCreate() {
-      this.$emit("update:visible", false);
-      this.$parent.renderTable();
-    },
-  },
-};
+      this.$emit('update:visible', false)
+      this.$parent.renderTable()
+    }
+  }
+}
 </script>
 
 <style>

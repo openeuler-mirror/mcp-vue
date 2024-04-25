@@ -45,104 +45,104 @@
 </template>
 
 <script>
-import footBtn from "@/components/Footbtn";
+import footBtn from '@/components/Footbtn'
 import {
   checkPassRegister,
   checkPassUpdateUser,
-  checkPassDeferred,
-} from "@/api/workOrder";
-import ReMessage from "@/utils/message";
-import validate from "@/utils/validate";
+  checkPassDeferred
+} from '@/api/workOrder'
+import ReMessage from '@/utils/message'
+import validate from '@/utils/validate'
 export default {
   components: {
-    footBtn,
+    footBtn
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     selectRowData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
       drawerVisible: this.visible,
       passFormData: {
-        auditOpinion: "",
+        auditOpinion: ''
       },
       rulesTemplate: {
         auditOpinion: [
           {
             required: true,
-            message: this.$t("workOrder.commentsNotempty"), // "审核意见不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.commentsNotempty'), // "审核意见不能为空",
+            trigger: 'blur'
           },
           {
             required: true,
-            trigger: "blur",
-            message: this.$t("workOrder.commentsspecialChar"), // "审核意见不能出现特殊字符",
+            trigger: 'blur',
+            message: this.$t('workOrder.commentsspecialChar'), // "审核意见不能出现特殊字符",
 
-            validator: validate.special_char,
-          },
-        ],
-      },
-    };
+            validator: validate.special_char
+          }
+        ]
+      }
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
+      this.drawerVisible = isvis
     },
-    selectRowData(selectRow) {},
+    selectRowData(selectRow) {}
   },
   methods: {
     // 提交
     handlerConfirm() {
       this.$refs.passForm.validate((valid) => {
         if (valid) {
-          this.sethandlerConfirm();
+          this.sethandlerConfirm()
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     sethandlerConfirm() {
-      let workOrderId = this.selectRowData.workOrderId;
-      let auditOpinion = this.passFormData.auditOpinion;
-      let type = this.selectRowData.type;
+      const workOrderId = this.selectRowData.workOrderId
+      const auditOpinion = this.passFormData.auditOpinion
+      const type = this.selectRowData.type
 
-      if (type === "REGISTER_USER") {
+      if (type === 'REGISTER_USER') {
         checkPassRegister({ workOrderId, auditOpinion }).then((res) => {
-          this.passSuccess();
-        });
-      } else if (type === "MODIFY_USER") {
+          this.passSuccess()
+        })
+      } else if (type === 'MODIFY_USER') {
         checkPassUpdateUser({ workOrderId, auditOpinion }).then((res) => {
-          this.passSuccess();
-        });
-      } else if (type === "DEFERRED_SERVERVM") {
+          this.passSuccess()
+        })
+      } else if (type === 'DEFERRED_SERVERVM') {
         checkPassDeferred({ workOrderId, auditOpinion }).then((res) => {
-          this.passSuccess();
-        });
+          this.passSuccess()
+        })
       }
     },
     handlerCancel() {
-      this.$refs.passForm.resetFields();
-      this.$emit("update:visible", false);
+      this.$refs.passForm.resetFields()
+      this.$emit('update:visible', false)
     },
     handleClosePass(done) {
-      this.handlerCancel();
+      this.handlerCancel()
 
-      done();
+      done()
     },
     passSuccess() {
-      this.$parent.refreshTable();
-      ReMessage.success(this.$t("common.reviewsucc"));
-      this.handlerCancel();
-    },
-  },
-};
+      this.$parent.refreshTable()
+      ReMessage.success(this.$t('common.reviewsucc'))
+      this.handlerCancel()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope >

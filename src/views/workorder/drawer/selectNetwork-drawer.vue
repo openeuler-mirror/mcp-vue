@@ -14,12 +14,12 @@
     <div class="drawer-content">
       <div class="bind-table">
         <mc-table
-          :data="networkList"
-          @selection-change="handlerSelectionNetworkChange"
-          :rowkey="rowkey"
-          :selectionType="selectionType"
           ref="multiTable"
+          :data="networkList"
+          :rowkey="rowkey"
+          :selection-type="selectionType"
           style="margin-top: 20px"
+          @selection-change="handlerSelectionNetworkChange"
         >
           <template v-for="(item, index) in columnArr">
             <el-table-column
@@ -73,36 +73,36 @@
 </template>
 
 <script>
-import mcTable from "@/components/MctablePro";
-import footBtn from "@/components/Footbtn";
-import ReMessage from "@/utils/message";
-import dictionary from "@/assets/common/dataDictionary/dictionary";
+import mcTable from '@/components/MctablePro'
+import footBtn from '@/components/Footbtn'
+import ReMessage from '@/utils/message'
+import dictionary from '@/assets/common/dataDictionary/dictionary'
 export default {
   components: {
     mcTable,
-    footBtn,
+    footBtn
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     networkList: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     selectedNetworkInfo: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
-      rowkey: "networkId",
-      selectionType: "singleTable",
+      rowkey: 'networkId',
+      selectionType: 'singleTable',
       drawerVisible: this.visible,
       selectTable: [],
-      selectNetworkName: "",
+      selectNetworkName: '',
       selectNetworkId: 0,
       columnArr: [
         // {
@@ -110,97 +110,97 @@ export default {
         //   prop: "networkId",
         // },
         {
-          label: this.$t("authorityMgr.netWorkSet.networkName"), // "网络名称",
-          prop: "networkName",
+          label: this.$t('authorityMgr.netWorkSet.networkName'), // "网络名称",
+          prop: 'networkName'
         },
         // {
         //   label: this.$t("authorityMgr.netWorkSet.interfaceType"), // "网络类型",
         //   prop: "interfaceType",
         // },
         {
-          label: this.$t("authorityMgr.netWorkSet.virtualSwitch"), // "虚拟交换机",
-          prop: "virtualSwitch",
+          label: this.$t('authorityMgr.netWorkSet.virtualSwitch'), // "虚拟交换机",
+          prop: 'virtualSwitch'
         },
         {
-          label: this.$t("authorityMgr.netWorkSet.modelType"), // "网卡类型",
-          prop: "modelType",
+          label: this.$t('authorityMgr.netWorkSet.modelType'), // "网卡类型",
+          prop: 'modelType'
         },
         {
-          label: this.$t("authorityMgr.netWorkSet.addressPool"), // "地址池",
-          prop: "addressPool",
+          label: this.$t('authorityMgr.netWorkSet.addressPool'), // "地址池",
+          prop: 'addressPool'
         },
         {
-          label: this.$t("authorityMgr.netWorkSet.portGroup"), // "端口组",
-          prop: "portGroup",
+          label: this.$t('authorityMgr.netWorkSet.portGroup'), // "端口组",
+          prop: 'portGroup'
         },
         {
-          label: this.$t("resourceMgr.network.securityPolicy"), // "安全策略"
-          prop: "securityPolicy",
-          tooltipsFlag: true,
+          label: this.$t('resourceMgr.network.securityPolicy'), // "安全策略"
+          prop: 'securityPolicy',
+          tooltipsFlag: true
         },
         {
-          label: this.$t("authorityMgr.netWorkSet.securityGroup"), // "安全组",
-          prop: "securityGroup",
-          tooltipsFlag: true,
+          label: this.$t('authorityMgr.netWorkSet.securityGroup'), // "安全组",
+          prop: 'securityGroup',
+          tooltipsFlag: true
         },
         {
-          label: this.$t("resourceMgr.network.virtualFirewallName"), // "虚拟防火墙",
-          prop: "virtualFirewallName",
-          tooltipsFlag: true,
-        },
-      ],
-    };
+          label: this.$t('resourceMgr.network.virtualFirewallName'), // "虚拟防火墙",
+          prop: 'virtualFirewallName',
+          tooltipsFlag: true
+        }
+      ]
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
+      this.drawerVisible = isvis
     },
-    networkList(val) {},
+    networkList(val) {}
   },
   methods: {
     getsecurityPolicyDesc(securityPolicy) {
-      return dictionary.getDesc(securityPolicy, dictionary.securityPolicyArr);
+      return dictionary.getDesc(securityPolicy, dictionary.securityPolicyArr)
     },
     setTableSelectedNetwork() {
-      let selected = this.selectedNetworkInfo.networkId;
-      this.$refs.multiTable.$refs.elTable.clearSelection();
+      const selected = this.selectedNetworkInfo.networkId
+      this.$refs.multiTable.$refs.elTable.clearSelection()
 
-      let row = this.networkList.find((item) => item.networkId === selected);
+      const row = this.networkList.find((item) => item.networkId === selected)
       if (row) {
-        this.$refs.multiTable.$refs.elTable.toggleRowSelection(row);
+        this.$refs.multiTable.$refs.elTable.toggleRowSelection(row)
       }
     },
     // 表格勾选
     handlerSelectionNetworkChange(selection) {
-      this.selectTable = selection;
+      this.selectTable = selection
     },
 
     // 提交
     handlerConfirm() {
-      let length = this.selectTable.length;
-      let errMsg = this.$t("workOrder.pchooseNetworkInfo"); //"请至少勾选一个网络配置";
+      const length = this.selectTable.length
+      const errMsg = this.$t('workOrder.pchooseNetworkInfo') // "请至少勾选一个网络配置";
       if (length < 1) {
-        ReMessage.error(errMsg);
-        return;
+        ReMessage.error(errMsg)
+        return
       }
-      let obj = JSON.parse(JSON.stringify(this.selectedNetworkInfo));
-      obj.networkId = this.selectTable[0].networkId;
-      obj.networkName = this.selectTable[0].networkName;
-      this.$emit("handlerConfirm", obj);
-      this.handlerCancel();
+      const obj = JSON.parse(JSON.stringify(this.selectedNetworkInfo))
+      obj.networkId = this.selectTable[0].networkId
+      obj.networkName = this.selectTable[0].networkName
+      this.$emit('handlerConfirm', obj)
+      this.handlerCancel()
     },
     handlerCancel() {
       if (this.selectTable.length > 0) {
-        this.$refs.multiTable.$refs.elTable.clearSelection();
+        this.$refs.multiTable.$refs.elTable.clearSelection()
       }
-      this.selectTable = [];
-      this.handleCloseSelectNetwork();
+      this.selectTable = []
+      this.handleCloseSelectNetwork()
     },
     handleCloseSelectNetwork() {
-      this.$emit("update:visible", false);
-    },
-  },
-};
+      this.$emit('update:visible', false)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope >

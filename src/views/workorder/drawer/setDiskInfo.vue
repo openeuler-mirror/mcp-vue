@@ -18,23 +18,23 @@
           prop="disk"
         >
           <el-input
-            v-model="item.diskSize"
             v-if="item.type === 'custom'"
+            v-model="item.diskSize"
             v-only-num
           >
             <template slot="append">GB</template>
           </el-input>
 
           <el-input
-            v-model="item.diskSize"
             v-if="item.type === 'original'"
+            v-model="item.diskSize"
             :disabled="item.applyModifyType == 'NONE'"
           >
             <template slot="append">GB</template>
           </el-input>
           <i
-            class="el-icon-remove-outline"
             v-if="item.type === 'custom' || item.applyModifyType === 'DELETE'"
+            class="el-icon-remove-outline"
             @click="deleteDiskItem(item)"
           />
           <i
@@ -57,29 +57,32 @@
   </div>
 </template>
 <script>
-import ReMessage from "@/utils/message";
+import ReMessage from '@/utils/message'
 export default {
   components: {},
-  props: ["formData", "pageMode"],
+  props: ['formData', 'pageMode'],
   data() {
     return {
       // 磁盘列表
       oridiskList: [],
       oridiskShowList: [],
-      cmtdiskList: [],
-    };
+      cmtdiskList: []
+    }
+  },
+  watch: {
+    formData(val) {
+      this.setPageDefaultData(val)
+    }
   },
 
   created() {},
   mounted() {
     if (this.formData) {
-      this.setPageDefaultData(this.formData);
+      this.setPageDefaultData(this.formData)
     }
   },
-  watch: {
-    formData(val) {
-      this.setPageDefaultData(val);
-    },
+  beforeDestroy() {
+    this.resetForm()
   },
   // watch: {
   //   data: {
@@ -100,10 +103,10 @@ export default {
   // },
   methods: {
     setPageDefaultData(defaultData) {
-      if (JSON.stringify(defaultData) == "{}") {
-        return;
+      if (JSON.stringify(defaultData) == '{}') {
+        return
       } else {
-        let { disks } = defaultData;
+        const { disks } = defaultData
         // switch (this.pageMode) {
         //   case "TEMPADD": // 模板新增
         //     if (applyNum == 1) {
@@ -121,111 +124,108 @@ export default {
         //     this.showbingIpBox = false;
         //     break;
         // }
-        this.dealDiskListIndex(disks);
+        this.dealDiskListIndex(disks)
       }
     },
     dealDiskListIndex(oriList) {
       oriList.forEach((element, index) => {
-        element.index = index;
-      });
-      this.oridiskList = JSON.parse(JSON.stringify(oriList));
-      this.dealDiskList(this.oridiskList);
+        element.index = index
+      })
+      this.oridiskList = JSON.parse(JSON.stringify(oriList))
+      this.dealDiskList(this.oridiskList)
     },
     dealDiskList(oriList) {
-      let list = [];
-      let filtermodifyType = ["DELETE", "ADDDELETE"];
+      const list = []
+      const filtermodifyType = ['DELETE', 'ADDDELETE']
       oriList.forEach((element) => {
-        let { modifyType } = element;
+        const { modifyType } = element
         if (filtermodifyType.indexOf(modifyType) == -1) {
-          list.push(element);
+          list.push(element)
         }
-      });
-      this.oridiskShowList = list;
+      })
+      this.oridiskShowList = list
     },
     // 添加
     addDiskItem() {
-      let diskNumMaxMsg = this.$t("common.diskNumMaxMsg"); // "磁盘数目已达上限";
+      const diskNumMaxMsg = this.$t('common.diskNumMaxMsg') // "磁盘数目已达上限";
       if (this.oridiskShowList.length >= 4) {
-        this.alertTips(diskNumMaxMsg);
-        return false;
+        this.alertTips(diskNumMaxMsg)
+        return false
       }
-      let index = this.oridiskList.length;
-      let addDisk = {
+      const index = this.oridiskList.length
+      const addDisk = {
         diskSize: 300,
-        type: "custom",
-        modifyType: "ADD",
+        type: 'custom',
+        modifyType: 'ADD',
         applyId: 0,
         id: 0,
-        index: index,
-      };
-      this.oridiskList.push(addDisk);
-      this.dealDiskList(this.oridiskList);
+        index: index
+      }
+      this.oridiskList.push(addDisk)
+      this.dealDiskList(this.oridiskList)
     },
     // 删除
     deleteDiskItem(item) {
-      let { modifyType, applyId, index } = item;
-      if (modifyType == "ADD" && applyId == 0) {
-        this.oridiskList[index].modifyType = "ADDDELETE";
+      const { modifyType, applyId, index } = item
+      if (modifyType == 'ADD' && applyId == 0) {
+        this.oridiskList[index].modifyType = 'ADDDELETE'
       } else {
-        this.oridiskList[index].modifyType = "DELETE";
+        this.oridiskList[index].modifyType = 'DELETE'
       }
-      this.dealDiskList(this.oridiskList);
+      this.dealDiskList(this.oridiskList)
     },
 
     submitForm() {
-      let flag = true;
-      let diskNumMsg = this.$t("common.diskNumMsg"); // "磁盘大小不能为小于1的正整数";
-      let diskNumSizeMsg = this.$t("common.diskNumSizeMsg"); // "磁盘大小不能为空";
-      let diskNumMinMsg = this.$t("common.diskNumMinMsg"); // "至少添加一块磁盘";
-      let disks = this.oridiskList;
-      let diskList = [];
+      let flag = true
+      const diskNumMsg = this.$t('common.diskNumMsg') // "磁盘大小不能为小于1的正整数";
+      const diskNumSizeMsg = this.$t('common.diskNumSizeMsg') // "磁盘大小不能为空";
+      const diskNumMinMsg = this.$t('common.diskNumMinMsg') // "至少添加一块磁盘";
+      const disks = this.oridiskList
+      const diskList = []
       for (let i = 0; i < disks.length; i++) {
-        var disk = disks[i];
-        let { modifyType, oldDiskSize, diskSize, type } = disks[i];
-        if (modifyType !== "ADDDELETE") {
+        var disk = disks[i]
+        let { modifyType, oldDiskSize, diskSize, type } = disks[i]
+        if (modifyType !== 'ADDDELETE') {
           if (isNaN(diskSize) && diskSize != 0) {
-            diskSize = "";
+            diskSize = ''
           }
-          if (type == "original" && this.pageMode == "CHANGE") {
+          if (type == 'original' && this.pageMode == 'CHANGE') {
             if (parseInt(oldDiskSize) > parseInt(diskSize)) {
-              ReMessage.error("原有磁盘只能变大，不能变小");
-              diskSize = oldDiskSize;
-              flag = false;
-              break;
+              ReMessage.error('原有磁盘只能变大，不能变小')
+              diskSize = oldDiskSize
+              flag = false
+              break
             }
           }
           if (parseInt(diskSize) <= 0) {
-            ReMessage.error(diskNumMsg);
-            flag = false;
-            break;
+            ReMessage.error(diskNumMsg)
+            flag = false
+            break
           }
           if (!diskSize) {
-            ReMessage.error(diskNumSizeMsg);
-            flag = false;
-            break;
+            ReMessage.error(diskNumSizeMsg)
+            flag = false
+            break
           }
-          disk.diskCapacity = diskSize;
-          diskList.push(disk);
+          disk.diskCapacity = diskSize
+          diskList.push(disk)
         }
       }
-      this.cmtdiskList = diskList;
+      this.cmtdiskList = diskList
       if (this.cmtdiskList.length < 1) {
-        ReMessage.error(diskNumMinMsg);
-        flag = false;
+        ReMessage.error(diskNumMinMsg)
+        flag = false
       }
-      return flag;
+      return flag
     },
     resetForm() {
       // 磁盘列表
-      this.oridiskList = [];
-      this.oridiskShowList = [];
-      this.cmtdiskList = [];
-    },
-  },
-  beforeDestroy() {
-    this.resetForm();
-  },
-};
+      this.oridiskList = []
+      this.oridiskShowList = []
+      this.cmtdiskList = []
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope>

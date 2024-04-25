@@ -47,85 +47,85 @@
 </template>
 
 <script>
-import footBtn from "@/components/Footbtn";
-import { refuseWorkOrder } from "@/api/workOrder";
-import ReMessage from "@/utils/message";
-import validate from "@/utils/validate";
+import footBtn from '@/components/Footbtn'
+import { refuseWorkOrder } from '@/api/workOrder'
+import ReMessage from '@/utils/message'
+import validate from '@/utils/validate'
 export default {
   components: {
-    footBtn,
+    footBtn
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     selectRowData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
       drawerVisible: this.visible,
       refuseFormData: {
-        auditOpinion: "",
+        auditOpinion: ''
       },
       rulesTemplate: {
         auditOpinion: [
           {
             required: true,
-            message: this.$t("workOrder.commentsNotempty"), // "审核意见不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.commentsNotempty'), // "审核意见不能为空",
+            trigger: 'blur'
           },
           {
             required: true,
-            trigger: "blur",
-            message: this.$t("workOrder.commentsspecialChar"), // "审核意见不能出现特殊字符",
+            trigger: 'blur',
+            message: this.$t('workOrder.commentsspecialChar'), // "审核意见不能出现特殊字符",
 
-            validator: validate.special_char,
-          },
-        ],
-      },
-    };
+            validator: validate.special_char
+          }
+        ]
+      }
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
+      this.drawerVisible = isvis
     },
-    selectRowData(selectRow) {},
+    selectRowData(selectRow) {}
   },
   methods: {
     // 提交申请
     handlerConfirm() {
       this.$refs.refuseForm.validate((valid) => {
         if (valid) {
-          let workOrderId = this.selectRowData.workOrderId;
-          let auditOpinion = this.refuseFormData.auditOpinion;
+          const workOrderId = this.selectRowData.workOrderId
+          const auditOpinion = this.refuseFormData.auditOpinion
 
           refuseWorkOrder({ workOrderId, auditOpinion }).then((res) => {
-            this.refuseSuccess();
-          });
+            this.refuseSuccess()
+          })
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     handlerCancel() {
-      this.$refs.refuseForm.resetFields();
-      this.$emit("update:visible", false);
+      this.$refs.refuseForm.resetFields()
+      this.$emit('update:visible', false)
     },
     handleCloseRefuse(done) {
-      this.handlerCancel();
-      done();
+      this.handlerCancel()
+      done()
     },
     refuseSuccess() {
-      this.$parent.refreshTable();
-      ReMessage.success(this.$t("common.refusesucc"));
-      this.handlerCancel();
-    },
-  },
-};
+      this.$parent.refreshTable()
+      ReMessage.success(this.$t('common.refusesucc'))
+      this.handlerCancel()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope >

@@ -16,11 +16,11 @@
       <!-- 架构 -->
       <el-form-item label="架构">
         <div
-          class="modifyVdcDetail-flexBox"
           v-for="(
             item, resousei
           ) in modifyVdcVMDetail.applyArchitectureResourceList"
           :key="'cpu' + item.architectureType + resousei"
+          class="modifyVdcDetail-flexBox"
         >
           <div class="modifyVdcDetail-flexBox-left">
             <span>{{ item.architectureType }}</span>
@@ -62,25 +62,25 @@
         <span>
           {{
             $t("workOrder.oldResouse") +
-            "：" +
-            modifyVdcVMDetail.oldStorage +
-            modifyVdcVMDetail.storageUnit
+              "：" +
+              modifyVdcVMDetail.oldStorage +
+              modifyVdcVMDetail.storageUnit
           }}
           ->
           {{
             $t("workOrder.applyResouse") +
-            "：" +
-            modifyVdcVMDetail.applyStorage +
-            modifyVdcVMDetail.storageUnit
+              "：" +
+              modifyVdcVMDetail.applyStorage +
+              modifyVdcVMDetail.storageUnit
           }}
         </span>
         <span v-if="modifyVdcVMDetail.status == 'CHECK_PASS'">
           ->
           {{
             $t("workOrder.realResouse") +
-            "：" +
-            modifyVdcVMDetail.realStorage +
-            modifyVdcVMDetail.storageUnit
+              "：" +
+              modifyVdcVMDetail.realStorage +
+              modifyVdcVMDetail.storageUnit
           }}
         </span>
       </el-form-item>
@@ -110,40 +110,40 @@
 
 <script>
 export default {
-  name: "WorkDetail",
+  name: 'WorkDetail',
+  components: {},
   props: {
     formOptions: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
-  components: {},
   data() {
     return {
-      modifyVdcVMDetail: {},
-    };
+      modifyVdcVMDetail: {}
+    }
   },
+  computed: {},
 
   watch: {
     formOptions: {
-      handler: function (newValue, oldValue) {
-        this.setPageData(newValue);
+      handler: function(newValue, oldValue) {
+        this.setPageData(newValue)
       },
       // 代表在wacth里声明了 立即先去执行handler方法
       immediate: false,
-      deep: true,
-    },
+      deep: true
+    }
   },
   created() {},
+  mounted() {},
   methods: {
     setPageData() {
-      let { formData } = this.formOptions;
-      this.modifyVdcVMDetail = formData;
-    },
-  },
-  mounted() {},
-  computed: {},
-};
+      const { formData } = this.formOptions
+      this.modifyVdcVMDetail = formData
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope>
