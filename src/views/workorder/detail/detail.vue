@@ -2,7 +2,7 @@
   <div class="workDetail">
     <div class="workDetail-content">
       <!-- 变更云服务器 -->
-      <el-form ref="form" label-width="auto" v-if="isModifyServerVM">
+      <el-form v-if="isModifyServerVM" ref="form" label-width="auto">
         <!-- 工单类型 -->
         <el-form-item :label="$t('workOrder.typeDesc')">
           <span>{{ modifyServerVM.workOrderTypeDesc }}</span>
@@ -51,68 +51,78 @@
               v-for="(item, index) in modifyServerVM.disks"
               :key="'disk' + index"
             >
-              <span v-if="item.modifyType === 'ADD'" class="newAdd"
-                >{{ $t("common.hard")
-                }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
-                  item.diskSize
-                }}GB,{{ item.purpose
-                }}<span class="modifyType"
-                  >({{ $t("common.newDisk") }})</span
-                ></span
-              >
-              <span v-else-if="item.modifyType === 'DELETE'" class="deleteOld"
-                >{{ $t("common.hard")
-                }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
-                  item.diskSize
-                }}GB <span class="modifyType"></span
-              ></span>
-              <span v-else-if="item.modifyType === 'MODIFY'" class="newAdd"
-                >{{ $t("common.hard")
-                }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：
+              <span
+                v-if="item.modifyType === 'ADD'"
+                class="newAdd"
+              >{{ $t("common.hard")
+              }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
+                item.diskSize
+              }}GB,{{ item.purpose
+              }}<span
+                class="modifyType"
+              >({{ $t("common.newDisk") }})</span></span>
+              <span
+                v-else-if="item.modifyType === 'DELETE'"
+                class="deleteOld"
+              >{{ $t("common.hard")
+              }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
+                item.diskSize
+              }}GB <span class="modifyType" /></span>
+              <span
+                v-else-if="item.modifyType === 'MODIFY'"
+                class="newAdd"
+              >{{ $t("common.hard")
+              }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：
                 {{ item.oldDiskSize }}GB -> {{ item.diskSize }}GB
               </span>
-              <span v-else
-                >{{ $t("common.hard")
-                }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
-                  item.diskSize
-                }}GB</span
-              >
+              <span
+                v-else
+              >{{ $t("common.hard")
+              }}{{ modifyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
+                item.diskSize
+              }}GB</span>
             </p>
             <p
               v-for="(item, index) in modifyServerVM.networks"
               :key="'network' + index"
             >
-              <span v-if="item.modifyType === 'ADD'" class="newAdd"
-                >{{ $t("common.network")
-                }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}<span class="modifyType"
-                  >({{ $t("common.newnetwork") }})</span
-                >
+              <span
+                v-if="item.modifyType === 'ADD'"
+                class="newAdd"
+              >{{ $t("common.network")
+               }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                 item.purpose
+               }}<span
+                 class="modifyType"
+               >({{ $t("common.newnetwork") }})</span>
 
-                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item"></ipsetDeiatl>
+                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item" />
               </span>
-              <span v-else-if="item.modifyType === 'DELETE'" class="deleteOld"
-                >{{ $t("common.network")
-                }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}<span class="modifyType"></span
-              ></span>
-              <span v-else-if="item.modifyType === 'NONE'"
-                >{{ $t("common.network")
-                }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}
+              <span
+                v-else-if="item.modifyType === 'DELETE'"
+                class="deleteOld"
+              >{{ $t("common.network")
+              }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                item.purpose
+              }}<span class="modifyType" /></span>
+              <span
+                v-else-if="item.modifyType === 'NONE'"
+              >{{ $t("common.network")
+               }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                 item.purpose
+               }}
 
-                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item"></ipsetDeiatl>
+                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item" />
               </span>
-              <span v-else class="newAdd"
-                >{{ $t("common.network")
-                }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}
+              <span
+                v-else
+                class="newAdd"
+              >{{ $t("common.network")
+               }}{{ modifyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                 item.purpose
+               }}
 
-                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item"></ipsetDeiatl>
+                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item" />
               </span>
             </p>
           </div>
@@ -147,7 +157,7 @@
         </el-form-item>
       </el-form>
       <!-- 申请云服务器 -->
-      <el-form ref="form" label-width="auto" v-if="isApplyServerVM">
+      <el-form v-if="isApplyServerVM" ref="form" label-width="auto">
         <!-- 创建方式 -->
         <el-form-item :label="$t('workOrder.howtocreate')">
           <span>{{ applyServerVmType[applyServerVM.applyServerVmType] }}</span>
@@ -169,7 +179,7 @@
         <el-form-item
           v-if="
             applyServerVM.applyServerVmType == 'TEMPLATE' &&
-            applyServerVM.status == 'CHECK_PASS'
+              applyServerVM.status == 'CHECK_PASS'
           "
           label="创建类型"
         >
@@ -254,55 +264,58 @@
                 {{ $t("common.hard")
                 }}{{ applyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
                   item.diskSize
-                }}GB <span class="modifyType"> </span
-              ></span>
+                }}GB <span class="modifyType" /></span>
               <span v-else-if="item.modifyType === 'MODIFY'" class="newAdd">
                 {{ $t("common.hard")
                 }}{{ applyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
                   item.oldDiskSize
                 }}GB -> {{ item.diskSize }}GB
               </span>
-              <span v-else
-                >{{ $t("common.hard")
-                }}{{ applyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
-                  item.diskSize
-                }}GB</span
-              >
+              <span
+                v-else
+              >{{ $t("common.hard")
+              }}{{ applyServerVM.disks.length > 1 ? index + 1 : "" }}：{{
+                item.diskSize
+              }}GB</span>
             </p>
 
             <p
               v-for="(item, index) in applyServerVM.networks"
               :key="'network' + index"
             >
-              <span v-if="item.modifyType === 'ADD'" class="newAdd"
-                >{{ $t("common.network")
-                }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}<span class="modifyType"
-                  >({{ $t("common.newnetwork") }})</span
-                >
+              <span
+                v-if="item.modifyType === 'ADD'"
+                class="newAdd"
+              >{{ $t("common.network")
+               }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                 item.purpose
+               }}<span
+                 class="modifyType"
+               >({{ $t("common.newnetwork") }})</span>
 
-                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item"></ipsetDeiatl>
+                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item" />
               </span>
-              <span v-else-if="item.modifyType === 'DELETE'" class="deleteOld"
-                >{{ $t("common.network")
-                }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}<span class="modifyType"></span
-              ></span>
-              <span v-else-if="item.modifyType === 'NONE'"
-                >{{ $t("common.network")
-                }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
-                  item.purpose
-                }}
-                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item"></ipsetDeiatl>
+              <span
+                v-else-if="item.modifyType === 'DELETE'"
+                class="deleteOld"
+              >{{ $t("common.network")
+              }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                item.purpose
+              }}<span class="modifyType" /></span>
+              <span
+                v-else-if="item.modifyType === 'NONE'"
+              >{{ $t("common.network")
+               }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
+                 item.purpose
+               }}
+                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item" />
               </span>
               <span v-else class="newAdd">
                 {{ $t("common.network")
                 }}{{ applyServerVM.networks.length > 1 ? index + 1 : "" }}：{{
                   item.purpose
                 }}
-                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item"></ipsetDeiatl>
+                <ipsetDeiatl v-if="item.setIpInfo" :ipinfo="item" />
               </span>
             </p>
           </div>
@@ -340,7 +353,7 @@
         </el-form-item>
       </el-form>
       <!-- 延期云服务器 -->
-      <el-form ref="form" label-width="auto" v-if="isApplyDeferredDetail">
+      <el-form v-if="isApplyDeferredDetail" ref="form" label-width="auto">
         <!-- 工单类型 -->
         <el-form-item :label="$t('workOrder.typeDesc')">
           <span>{{ applyDeferredDetail.workOrderTypeDesc }}</span>
@@ -387,7 +400,7 @@
         </el-form-item>
       </el-form>
       <!-- 注册用户 -->
-      <el-form ref="form" label-width="auto" v-if="isRegisterUserDetail">
+      <el-form v-if="isRegisterUserDetail" ref="form" label-width="auto">
         <!-- 工单类型 -->
         <el-form-item :label="$t('workOrder.typeDesc')">
           <span>{{ registerUserDetail.workOrderTypeDesc }}</span>
@@ -434,7 +447,7 @@
         </el-form-item>
       </el-form>
       <!-- 修改账号 -->
-      <el-form ref="form" label-width="auto" v-if="isUpdateUserDetail">
+      <el-form v-if="isUpdateUserDetail" ref="form" label-width="auto">
         <!-- 工单类型 -->
         <el-form-item :label="$t('workOrder.typeDesc')">
           <span>{{ updateUserDetail.workOrderTypeDesc }}</span>
@@ -489,8 +502,7 @@
       </el-form>
 
       <!-- isModifyVdcVM -->
-      <modifyVdcDetail v-if="isModifyVdcVM" :formOptions="modifyVdcVMDetail">
-      </modifyVdcDetail>
+      <modifyVdcDetail v-if="isModifyVdcVM" :form-options="modifyVdcVMDetail" />
     </div>
   </div>
 </template>
@@ -502,26 +514,26 @@ import {
   getApplyDeferredDetail,
   getRegisterUserDetail,
   getUpdateUserDetail,
-  applyModifyVdcDetail,
-} from "@/api/workOrder";
+  applyModifyVdcDetail
+} from '@/api/workOrder'
 
-import ipsetDeiatl from "./ipsetDeiatl";
-import modifyVdcDetail from "./modifyVdcDetail.vue";
-import dictionary from "@/assets/common/dataDictionary/dictionary";
+import ipsetDeiatl from './ipsetDeiatl'
+import modifyVdcDetail from './modifyVdcDetail.vue'
+import dictionary from '@/assets/common/dataDictionary/dictionary'
 
 export default {
-  name: "WorkDetail",
+  name: 'WorkDetail',
+  components: { ipsetDeiatl, modifyVdcDetail },
   props: {
     formOptions: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
-  components: { ipsetDeiatl, modifyVdcDetail },
   data() {
     return {
-      workOrderId: "",
-      type: "",
+      workOrderId: '',
+      type: '',
       // 变更云服务器
       modifyServerVM: {},
       // 申请云服务器
@@ -533,83 +545,83 @@ export default {
       // 修改账号
       updateUserDetail: {},
       applyServerVmType: {
-        ISO: "ISO镜像",
-        TEMPLATE: "模板",
+        ISO: 'ISO镜像',
+        TEMPLATE: '模板'
       },
       modifyVdcVMDetail: {
-        formData: {},
-      },
-    };
+        formData: {}
+      }
+    }
+  },
+  computed: {
+    isModifyServerVM: function() {
+      return this.type === 'MODIFY_SERVERVM'
+    },
+    isApplyServerVM: function() {
+      return this.type === 'APPLY_SERVERVM'
+    },
+    isApplyDeferredDetail: function() {
+      return this.type === 'DEFERRED_SERVERVM'
+    },
+    isRegisterUserDetail: function() {
+      return this.type === 'REGISTER_USER'
+    },
+    isUpdateUserDetail: function() {
+      return this.type === 'MODIFY_USER'
+    },
+    isModifyVdcVM: function() {
+      return this.type === 'MODIFY_VDC'
+    }
   },
   created() {
-    let { formData } = this.formOptions;
+    const { formData } = this.formOptions
 
-    this.workOrderId = formData.workOrderId;
-    this.type = formData.type;
-    const workOrderId = this.workOrderId;
-    const type = this.type;
+    this.workOrderId = formData.workOrderId
+    this.type = formData.type
+    const workOrderId = this.workOrderId
+    const type = this.type
     // 申请云服务器
     this.isApplyServerVM &&
       getApplyServerVmDetail({ workOrderId, type }).then((data) => {
-        this.applyServerVM = data;
-      });
+        this.applyServerVM = data
+      })
 
     // 变更云服务器
     this.isModifyServerVM &&
       getModifyServerVmDetail({ workOrderId, type }).then((data) => {
-        this.modifyServerVM = data;
-      });
+        this.modifyServerVM = data
+      })
 
     // 延期云服务器
     this.isApplyDeferredDetail &&
       getApplyDeferredDetail({ workOrderId, type }).then((data) => {
-        this.applyDeferredDetail = data;
-      });
+        this.applyDeferredDetail = data
+      })
 
     // 注册账号
     this.isRegisterUserDetail &&
       getRegisterUserDetail({ workOrderId, type }).then((data) => {
-        this.registerUserDetail = data;
-      });
+        this.registerUserDetail = data
+      })
 
     // 修改账号
     this.isUpdateUserDetail &&
       getUpdateUserDetail({ workOrderId, type }).then((data) => {
-        this.updateUserDetail = data;
-      });
+        this.updateUserDetail = data
+      })
     // 工单详情-变更VDC
     this.isModifyVdcVM &&
       applyModifyVdcDetail({ workOrderId }).then((data) => {
-        this.modifyVdcVMDetail.formData = data;
-      });
+        this.modifyVdcVMDetail.formData = data
+      })
   },
   mounted() {},
-  computed: {
-    isModifyServerVM: function () {
-      return this.type === "MODIFY_SERVERVM";
-    },
-    isApplyServerVM: function () {
-      return this.type === "APPLY_SERVERVM";
-    },
-    isApplyDeferredDetail: function () {
-      return this.type === "DEFERRED_SERVERVM";
-    },
-    isRegisterUserDetail: function () {
-      return this.type === "REGISTER_USER";
-    },
-    isUpdateUserDetail: function () {
-      return this.type === "MODIFY_USER";
-    },
-    isModifyVdcVM: function () {
-      return this.type === "MODIFY_VDC";
-    },
-  },
   methods: {
     getmcCloneTypeDesc(key) {
-      return dictionary.getDesc(key, dictionary.cloneTypeArr);
-    },
-  },
-};
+      return dictionary.getDesc(key, dictionary.cloneTypeArr)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope>

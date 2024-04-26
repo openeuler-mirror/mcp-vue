@@ -18,16 +18,16 @@
         ref="isotable"
         :data="tableData"
         :total="total"
-        :pageSize="pageSize"
-        :currentPage="pageNo"
-        :defaultSelectedKeys="defaultSelectedKeysNew"
+        :page-size="pageSize"
+        :current-page="pageNo"
+        :default-selected-keys="defaultSelectedKeysNew"
+        :rowkey="rowkey"
+        selection-type="singleTable"
+        style="margin-top: 20px"
         @current-change="handlePageChange"
         @size-change="handleSizeChange"
         @handleSelectione="handleSelectione"
         @row-click="rowSelect"
-        :rowkey="rowkey"
-        selectionType="singleTable"
-        style="margin-top: 20px"
       >
         <template v-for="(item, index) in columnArr">
           <el-table-column
@@ -71,35 +71,35 @@
   </div>
 </template>
 <script>
-import mcTable from "@/components/MctablePro";
-import footBtn from "@/components/Footbtn";
+import mcTable from '@/components/MctablePro'
+import footBtn from '@/components/Footbtn'
 
 export default {
   components: { mcTable, footBtn },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     defaultSelectedKeys: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     allIsoList: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {
-      input: "",
-      rowkey: "isoKey",
+      input: '',
+      rowkey: 'isoKey',
       columnArr: [
         {
-          label: this.$t("workOrder.isoLabel"), // "ISO镜像名称",
-          prop: "isoLabel",
-        },
+          label: this.$t('workOrder.isoLabel'), // "ISO镜像名称",
+          prop: 'isoLabel'
+        }
       ],
       tableData: [],
       oritableData: [],
@@ -109,37 +109,37 @@ export default {
       // 每页数量
       pageSize: 20,
       selectList: [],
-      defaultSelectedKeysNew: [],
-    };
+      defaultSelectedKeysNew: []
+    }
   },
+  computed: {},
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
+      this.drawerVisible = isvis
     },
     allIsoList: {
       handler(newValue, old) {
-        this.renderTable();
+        this.renderTable()
       },
       // 代表在wacth里声明了这个方法之后立即先去执行handler方法
       immediate: true,
-      deep: true,
-    },
+      deep: true
+    }
   },
   created() {},
-  computed: {},
   methods: {
     // 提交
     handlerConfirm() {
-      this.commitCreate();
+      this.commitCreate()
     },
     commitCreate() {
       if (this.selectList.length > 0) {
-        this.$emit("confirm", this.selectList);
+        this.$emit('confirm', this.selectList)
       }
-      this.$parent.closeDrawer();
+      this.$parent.closeDrawer()
     },
     handlerCancel() {
-      this.$parent.closeDrawer();
+      this.$parent.closeDrawer()
     },
 
     renderTable() {
@@ -174,83 +174,83 @@ export default {
       //     this.alertTips(err);
       //   });
 
-      let list = [];
+      const list = []
       this.allIsoList.forEach((element) => {
         list.push({
           isoLabel: element,
-          isoKey: element,
-        });
-      });
-      this.input = "";
-      this.tableData = list;
-      this.oritableData = JSON.parse(JSON.stringify(this.tableData));
-      let listNew = [];
+          isoKey: element
+        })
+      })
+      this.input = ''
+      this.tableData = list
+      this.oritableData = JSON.parse(JSON.stringify(this.tableData))
+      const listNew = []
       this.defaultSelectedKeys.forEach((element) => {
-        let listi = this.getChidlren(this.tableData, "isoKey", element.isoKey);
-        listNew.push(listi);
-      });
+        const listi = this.getChidlren(this.tableData, 'isoKey', element.isoKey)
+        listNew.push(listi)
+      })
 
-      this.defaultSelectedKeysNew = listNew;
+      this.defaultSelectedKeysNew = listNew
     },
     getChidlren(dataList, key, id) {
-      let data = dataList;
-      var hasFound = false; // 表示是否有找到id值
-      var result = null;
-      var fn = function (data) {
+      const data = dataList
+      var hasFound = false // 表示是否有找到id值
+      var result = null
+      var fn = function(data) {
         if (Array.isArray(data) && !hasFound) {
           // 判断是否是数组并且没有的情况
           data.forEach((item) => {
             if (item[key] === id) {
               // 数据循环每个子项，并且判断子项下边是否有id值
-              result = item; // 返回的结果等于每一项
-              hasFound = true; // 并且找到id值
+              result = item // 返回的结果等于每一项
+              hasFound = true // 并且找到id值
             } else if (item.children) {
-              fn(item.children); // 递归调用下边的子项
+              fn(item.children) // 递归调用下边的子项
             }
-          });
+          })
         }
-      };
-      fn(data); // 调用一下
-      return result;
+      }
+      fn(data) // 调用一下
+      return result
     },
     handlePageChange(page) {
-      this.pageNo = +page;
-      this.renderTable();
+      this.pageNo = +page
+      this.renderTable()
     },
     handleSizeChange(pageSize) {
-      this.pageNo = 1;
-      this.pageSize = pageSize;
-      this.renderTable();
+      this.pageNo = 1
+      this.pageSize = pageSize
+      this.renderTable()
     },
     inputchange() {
-      this.pageNo = 1;
-      this.pageSize = 20;
+      this.pageNo = 1
+      this.pageSize = 20
       // this.renderTable();
-      let search = this.input;
+      const search = this.input
 
-      let data = this.oritableData.filter(
+      const data = this.oritableData.filter(
         (data) =>
           !search || data.isoLabel.toLowerCase().includes(search.toLowerCase())
-      );
-      this.tableData = data;
+      )
+      this.tableData = data
     },
     handleSelectione(rows) {
-      this.selectList = rows;
+      this.selectList = rows
     },
     rowSelect(row) {
       if (this.selectList.length > 0) {
-        let currentRow = this.selectList[0];
+        const currentRow = this.selectList[0]
         if (currentRow[this.rowkey] == row[this.rowkey]) {
-          this.$refs.isotable.handleSelectione([]);
+          this.$refs.isotable.handleSelectione([])
         } else {
-          this.$refs.isotable.handleSelectione([row]);
+          this.$refs.isotable.handleSelectione([row])
         }
       } else {
-        this.$refs.isotable.handleSelectione([row]);
+        this.$refs.isotable.handleSelectione([row])
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style>
 .search-box .small-input-box .el-input__suffix {

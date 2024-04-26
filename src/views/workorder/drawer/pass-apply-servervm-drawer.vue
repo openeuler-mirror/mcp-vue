@@ -1,10 +1,10 @@
 <template>
   <el-drawer
+    v-if="drawerVisible"
     size="900px"
     :title="$t('workOrder.passapplyservervm')"
     direction="rtl"
     custom-class="workorder-pass-apply-servervm-drawer"
-    v-if="drawerVisible"
     :wrapper-closable="false"
     :visible.sync="drawerVisible"
     :before-close="handleClosePass"
@@ -14,38 +14,38 @@
     <PassServervmApplyDrawer
       v-if="showTemplate"
       ref="PassServervmApply"
-      :formData="passApplyFormData"
-      :passApplyData="passApplyData"
+      :form-data="passApplyFormData"
+      :pass-apply-data="passApplyData"
     />
     <!-- iso审核 -->
     <PassServervmIsoApplyDrawer
       v-if="showIsoTemplate"
       ref="PassServervmApply"
-      :formData="passApplyFormData"
-      :passApplyData="passApplyData"
+      :form-data="passApplyFormData"
+      :pass-apply-data="passApplyData"
     />
   </el-drawer>
 </template>
 
 <script>
-import PassServervmApplyDrawer from "./PassServervmApply.vue";
-import PassServervmIsoApplyDrawer from "./PassServervmIsoApply.vue";
-import { passApplyServerVmDetail } from "@/api/workOrder";
+import PassServervmApplyDrawer from './PassServervmApply.vue'
+import PassServervmIsoApplyDrawer from './PassServervmIsoApply.vue'
+import { passApplyServerVmDetail } from '@/api/workOrder'
 
 export default {
   components: {
     PassServervmApplyDrawer,
-    PassServervmIsoApplyDrawer,
+    PassServervmIsoApplyDrawer
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     selectRowData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
@@ -53,15 +53,15 @@ export default {
       passApplyData: null,
       passApplyFormData: null,
       showTemplate: false,
-      showIsoTemplate: false,
-    };
+      showIsoTemplate: false
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
-      this.passApplyData = this.selectRowData;
+      this.drawerVisible = isvis
+      this.passApplyData = this.selectRowData
       if (isvis) {
-        this.getApplyDetail();
+        this.getApplyDetail()
       }
     },
     selectRowData: {
@@ -71,8 +71,8 @@ export default {
       },
       // 代表在wacth里声明了 立即先去执行handler方法
       immediate: false,
-      deep: true,
-    },
+      deep: true
+    }
 
     // visible(isvis) {
     //   this.drawerVisible = isvis;
@@ -85,44 +85,44 @@ export default {
   created() {},
   methods: {
     getApplyDetail() {
-      let workOrderId = this.passApplyData.workOrderId;
+      const workOrderId = this.passApplyData.workOrderId
 
       this.$nextTick(() => {
-        this.$showFullScreenLoading(".el-drawer__body");
-      });
+        this.$showFullScreenLoading('.el-drawer__body')
+      })
       passApplyServerVmDetail({ workOrderId })
         .then((res) => {
-          let { applyServerVmType } = res;
+          const { applyServerVmType } = res
           switch (applyServerVmType) {
-            case "TEMPLATE":
-              this.showTemplate = true;
-              break;
-            case "ISO":
-              this.showIsoTemplate = true;
-              break;
+            case 'TEMPLATE':
+              this.showTemplate = true
+              break
+            case 'ISO':
+              this.showIsoTemplate = true
+              break
             default:
-              this.showTemplate = false;
-              this.showIsoTemplate = false;
-              break;
+              this.showTemplate = false
+              this.showIsoTemplate = false
+              break
           }
           // applyServerVmType: "TEMPLATE";
-          this.passApplyFormData = res;
-          this.$hideFullScreenLoading();
+          this.passApplyFormData = res
+          this.$hideFullScreenLoading()
         })
         .catch((err) => {
-          this.$hideFullScreenLoading();
-        });
+          this.$hideFullScreenLoading()
+        })
     },
     handleClosePass(done) {
-      //this.$refs.PassServervmApply.handlerCancel()
-      this.showTemplate = false;
-      this.showIsoTemplate = false;
+      // this.$refs.PassServervmApply.handlerCancel()
+      this.showTemplate = false
+      this.showIsoTemplate = false
       // this.passApplyData = null;
-      this.$emit("update:visible", false);
-      done();
-    },
-  },
-};
+      this.$emit('update:visible', false)
+      done()
+    }
+  }
+}
 </script>
 <style>
 </style>

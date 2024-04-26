@@ -39,8 +39,7 @@
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
 
@@ -61,8 +60,7 @@
                   :key="item.systemName"
                   :label="item.systemName"
                   :value="item.systemName"
-                >
-                </el-option>
+                />
               </el-option-group>
             </el-select>
           </el-form-item>
@@ -89,27 +87,26 @@
           <!-- 自动安置 -->
           <el-form-item :label="$t('workOrder.autoConfiguration')">
             <el-switch
-              class="switchStyle"
               v-model="passApplyServervmFormData.autoConfiguration"
+              class="switchStyle"
               :active-value="true"
               :inactive-value="false"
               :active-text="$t('workOrder.autoConfigurationOn')"
               :inactive-text="$t('workOrder.autoConfigurationOff')"
-            >
-            </el-switch>
+            />
           </el-form-item>
 
           <!-- 计算资源 -->
           <computResources
             v-if="!passApplyServervmFormData.autoConfiguration"
             ref="computResources"
-            :formData="formData"
-          ></computResources>
+            :form-data="formData"
+          />
           <!-- 存储位置  -->
           <el-form-item
+            v-if="!passApplyServervmFormData.autoConfiguration"
             :label="$t('workOrder.storageLocation')"
             prop="storageLocationId"
-            v-if="!passApplyServervmFormData.autoConfiguration"
           >
             <el-select
               v-model="passApplyServervmFormData.storageLocationId"
@@ -136,18 +133,16 @@
           <!-- 磁盘 -->
           <setDiskInfo
             ref="setDiskInfo"
-            :formData="disksformData"
-            pageMode="ISOADD"
-          >
-          </setDiskInfo>
+            :form-data="disksformData"
+            page-mode="ISOADD"
+          />
 
           <!-- 网卡 -->
           <setNetWorkInfo
             ref="setNetWorkInfo"
-            :formData="networksformData"
-            pageMode="ISOADD"
-          >
-          </setNetWorkInfo>
+            :form-data="networksformData"
+            page-mode="ISOADD"
+          />
 
           <!-- 审核意见 -->
           <el-form-item
@@ -175,112 +170,111 @@
     <!-- bindTemplateModal -->
     <bindTemplateModal
       :visible.sync="showbindisotemplateModal"
-      :defaultSelectedKeys="defaultSelectedKeys"
-      :allIsoList="allIsoList"
+      :default-selected-keys="defaultSelectedKeys"
+      :all-iso-list="allIsoList"
       @confirm="templateConfirm"
-    >
-    </bindTemplateModal>
+    />
   </div>
 </template>
 <script>
-import footBtn from "@/components/Footbtn";
-import ReMessage from "@/utils/message";
-import { passApplyServerVm } from "@/api/workOrder";
-import bindTemplateModal from "../bindIsoTempModal/bindTemplateModal.vue";
-import validate from "@/utils/validate";
-import computResources from "./computResources.vue"; // 计算资源
-import setDiskInfo from "./setDiskInfo.vue"; // 设置磁盘信息
-import setNetWorkInfo from "./setNetWorkInfo.vue"; // 设置网卡信息
+import footBtn from '@/components/Footbtn'
+import ReMessage from '@/utils/message'
+import { passApplyServerVm } from '@/api/workOrder'
+import bindTemplateModal from '../bindIsoTempModal/bindTemplateModal.vue'
+import validate from '@/utils/validate'
+import computResources from './computResources.vue' // 计算资源
+import setDiskInfo from './setDiskInfo.vue' // 设置磁盘信息
+import setNetWorkInfo from './setNetWorkInfo.vue' // 设置网卡信息
 export default {
   components: {
     footBtn,
     bindTemplateModal,
     computResources,
     setDiskInfo,
-    setNetWorkInfo,
+    setNetWorkInfo
   },
-  props: ["passApplyData", "formData"],
+  props: ['passApplyData', 'formData'],
   data() {
     const validApplyNum = (rule, value, callback) => {
       if (isNaN(value)) {
-        callback(new Error(rule.message));
+        callback(new Error(rule.message))
       } else if (Number(value) < 1 || Number(value) > 4) {
-        callback(new Error(rule.message));
+        callback(new Error(rule.message))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       applyServerVmType: {
-        ISO: this.$t("workOrder.serverVmType.ISO"), // ISO镜像
-        TEMPLATE: this.$t("workOrder.serverVmType.TEMPLATE"), // 模板
+        ISO: this.$t('workOrder.serverVmType.ISO'), // ISO镜像
+        TEMPLATE: this.$t('workOrder.serverVmType.TEMPLATE') // 模板
       },
       architectureoptions: [
         // 架构
-        { value: "X86_64", label: "X86_64" },
-        { value: "aarch64", label: "ARM64" },
-        { value: "mips", label: "MIPS" },
+        { value: 'X86_64', label: 'X86_64' },
+        { value: 'aarch64', label: 'ARM64' },
+        { value: 'mips', label: 'MIPS' }
       ],
       machineoptions: [],
       passApplyServervmFormData: {
-        auditOpinion: "",
-        osMachine: "",
-        architecture: "",
-        systemType: "",
-        templateName: "",
+        auditOpinion: '',
+        osMachine: '',
+        architecture: '',
+        systemType: '',
+        templateName: '',
         applyNum: 5,
-        aliasName: "",
+        aliasName: '',
         autoConfiguration: true,
-        selectCluster: "",
-        selectClusterUuid: "",
-        storageLocationId: "",
-        cpu: "",
-        mem: "",
-        memUnit: "GB",
-        disks: [], //磁盘信息
-        networks: [], //网卡信息
+        selectCluster: '',
+        selectClusterUuid: '',
+        storageLocationId: '',
+        cpu: '',
+        mem: '',
+        memUnit: 'GB',
+        disks: [], // 磁盘信息
+        networks: [] // 网卡信息
       },
       storageLocationList: [],
       rulesTemplate: {
         aliasName: [
           {
             required: true,
-            message: this.$t("workOrder.aliasNameNotNull"), // "名称不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.aliasNameNotNull'), // "名称不能为空",
+            trigger: 'blur'
           },
           {
             min: 6,
             max: 32,
-            message: this.$t("workOrder.aliasNameLength"), // "名称长度应控制在 6 ~ 32 个字符",
-            trigger: "blur",
-          },
+            message: this.$t('workOrder.aliasNameLength'), // "名称长度应控制在 6 ~ 32 个字符",
+            trigger: 'blur'
+          }
         ],
         applyNum: [
           {
             required: true,
-            message: this.$t("workOrder.serverNumNotNull"), // "申请个数不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.serverNumNotNull'), // "申请个数不能为空",
+            trigger: 'blur'
           },
           {
-            message: this.$t("workOrder.serverNumIsoRange"), //"申请个数应控制在 1 ~ 4 范围",
-            trigger: "blur",
-            validator: validApplyNum,
-          },
+            message: this.$t('workOrder.serverNumIsoRange'), // "申请个数应控制在 1 ~ 4 范围",
+            trigger: 'blur',
+            validator: validApplyNum
+          }
         ],
         auditOpinion: [
           {
             required: true,
-            message: this.$t("workOrder.commentsNotempty"), // "审核意见不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.commentsNotempty'), // "审核意见不能为空",
+            trigger: 'blur'
           },
           {
             required: true,
-            trigger: "blur",
-            message: this.$t("workOrder.commentsspecialChar"), // "审核意见不能出现特殊字符",
+            trigger: 'blur',
+            message: this.$t('workOrder.commentsspecialChar'), // "审核意见不能出现特殊字符",
 
-            validator: validate.special_char,
-          },
-        ],
+            validator: validate.special_char
+          }
+        ]
       },
       // 磁盘信息
       disksformData: {},
@@ -289,74 +283,74 @@ export default {
 
       showbindisotemplateModal: false,
       allIsoList: [],
-      defaultSelectedKeys: [],
-    };
+      defaultSelectedKeys: []
+    }
   },
 
   created() {
-    this.getApplyDetail();
+    this.getApplyDetail()
   },
   methods: {
     openSelectModal(key) {
       switch (key) {
-        case "isotemplate":
+        case 'isotemplate':
           this.defaultSelectedKeys = [
-            { isoKey: this.passApplyServervmFormData.templateName },
-          ];
-          this.showbindisotemplateModal = true;
-          break;
+            { isoKey: this.passApplyServervmFormData.templateName }
+          ]
+          this.showbindisotemplateModal = true
+          break
 
         default:
-          this.showbindisotemplateModal = false;
-          break;
+          this.showbindisotemplateModal = false
+          break
       }
     },
     templateConfirm(rows) {
-      let template = rows[0];
-      this.passApplyServervmFormData.templateName = template.isoLabel;
+      const template = rows[0]
+      this.passApplyServervmFormData.templateName = template.isoLabel
     },
-    //获取模板详情
+    // 获取模板详情
     getApplyDetail() {
-      let res = JSON.parse(JSON.stringify(this.formData));
-      this.passApplyServervmFormData.applyServerVmType = res.applyServerVmType;
-      this.passApplyServervmFormData.aliasName = res.aliasName;
-      this.passApplyServervmFormData.applyNum = res.applyNum;
-      this.passApplyServervmFormData.templateName = res.applyIsoList[0].isoFile;
-      this.allIsoList = res.allIsoList;
-      this.passApplyServervmFormData.osMachine = res.osMachine;
-      this.passApplyServervmFormData.architecture = res.architecture;
-      this.passApplyServervmFormData.systemType = res.systemType;
-      this.passApplyServervmFormData.cpu = res.cpu;
-      this.passApplyServervmFormData.mem = res.mem;
-      this.passApplyServervmFormData.memUnit = res.memUnit;
-      this.passApplyServervmFormData.storageLocationId = res.storageLocationId;
+      const res = JSON.parse(JSON.stringify(this.formData))
+      this.passApplyServervmFormData.applyServerVmType = res.applyServerVmType
+      this.passApplyServervmFormData.aliasName = res.aliasName
+      this.passApplyServervmFormData.applyNum = res.applyNum
+      this.passApplyServervmFormData.templateName = res.applyIsoList[0].isoFile
+      this.allIsoList = res.allIsoList
+      this.passApplyServervmFormData.osMachine = res.osMachine
+      this.passApplyServervmFormData.architecture = res.architecture
+      this.passApplyServervmFormData.systemType = res.systemType
+      this.passApplyServervmFormData.cpu = res.cpu
+      this.passApplyServervmFormData.mem = res.mem
+      this.passApplyServervmFormData.memUnit = res.memUnit
+      this.passApplyServervmFormData.storageLocationId = res.storageLocationId
 
-      this.storageLocationList = res.storageLocationList;
+      this.storageLocationList = res.storageLocationList
       // 处理网卡数据
-      this.networksformData = JSON.parse(JSON.stringify(this.formData));
+      this.networksformData = JSON.parse(JSON.stringify(this.formData))
       // 处理磁盘数据
-      this.disksformData = JSON.parse(JSON.stringify(this.formData));
+      this.disksformData = JSON.parse(JSON.stringify(this.formData))
 
       // 处理磁盘数据
-      this.passApplyServervmFormData.disks = res.disks;
+      this.passApplyServervmFormData.disks = res.disks
     },
     // 提交
     handlerConfirm() {
-      const that = this;
-      let computResourcesvalidate = true;
-      let netWorkInfovalidate = true;
-      let setDiskInfovalidate = true;
+      const that = this
+      let computResourcesvalidate = true
+      let netWorkInfovalidate = true
+      let setDiskInfovalidate = true
       // 检验计算资源
       if (!this.passApplyServervmFormData.autoConfiguration) {
-        computResourcesvalidate = this.$refs.computResources.submitForm();
+        computResourcesvalidate = this.$refs.computResources.submitForm()
       }
 
       // 检验磁盘信息
-      setDiskInfovalidate = this.$refs.setDiskInfo.submitForm();
+      setDiskInfovalidate = this.$refs.setDiskInfo.submitForm()
       // 检验网卡信息
-      netWorkInfovalidate = this.$refs.setNetWorkInfo.submitForm();
+      netWorkInfovalidate = this.$refs.setNetWorkInfo.submitForm()
 
-      let confirmMsg = this.$t("workOrder.sureApproved"); // "确定审核通过？";
+      const confirmMsg = this.$t('workOrder.sureApproved') // "确定审核通过？";
       this.$refs.passApplyServervmForm.validate((valid) => {
         if (
           valid &&
@@ -366,36 +360,36 @@ export default {
         ) {
           this.alertConfirm(confirmMsg)
             .then((err) => {
-              that.commitPass();
+              that.commitPass()
             })
-            .catch((err) => {});
+            .catch((err) => {})
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     commitPass() {
-      let workOrderId = this.passApplyData.workOrderId;
-      let auditOpinion = this.passApplyServervmFormData.auditOpinion;
-      let aliasName = this.passApplyServervmFormData.aliasName;
+      const workOrderId = this.passApplyData.workOrderId
+      const auditOpinion = this.passApplyServervmFormData.auditOpinion
+      const aliasName = this.passApplyServervmFormData.aliasName
 
-      let storageLocationId = this.passApplyServervmFormData.storageLocationId;
-      let vcpus = this.passApplyServervmFormData.cpu;
-      let memory = this.passApplyServervmFormData.mem;
-      let memUnit = this.passApplyServervmFormData.memUnit;
+      const storageLocationId = this.passApplyServervmFormData.storageLocationId
+      const vcpus = this.passApplyServervmFormData.cpu
+      const memory = this.passApplyServervmFormData.mem
+      const memUnit = this.passApplyServervmFormData.memUnit
 
-      let plateformType = this.passApplyServervmFormData.architecture;
-      let operatingSystem = this.passApplyServervmFormData.osMachine;
-      let systemType = this.passApplyServervmFormData.systemType;
-      let vmNumber = this.passApplyServervmFormData.applyNum;
+      const plateformType = this.passApplyServervmFormData.architecture
+      const operatingSystem = this.passApplyServervmFormData.osMachine
+      const systemType = this.passApplyServervmFormData.systemType
+      const vmNumber = this.passApplyServervmFormData.applyNum
 
-      let remotePassword = this.createRemotePassword();
-      let isoList = this.formData.applyIsoList;
-      isoList[0].isoFile = this.passApplyServervmFormData.templateName; // iso名
+      const remotePassword = this.createRemotePassword()
+      const isoList = this.formData.applyIsoList
+      isoList[0].isoFile = this.passApplyServervmFormData.templateName // iso名
 
       // 枚举: TEMPLATE,ISO
       // 枚举备注: TEMPLATE(基于模板创建) ISO(ISO创建)
-      let applyServerVmType = "ISO";
+      const applyServerVmType = 'ISO'
       // 计算资源
       let computResourcesFormData = {
         serverClusterType: this.formData.serverClusterType,
@@ -404,11 +398,11 @@ export default {
         selectClusterUuid: this.formData.selectClusterUuid, // 模板所选计算资源uuid
 
         selectResourceTagId: this.formData.selectTagIds, // 绑定资源ID
-        selectTagNames: this.formData.selectTagNames, // 绑定资源的名称
-      };
+        selectTagNames: this.formData.selectTagNames // 绑定资源的名称
+      }
       if (!this.passApplyServervmFormData.autoConfiguration) {
-        let computResources =
-          this.$refs.computResources.computResourcesFormData;
+        const computResources =
+          this.$refs.computResources.computResourcesFormData
         computResourcesFormData = {
           serverClusterType: computResources.serverClusterType,
           // 自定义 选择主机
@@ -416,17 +410,17 @@ export default {
           selectClusterUuid: computResources.selectClusterUuid, // 模板所选计算资源uuid
 
           selectResourceTagId: computResources.selectTagIds, // 绑定资源ID
-          selectTagNames: computResources.selectTagNames, // 绑定资源的名称
-        };
+          selectTagNames: computResources.selectTagNames // 绑定资源的名称
+        }
       }
 
-      //网络
-      let networkList = this.$refs.setNetWorkInfo.cmtnetworkList;
+      // 网络
+      const networkList = this.$refs.setNetWorkInfo.cmtnetworkList
 
-      //磁盘处理
-      let diskList = this.$refs.setDiskInfo.cmtdiskList;
+      // 磁盘处理
+      const diskList = this.$refs.setDiskInfo.cmtdiskList
 
-      let commitData = {
+      const commitData = {
         workOrderId,
         auditOpinion,
         aliasName,
@@ -443,75 +437,75 @@ export default {
         remotePassword,
         isoList,
         applyServerVmType,
-        ...computResourcesFormData,
-      };
-      //申请云服务器
+        ...computResourcesFormData
+      }
+      // 申请云服务器
       passApplyServerVm(commitData).then((res) => {
-        this.passSuccess();
-      });
+        this.passSuccess()
+      })
     },
     handlerCancel() {
-      this.$parent.closeDrawer();
+      this.$parent.closeDrawer()
     },
     passSuccess() {
-      ReMessage.success(this.$t("common.reviewsucc"));
-      this.$parent.$parent.$parent.refreshTable();
-      this.handlerCancel();
+      ReMessage.success(this.$t('common.reviewsucc'))
+      this.$parent.$parent.$parent.refreshTable()
+      this.handlerCancel()
     },
     createRemotePassword() {
       var arr = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z",
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F',
+        'G',
+        'H',
+        'I',
+        'J',
+        'K',
+        'L',
+        'M',
+        'N',
+        'O',
+        'P',
+        'Q',
+        'R',
+        'S',
+        'T',
+        'U',
+        'V',
+        'W',
+        'X',
+        'Y',
+        'Z',
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'l',
+        'm',
+        'n',
+        'o',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'u',
+        'v',
+        'w',
+        'x',
+        'y',
+        'z',
         0,
         1,
         2,
@@ -521,14 +515,14 @@ export default {
         6,
         7,
         8,
-        9,
-      ];
-      var rand1 = Math.floor(Math.random() * 62);
-      var rand2 = Math.floor(Math.random() * 62);
-      var rand3 = Math.floor(Math.random() * 62);
-      var rand4 = Math.floor(Math.random() * 62);
-      var rand5 = Math.floor(Math.random() * 62);
-      var rand6 = Math.floor(Math.random() * 62);
+        9
+      ]
+      var rand1 = Math.floor(Math.random() * 62)
+      var rand2 = Math.floor(Math.random() * 62)
+      var rand3 = Math.floor(Math.random() * 62)
+      var rand4 = Math.floor(Math.random() * 62)
+      var rand5 = Math.floor(Math.random() * 62)
+      var rand6 = Math.floor(Math.random() * 62)
       return (
         arr[rand1] +
         arr[rand2] +
@@ -536,10 +530,10 @@ export default {
         arr[rand4] +
         arr[rand5] +
         arr[rand6]
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope>

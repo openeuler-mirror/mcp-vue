@@ -28,8 +28,8 @@
           <!-- 计算资源 -->
           <computResources
             ref="computResources"
-            :formData="passModifyformData"
-          ></computResources>
+            :form-data="passModifyformData"
+          />
           <!-- 存储位置  -->
           <el-form-item
             :label="$t('workOrder.storageLocation')"
@@ -59,25 +59,23 @@
           <!-- 磁盘 -->
           <setDiskInfo
             ref="setDiskInfo"
-            :formData="disksformData"
-            pageMode="CHANGE"
-          >
-          </setDiskInfo>
+            :form-data="disksformData"
+            page-mode="CHANGE"
+          />
 
           <!-- 网卡 -->
           <setNetWorkInfo
             ref="setNetWorkInfo"
-            :formData="networksformData"
-            pageMode="CHANGE"
-          >
-          </setNetWorkInfo>
+            :form-data="networksformData"
+            page-mode="CHANGE"
+          />
           <div class="network-group-wrap">
             <div v-for="(item, index) in orlIsoShowList" :key="index">
               <!-- 光驱 -->
               <el-form-item
                 :label="
                   $t('common.cdRom') +
-                  (orlIsoShowList.length > 1 ? index + 1 : '')
+                    (orlIsoShowList.length > 1 ? index + 1 : '')
                 "
                 prop="network"
               >
@@ -110,90 +108,90 @@
   </div>
 </template>
 <script>
-import footBtn from "@/components/Footbtn";
-import ReMessage from "@/utils/message";
-import { passModifyServerVmDetail, passModifyServerVm } from "@/api/workOrder";
-import validate from "@/utils/validate";
-import computResources from "./computResources.vue"; // 计算资源
-import setDiskInfo from "./setDiskInfo.vue"; // 设置磁盘信息
-import setNetWorkInfo from "./setNetWorkInfo.vue"; // 设置网卡信息
+import footBtn from '@/components/Footbtn'
+import ReMessage from '@/utils/message'
+import { passModifyServerVmDetail, passModifyServerVm } from '@/api/workOrder'
+import validate from '@/utils/validate'
+import computResources from './computResources.vue' // 计算资源
+import setDiskInfo from './setDiskInfo.vue' // 设置磁盘信息
+import setNetWorkInfo from './setNetWorkInfo.vue' // 设置网卡信息
 export default {
   components: {
     footBtn,
     computResources,
     setDiskInfo,
-    setNetWorkInfo,
+    setNetWorkInfo
   },
-  props: ["passModifyData"],
+  props: ['passModifyData'],
   data() {
     const validApplyNum = (rule, value, callback) => {
       if (isNaN(value)) {
-        callback(new Error(rule.message));
+        callback(new Error(rule.message))
       } else if (Number(value) < 1 || Number(value) > 4) {
-        callback(new Error(rule.message));
+        callback(new Error(rule.message))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       passModifyServervmFormData: {
-        auditOpinion: "",
-        osMachine: "",
-        architecture: "",
-        templateName: "",
-        systemType: "",
-        aliasName: "",
-        selectCluster: "",
-        selectClusterUuid: "",
-        storageLocationId: "",
-        cpu: "",
-        mem: "",
-        memUnit: "GB",
-        disks: [], //磁盘信息
-        networks: [], //网卡信息
-        applyNum: "",
+        auditOpinion: '',
+        osMachine: '',
+        architecture: '',
+        templateName: '',
+        systemType: '',
+        aliasName: '',
+        selectCluster: '',
+        selectClusterUuid: '',
+        storageLocationId: '',
+        cpu: '',
+        mem: '',
+        memUnit: 'GB',
+        disks: [], // 磁盘信息
+        networks: [], // 网卡信息
+        applyNum: ''
       },
       storageLocationList: [],
       rulesTemplate: {
         aliasName: [
           {
             required: true,
-            message: this.$t("workOrder.aliasNameNotNull"), // "名称不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.aliasNameNotNull'), // "名称不能为空",
+            trigger: 'blur'
           },
           {
             min: 6,
             max: 32,
-            message: this.$t("workOrder.aliasNameLength"), // "名称长度应控制在 6 ~ 32 个字符",
-            trigger: "blur",
-          },
+            message: this.$t('workOrder.aliasNameLength'), // "名称长度应控制在 6 ~ 32 个字符",
+            trigger: 'blur'
+          }
         ],
         applyNum: [
           {
             required: true,
-            message: this.$t("workOrder.serverNumNotNull"), // "申请个数不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.serverNumNotNull'), // "申请个数不能为空",
+            trigger: 'blur'
           },
           {
-            message: this.$t("workOrder.serverNumIsoRange"), // "申请个数应控制在 1 ~ 4 范围",
-            trigger: "blur",
-            validator: validApplyNum,
-          },
+            message: this.$t('workOrder.serverNumIsoRange'), // "申请个数应控制在 1 ~ 4 范围",
+            trigger: 'blur',
+            validator: validApplyNum
+          }
         ],
         auditOpinion: [
           {
             required: true,
-            message: this.$t("workOrder.commentsNotempty"), // "审核意见不能为空",
-            trigger: "blur",
+            message: this.$t('workOrder.commentsNotempty'), // "审核意见不能为空",
+            trigger: 'blur'
           },
           {
             required: true,
-            trigger: "blur",
-            message: this.$t("workOrder.commentsspecialChar"), // "审核意见不能出现特殊字符",
+            trigger: 'blur',
+            message: this.$t('workOrder.commentsspecialChar'), // "审核意见不能出现特殊字符",
 
-            validator: validate.special_char,
-          },
-        ],
+            validator: validate.special_char
+          }
+        ]
       },
 
       // 磁盘信息
@@ -203,61 +201,61 @@ export default {
 
       // 光驱列表
       orlIsoShowList: [],
-      passModifyformData: {},
-    };
+      passModifyformData: {}
+    }
   },
 
   created() {
-    this.getApplyDetail();
+    this.getApplyDetail()
   },
   methods: {
-    //获取模板详情
+    // 获取模板详情
     getApplyDetail() {
-      let workOrderId = this.passModifyData.workOrderId;
+      const workOrderId = this.passModifyData.workOrderId
       passModifyServerVmDetail({ workOrderId }).then((res) => {
-        this.passModifyformData = res;
-        this.passModifyServervmFormData.applyNum = res.applyNum;
-        this.passModifyServervmFormData.aliasName = res.aliasName;
-        this.passModifyServervmFormData.osMachine = res.osMachine;
-        this.passModifyServervmFormData.architecture = res.architecture;
-        this.passModifyServervmFormData.systemType = res.systemType;
-        this.passModifyServervmFormData.cpu = res.cpu;
-        this.passModifyServervmFormData.mem = res.mem;
-        this.passModifyServervmFormData.memUnit = res.memUnit;
-        this.passModifyServervmFormData.selectCluster = res.selectCluster;
+        this.passModifyformData = res
+        this.passModifyServervmFormData.applyNum = res.applyNum
+        this.passModifyServervmFormData.aliasName = res.aliasName
+        this.passModifyServervmFormData.osMachine = res.osMachine
+        this.passModifyServervmFormData.architecture = res.architecture
+        this.passModifyServervmFormData.systemType = res.systemType
+        this.passModifyServervmFormData.cpu = res.cpu
+        this.passModifyServervmFormData.mem = res.mem
+        this.passModifyServervmFormData.memUnit = res.memUnit
+        this.passModifyServervmFormData.selectCluster = res.selectCluster
         this.passModifyServervmFormData.selectClusterUuid =
-          res.selectClusterUuid;
+          res.selectClusterUuid
         this.passModifyServervmFormData.storageLocationId =
-          res.storageLocationId;
+          res.storageLocationId
 
-        this.storageLocationList = res.storageLocationList;
+        this.storageLocationList = res.storageLocationList
 
         // 处理网卡数据
         this.networksformData = JSON.parse(
           JSON.stringify(this.passModifyformData)
-        );
+        )
         // 处理磁盘数据
         this.disksformData = JSON.parse(
           JSON.stringify(this.passModifyformData)
-        );
+        )
 
-        this.orlIsoShowList = res.applyIsoList;
-      });
+        this.orlIsoShowList = res.applyIsoList
+      })
     },
     // 提交
     handlerConfirm() {
-      const that = this;
-      let computResourcesvalidate = true;
-      let netWorkInfovalidate = true;
-      let setDiskInfovalidate = true;
+      const that = this
+      let computResourcesvalidate = true
+      let netWorkInfovalidate = true
+      let setDiskInfovalidate = true
       // 检验计算资源
-      computResourcesvalidate = this.$refs.computResources.submitForm();
+      computResourcesvalidate = this.$refs.computResources.submitForm()
       // 检验磁盘信息
-      setDiskInfovalidate = this.$refs.setDiskInfo.submitForm();
+      setDiskInfovalidate = this.$refs.setDiskInfo.submitForm()
       // 检验网卡信息
-      netWorkInfovalidate = this.$refs.setNetWorkInfo.submitForm();
+      netWorkInfovalidate = this.$refs.setNetWorkInfo.submitForm()
 
-      let confirmMsg = this.$t("workOrder.sureApproved"); // "确定审核通过？";
+      const confirmMsg = this.$t('workOrder.sureApproved') // "确定审核通过？";
       this.$refs.passModifyServervmForm.validate((valid) => {
         if (
           valid &&
@@ -267,45 +265,45 @@ export default {
         ) {
           this.alertConfirm(confirmMsg)
             .then((err) => {
-              that.commitModifyPass();
+              that.commitModifyPass()
             })
-            .catch((err) => {});
+            .catch((err) => {})
         } else {
-          return false;
+          return false
         }
-      });
+      })
     },
     commitModifyPass() {
-      let workOrderId = this.passModifyData.workOrderId;
-      let auditOpinion = this.passModifyServervmFormData.auditOpinion;
-      let aliasName = this.passModifyServervmFormData.aliasName;
+      const workOrderId = this.passModifyData.workOrderId
+      const auditOpinion = this.passModifyServervmFormData.auditOpinion
+      const aliasName = this.passModifyServervmFormData.aliasName
 
-      let storageLocationId = this.passModifyServervmFormData.storageLocationId;
-      let vcpus = this.passModifyServervmFormData.cpu;
-      let memory = this.passModifyServervmFormData.mem;
-      let memUnit = this.passModifyServervmFormData.memUnit;
-      let plateformType = this.passModifyServervmFormData.architecture;
-      let operatingSystem = this.passModifyServervmFormData.osMachine;
-      let systemType = this.passModifyServervmFormData.systemType;
+      const storageLocationId = this.passModifyServervmFormData.storageLocationId
+      const vcpus = this.passModifyServervmFormData.cpu
+      const memory = this.passModifyServervmFormData.mem
+      const memUnit = this.passModifyServervmFormData.memUnit
+      const plateformType = this.passModifyServervmFormData.architecture
+      const operatingSystem = this.passModifyServervmFormData.osMachine
+      const systemType = this.passModifyServervmFormData.systemType
 
-      let computResources = this.$refs.computResources.computResourcesFormData;
-      let computResourcesFormData = {
+      const computResources = this.$refs.computResources.computResourcesFormData
+      const computResourcesFormData = {
         serverClusterType: computResources.serverClusterType,
         // 自定义 选择主机
         selectCluster: computResources.selectCluster, // 模板所选计算资源
         selectClusterUuid: computResources.selectClusterUuid, // 模板所选计算资源uuid
 
         selectResourceTagId: computResources.selectTagIds, // 绑定资源ID
-        selectTagNames: computResources.selectTagNames, // 绑定资源的名称
-      };
+        selectTagNames: computResources.selectTagNames // 绑定资源的名称
+      }
 
-      //网络
-      let networkList = this.$refs.setNetWorkInfo.cmtnetworkList;
+      // 网络
+      const networkList = this.$refs.setNetWorkInfo.cmtnetworkList
 
-      //磁盘处理
-      let diskList = this.$refs.setDiskInfo.cmtdiskList;
+      // 磁盘处理
+      const diskList = this.$refs.setDiskInfo.cmtdiskList
 
-      let commitData = {
+      const commitData = {
         workOrderId,
         auditOpinion,
         aliasName,
@@ -319,22 +317,22 @@ export default {
         memUnit,
         diskList,
         networkList,
-        ...computResourcesFormData,
-      };
+        ...computResourcesFormData
+      }
       passModifyServerVm(commitData).then((res) => {
-        this.passSuccess();
-      });
+        this.passSuccess()
+      })
     },
     handlerCancel() {
-      this.$parent.closeDrawer();
+      this.$parent.closeDrawer()
     },
     passSuccess() {
-      ReMessage.success(this.$t("common.reviewsucc"));
-      this.$parent.$parent.$parent.refreshTable();
-      this.handlerCancel();
-    },
-  },
-};
+      ReMessage.success(this.$t('common.reviewsucc'))
+      this.$parent.$parent.$parent.refreshTable()
+      this.handlerCancel()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope>

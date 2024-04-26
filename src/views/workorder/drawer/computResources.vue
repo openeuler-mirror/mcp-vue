@@ -63,92 +63,95 @@
     <!-- 选择主机 -->
     <selectCluster-drawer
       :visible.sync="showSelectClusterDrawer"
-      :selectedClusterIds="selectedClusterIds"
-      :canClusterList="clusterList"
+      :selected-cluster-ids="selectedClusterIds"
+      :can-cluster-list="clusterList"
       @handlerConfirm="selectClusterConfirm"
     />
     <!-- 绑定资源 -->
     <selectTagNames-drawer
       :visible.sync="showSelectTagNamesDrawer"
-      :selectTagIds="selectTagIds"
-      :clusterBindResourceList="clusterBindResourceList"
+      :select-tag-ids="selectTagIds"
+      :cluster-bind-resource-list="clusterBindResourceList"
       @handlerConfirm="selectTagIdsConfirm"
     />
   </div>
 </template>
 <script>
-import selectClusterDrawer from "./selectCluster-drawer";
-import selectTagNamesDrawer from "./selectTagNames-drawer.vue";
+import selectClusterDrawer from './selectCluster-drawer'
+import selectTagNamesDrawer from './selectTagNames-drawer.vue'
 export default {
   components: {
     selectClusterDrawer,
-    selectTagNamesDrawer,
+    selectTagNamesDrawer
   },
-  props: ["formData"],
+  props: ['formData'],
   data() {
     return {
       // 枚举备注: AUTO(自动) CUSTOM(自定义) BIND_RESOURCE(绑定资源)
       serverClusterTypeList: [
         {
-          label: this.$t("workOrder.serverClusterTypeObj.AUTO"), // "自动",
-          value: "AUTO",
+          label: this.$t('workOrder.serverClusterTypeObj.AUTO'), // "自动",
+          value: 'AUTO'
         },
         {
-          label: this.$t("workOrder.serverClusterTypeObj.CUSTOM"), // "自定义",
-          value: "CUSTOM",
+          label: this.$t('workOrder.serverClusterTypeObj.CUSTOM'), // "自定义",
+          value: 'CUSTOM'
         },
         {
-          label: this.$t("workOrder.serverClusterTypeObj.BIND_RESOURCE"), // "绑定资源",
-          value: "BIND_RESOURCE",
-        },
+          label: this.$t('workOrder.serverClusterTypeObj.BIND_RESOURCE'), // "绑定资源",
+          value: 'BIND_RESOURCE'
+        }
       ],
       computResourcesFormData: {
-        serverClusterType: "AUTO",
+        serverClusterType: 'AUTO',
         // 自定义 选择主机
-        selectCluster: "", // 模板所选计算资源
-        selectClusterUuid: "", // 模板所选计算资源uuid
+        selectCluster: '', // 模板所选计算资源
+        selectClusterUuid: '', // 模板所选计算资源uuid
 
-        selectTagIds: "", // 绑定资源ID
-        selectTagNames: "", // 绑定资源的名称
+        selectTagIds: '', // 绑定资源ID
+        selectTagNames: '' // 绑定资源的名称
       },
       computResourcesRules: {
-        serverClusterType: [{ required: true, message: "", trigger: "blur" }],
+        serverClusterType: [{ required: true, message: '', trigger: 'blur' }],
         selectCluster: [
           {
             required: true,
-            message: this.$t("workOrder.pselectCluster"), // "请选择主机",
-            trigger: "blur",
-          },
+            message: this.$t('workOrder.pselectCluster'), // "请选择主机",
+            trigger: 'blur'
+          }
         ],
         selectTagNames: [
           {
             required: true,
-            message: this.$t("workOrder.pselectCluster"), // "请绑定资源",
-            trigger: "blur",
-          },
-        ],
+            message: this.$t('workOrder.pselectCluster'), // "请绑定资源",
+            trigger: 'blur'
+          }
+        ]
       },
 
       showSelectClusterDrawer: false,
-      selectedClusterIds: "",
+      selectedClusterIds: '',
       clusterList: [],
 
       showSelectTagNamesDrawer: false,
-      selectTagIds: "",
-      clusterBindResourceList: [],
-    };
+      selectTagIds: '',
+      clusterBindResourceList: []
+    }
+  },
+  watch: {
+    formData(val) {
+      this.setPageDefaultData(val)
+    }
   },
 
   created() {},
   mounted() {
     if (this.formData) {
-      this.setPageDefaultData(this.formData);
+      this.setPageDefaultData(this.formData)
     }
   },
-  watch: {
-    formData(val) {
-      this.setPageDefaultData(val);
-    },
+  beforeDestroy() {
+    this.resetForm()
   },
   // watch: {
   //   data: {
@@ -169,83 +172,80 @@ export default {
   // },
   methods: {
     setPageDefaultData(defaultData) {
-      let { serverClusterType, clusterList, clusterBindResourceList } =
-        defaultData;
-      this.clusterList = clusterList;
-      this.clusterBindResourceList = clusterBindResourceList;
-      this.serverClusterTypeChange(serverClusterType);
+      const { serverClusterType, clusterList, clusterBindResourceList } =
+        defaultData
+      this.clusterList = clusterList
+      this.clusterBindResourceList = clusterBindResourceList
+      this.serverClusterTypeChange(serverClusterType)
     },
     serverClusterTypeChange(val) {
-      this.resetForm();
-      this.computResourcesFormData.serverClusterType = val;
-      let { selectCluster, selectClusterUuid, selectTagIds, selectTagNames } =
-        this.formData;
+      this.resetForm()
+      this.computResourcesFormData.serverClusterType = val
+      const { selectCluster, selectClusterUuid, selectTagIds, selectTagNames } =
+        this.formData
       switch (val) {
-        case "AUTO":
-          this.computResourcesFormData.selectCluster = ""; // 模板所选计算资源
-          this.computResourcesFormData.selectClusterUuid = ""; // 模板所选计算资源uuid
-          this.computResourcesFormData.selectTagIds = ""; // 绑定资源ID
-          this.computResourcesFormData.selectTagNames = ""; // 绑定资源的名称
-          break;
-        case "CUSTOM":
-          this.computResourcesFormData.selectCluster = selectCluster; // 模板所选计算资源
-          this.computResourcesFormData.selectClusterUuid = selectClusterUuid; // 模板所选计算资源uuid
-          this.computResourcesFormData.selectTagIds = ""; // 绑定资源ID
-          this.computResourcesFormData.selectTagNames = ""; // 绑定资源的名称
+        case 'AUTO':
+          this.computResourcesFormData.selectCluster = '' // 模板所选计算资源
+          this.computResourcesFormData.selectClusterUuid = '' // 模板所选计算资源uuid
+          this.computResourcesFormData.selectTagIds = '' // 绑定资源ID
+          this.computResourcesFormData.selectTagNames = '' // 绑定资源的名称
+          break
+        case 'CUSTOM':
+          this.computResourcesFormData.selectCluster = selectCluster // 模板所选计算资源
+          this.computResourcesFormData.selectClusterUuid = selectClusterUuid // 模板所选计算资源uuid
+          this.computResourcesFormData.selectTagIds = '' // 绑定资源ID
+          this.computResourcesFormData.selectTagNames = '' // 绑定资源的名称
 
-          break;
-        case "BIND_RESOURCE":
-          this.computResourcesFormData.selectCluster = ""; // 模板所选计算资源
-          this.computResourcesFormData.selectClusterUuid = ""; // 模板所选计算资源uuid
-          this.computResourcesFormData.selectTagIds = selectTagIds; // 绑定资源ID
-          this.computResourcesFormData.selectTagNames = selectTagNames; // 绑定资源的名称
-          break;
+          break
+        case 'BIND_RESOURCE':
+          this.computResourcesFormData.selectCluster = '' // 模板所选计算资源
+          this.computResourcesFormData.selectClusterUuid = '' // 模板所选计算资源uuid
+          this.computResourcesFormData.selectTagIds = selectTagIds // 绑定资源ID
+          this.computResourcesFormData.selectTagNames = selectTagNames // 绑定资源的名称
+          break
         default:
-          this.computResourcesFormData.selectCluster = ""; // 模板所选计算资源
-          this.computResourcesFormData.selectClusterUuid = ""; // 模板所选计算资源uuid
-          this.computResourcesFormData.selectTagIds = ""; // 绑定资源ID
-          this.computResourcesFormData.selectTagNames = ""; // 绑定资源的名称
-          break;
+          this.computResourcesFormData.selectCluster = '' // 模板所选计算资源
+          this.computResourcesFormData.selectClusterUuid = '' // 模板所选计算资源uuid
+          this.computResourcesFormData.selectTagIds = '' // 绑定资源ID
+          this.computResourcesFormData.selectTagNames = '' // 绑定资源的名称
+          break
       }
     },
 
     changeSelectCluster() {
-      this.selectedClusterIds = this.computResourcesFormData.selectClusterUuid;
-      this.showSelectClusterDrawer = true;
+      this.selectedClusterIds = this.computResourcesFormData.selectClusterUuid
+      this.showSelectClusterDrawer = true
     },
     selectClusterConfirm(val) {
-      this.computResourcesFormData.selectCluster = val.selectCluster; // 模板所选计算资源
-      this.computResourcesFormData.selectClusterUuid = val.selectClusterUuid; // 模板所选计算资源uuid
+      this.computResourcesFormData.selectCluster = val.selectCluster // 模板所选计算资源
+      this.computResourcesFormData.selectClusterUuid = val.selectClusterUuid // 模板所选计算资源uuid
     },
 
     changeSelectTagNames() {
-      this.selectTagIds = this.computResourcesFormData.selectTagIds;
-      this.showSelectTagNamesDrawer = true;
+      this.selectTagIds = this.computResourcesFormData.selectTagIds
+      this.showSelectTagNamesDrawer = true
     },
     selectTagIdsConfirm(val) {
-      this.computResourcesFormData.selectTagIds = val.selectTagIds; // 绑定资源ID
-      this.computResourcesFormData.selectTagNames = val.selectTagNames; // 绑定资源的名称
+      this.computResourcesFormData.selectTagIds = val.selectTagIds // 绑定资源ID
+      this.computResourcesFormData.selectTagNames = val.selectTagNames // 绑定资源的名称
     },
 
     submitForm() {
-      let flag;
+      let flag
       this.$refs.computResourcesForm.validate((valid) => {
         if (valid) {
-          flag = true;
+          flag = true
         } else {
-          flag = false;
+          flag = false
         }
-      });
-      return flag;
+      })
+      return flag
     },
     resetForm() {
-      this.$refs.computResourcesForm.resetFields();
-    },
-  },
-  beforeDestroy() {
-    this.resetForm();
-  },
-};
+      this.$refs.computResourcesForm.resetFields()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scope>

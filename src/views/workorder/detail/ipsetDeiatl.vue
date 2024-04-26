@@ -55,14 +55,14 @@
 
 <script>
 export default {
-  name: "App",
-  props: ["ipinfo"],
+  name: 'App',
+  props: ['ipinfo'],
   data() {
     return {
-      pageInfo: this.ipinfo,
-    };
-  },
-};
+      pageInfo: this.ipinfo
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .networkIpinfo {

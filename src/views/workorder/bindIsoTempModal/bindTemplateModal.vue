@@ -1,5 +1,6 @@
 <template>
   <el-drawer
+    v-if="drawerVisible"
     size="800px"
     :title="$t('workOrder.selectiso')"
     direction="rtl"
@@ -7,61 +8,60 @@
     :modal="false"
     custom-class=""
     :wrapper-closable="false"
-    v-if="drawerVisible"
     :visible.sync="drawerVisible"
     :before-close="handleCloseCreate"
     :destroy-on-close="true"
   >
     <bindTemplateBox
       ref="bindTemplateBox"
-      :allIsoList="allIsoList"
-      :defaultSelectedKeys="defaultSelectedKeys"
+      :all-iso-list="allIsoList"
+      :default-selected-keys="defaultSelectedKeys"
       @confirm="confirm"
     />
   </el-drawer>
 </template>
 
 <script>
-import bindTemplateBox from "./bindTemplateBox.vue";
+import bindTemplateBox from './bindTemplateBox.vue'
 export default {
   components: {
-    bindTemplateBox,
+    bindTemplateBox
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
 
     defaultSelectedKeys: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     allIsoList: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {
-      drawerVisible: this.visible,
-    };
+      drawerVisible: this.visible
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
-    },
+      this.drawerVisible = isvis
+    }
   },
   methods: {
     handleCloseCreate() {
-      this.$emit("update:visible", false);
+      this.$emit('update:visible', false)
       // this.$parent.renderTable();
     },
     confirm(rows) {
-      this.$emit("confirm", rows);
-    },
-  },
-};
+      this.$emit('confirm', rows)
+    }
+  }
+}
 </script>
 
 <style>

@@ -1,11 +1,11 @@
 <template>
   <!-- 变更云服务器审核 -->
   <el-drawer
+    v-if="drawerVisible"
     size="900px"
     :title="$t('workOrder.passmodifyservervm')"
     direction="rtl"
     custom-class="workorder-pass-modify-servervm-drawer"
-    v-if="drawerVisible"
     :wrapper-closable="false"
     :visible.sync="drawerVisible"
     :before-close="handleClosePass"
@@ -13,50 +13,50 @@
   >
     <PassServervmModifyDrawer
       ref="PassServervmModify"
-      :passModifyData="passModifyData"
+      :pass-modify-data="passModifyData"
     />
   </el-drawer>
 </template>
 
 <script>
-import PassServervmModifyDrawer from "./PassServervmModify.vue";
+import PassServervmModifyDrawer from './PassServervmModify.vue'
 export default {
   components: {
-    PassServervmModifyDrawer,
+    PassServervmModifyDrawer
   },
   props: {
     visible: {
       type: Boolean,
-      default: false,
+      default: false
     },
     selectRowData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
       drawerVisible: this.visible,
-      passModifyData: null,
-    };
+      passModifyData: null
+    }
   },
   watch: {
     visible(isvis) {
-      this.drawerVisible = isvis;
+      this.drawerVisible = isvis
     },
     selectRowData(selectRow) {
-      this.passModifyData = selectRow;
-    },
+      this.passModifyData = selectRow
+    }
   },
   created() {},
   methods: {
     handleClosePass(done) {
-      //this.$refs.PassServervmApply.handlerCancel()
-      this.$emit("update:visible", false);
-      done();
-    },
-  },
-};
+      // this.$refs.PassServervmApply.handlerCancel()
+      this.$emit('update:visible', false)
+      done()
+    }
+  }
+}
 </script>
 <style>
 </style>
