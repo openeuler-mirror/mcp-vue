@@ -44,7 +44,7 @@ export default {
       default: () => [],
     },
     // 存储到cookie 的表格名称，用户获取显示列
-    clumnName: {
+    columnName: {
       type: String,
       default: "column-setting",
     },
@@ -79,7 +79,7 @@ export default {
       this.checkedColumn = checkedColumnArr;
       this.isIndeterminate = false;
       this.$emit("tableColumn", filterDataArr);
-      Cookies.set(this.clumnName, this.checkedColumn);
+      Cookies.set(this.columnName, this.checkedColumn);
     },
     // 单个选中
     handlecheckedColumnChange(value) {
@@ -87,16 +87,16 @@ export default {
       this.checkAll = checkedCount === this.filterData.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.filterData.length;
-      this.$emit("tableColumn", this.filteTableColunmnn(value));
-      Cookies.set(this.clumnName, value);
+      this.$emit("tableColumn", this.filterTableColumn(value));
+      Cookies.set(this.columnName, value);
     },
-    filteTableColunmnn(arr) {
+    filterTableColumn(arr) {
       return this.filterData.filter((item) => arr.includes(item.prop));
     },
     // 从cookie 中获取显示列
     defaultSetting() {
-      const clumnOldName = Cookies.get(this.clumnName);
-      const arr = clumnOldName ? JSON.parse(clumnOldName) : [];
+      const columnOldName = Cookies.get(this.columnName);
+      const arr = columnOldName ? JSON.parse(columnOldName) : [];
       if (arr.length) {
         this.setDefaultSetting(arr);
       } else {
@@ -108,7 +108,7 @@ export default {
     setDefaultSetting(arr) {
       this.checkAll = this.filterData.length === arr.length;
       this.checkedColumn = arr;
-      this.$emit("tableColumn", this.filteTableColunmnn(arr));
+      this.$emit("tableColumn", this.filterTableColumn(arr));
     },
   },
 };
