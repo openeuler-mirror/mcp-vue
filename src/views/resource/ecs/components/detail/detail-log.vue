@@ -109,15 +109,13 @@ export default {
   },
   methods: {
     getdetailInfo(row) {
-      let details = "";
-      var name = row.detail;
-      if (name == "null" || typeof name == "undefined") {
+      let name = row.detail;
+      if (name === "null" || typeof name === "undefined") {
         name = "";
       } else {
         name = KSVD.taskDetailInfo.init(row.objName, name);
       }
-      details = name;
-      return details;
+      return name;
       // return row.detail;
     },
     handlePageChange(page) {
