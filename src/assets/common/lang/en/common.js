@@ -129,7 +129,7 @@ export default {
     moreLabel: 'More',
     validateNull: 'Cannot be empty',
     validateNumber: 'Must be a number',
-    validateLeng3_15: 'The length should be betwee 3 and 15 characters',
+    validateLeng3_15: 'The length should be between 3 and 15 characters',
     column_Dispaly: 'Column Display Settings',
     refreshTable: 'Rfresh Table',
     selected_label: 'Selected',
