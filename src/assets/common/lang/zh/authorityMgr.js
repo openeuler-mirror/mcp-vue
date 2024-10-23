@@ -19,7 +19,7 @@ export default {
     deleteUsers: "删除用户", // 删除用户
     deleteTipMsg: "确定删除该用户吗?", // 确定删除该用户吗?
     deleteSuccessMsg: "删除用户成功!", // 确定删除该用户吗?
-    deletesTipMsg: "确定批量删除该用户嘛?", // 确定批量删除该用户组吗?
+    deletesTipMsg: "确定批量删除该用户吗?", // 确定批量删除该用户吗?
     deletesSuccessMsg: "批量删除用户成功!", // 确定批量删除该用户组吗?
 
 

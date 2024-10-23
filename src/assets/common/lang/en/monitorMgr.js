@@ -73,7 +73,7 @@ export default {
             timestamp: 'Date', // 日期
             info: 'Info', // 信息
             server: 'Server', // 服务器
-            mutableTags: 'Sesource', // 资源
+            mutableTags: 'Resource', // 资源
         },
         alarmEvtMap: {
             severity: 'Alarm level',
