@@ -61,7 +61,6 @@
           >
             <el-input
               v-model="createDataFormData.parentName"
-              qlinput-readonly
               readonly
               :placeholder="$t('authorityMgr.vdcIdPlc')"
             >
