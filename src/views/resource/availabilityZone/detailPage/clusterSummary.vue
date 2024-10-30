@@ -487,8 +487,6 @@ export default {
         .basicInfo-item-label {
           text-align: right;
         }
-        .basicInfo-item-value {
-        }
       }
       .basicInfo-content-chart {
         border-radius: 15px;
