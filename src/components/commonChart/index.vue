@@ -35,7 +35,7 @@ export default {
           });
         }
       },
-      // 代表在wacth里声明了 立即先去执行handler方法
+      // 代表在watch里声明了 立即先去执行handler方法
       immediate: true,
       deep: true,
     },
