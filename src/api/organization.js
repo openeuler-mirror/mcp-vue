@@ -10,7 +10,7 @@ export function queryOrgTree(data) {
 }
 
 
-// 获取未绑定vdc列表
+// 父组织查询
 export function queryParentOrg(data) {
     return request({
         url: '/org/queryParentOrg',
