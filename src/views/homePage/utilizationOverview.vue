@@ -260,7 +260,7 @@ export default {
       let { cpuData, memData, storageData } = pageData;
       // CPU利用率
       let cpuLylChart = {
-        nama: this.cpuUtilization.title, // CPU利用率
+        name: this.cpuUtilization.title, // CPU利用率
         value: this.calculatePercentage(cpuData.usedCpu, cpuData.totalCpu),
       };
       this.cpuUtilization.usedCpu = cpuData.usedCpu;
@@ -274,7 +274,7 @@ export default {
 
       // 内存利用率
       let memoryLylChart = {
-        nama: this.memoryUtilization.title, // CPU利用率
+        name: this.memoryUtilization.title, // CPU利用率
         value: this.calculatePercentage(memData.usedMem, memData.totalMem),
       };
       this.memoryUtilization.usedMem = memData.usedMem;
@@ -288,7 +288,7 @@ export default {
 
       // 存储利用率
       let storageLylChart = {
-        nama: this.storageUtilization.title, // CPU利用率
+        name: this.storageUtilization.title, // CPU利用率
         value: this.calculatePercentage(
           storageData.usedStorage,
           storageData.totalStorage

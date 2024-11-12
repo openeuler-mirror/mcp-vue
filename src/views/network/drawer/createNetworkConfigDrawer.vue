@@ -170,11 +170,11 @@ export default {
       mcNetworkConfig().then((res) => {
         this.virtualSwitchList = res.virtualSwitchList;
         this.addressPoolList = res.addressPoolList;
-        let defauleAddressPool = this.addressPoolList.find(
+        let defaultAddressPool = this.addressPoolList.find(
           (item) => item.defaultPool === true
         );
-        if (defauleAddressPool) {
-          this.createNeworkFormData.addressPool = defauleAddressPool.name;
+        if (defaultAddressPool) {
+          this.createNeworkFormData.addressPool = defaultAddressPool.name;
         }
         this.securityGroupList = res.securityGroupList;
       });

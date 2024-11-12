@@ -193,19 +193,19 @@ export default {
 
       // CPU利用率
       let cpufpb = {
-        nama: this.$t("common.details.CPUUtilization"), // "CPU利用率",
+        name: this.$t("common.details.CPUUtilization"), // "CPU利用率",
         value: this.resourceUsedInfo.cpuPercent,
       };
       this.cpufpbChart.option = this.getpersentoption(cpufpb);
       // 内存利用率
       let memfpb = {
-        nama: this.$t("common.details.memoryUtilization"), // "内存利用率",
+        name: this.$t("common.details.memoryUtilization"), // "内存利用率",
         value: this.resourceUsedInfo.memoryPercent,
       };
       this.memfpbChart.option = this.getpersentoption(memfpb);
       // 存储利用率
       let storagefpb = {
-        nama: this.$t("common.details.storageUtilization"), // "存储利用率",
+        name: this.$t("common.details.storageUtilization"), // "存储利用率",
         value: this.resourceUsedInfo.diskPercent,
       };
       this.storagefpbChart.option = this.getpersentoption(storagefpb);

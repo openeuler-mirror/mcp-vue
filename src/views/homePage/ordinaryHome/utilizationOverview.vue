@@ -218,7 +218,7 @@ export default {
       let { vdcCpuUsedData, vdcMemUsedData, vdcStorageUsedData } = pageData;
       // CPU分配比
       let cpuFpbChart = {
-        nama: this.cpuUtilization.title, // CPU分配比
+        name: this.cpuUtilization.title, // CPU分配比
         data: [
           {
             value: vdcCpuUsedData.allocateChild,
@@ -242,7 +242,7 @@ export default {
 
       // 内存分配比
       let memoryFpbChart = {
-        nama: this.memoryUtilization.title, // CPU分配比
+        name: this.memoryUtilization.title, // CPU分配比
         data: [
           {
             value: vdcMemUsedData.allocateChild,
@@ -268,7 +268,7 @@ export default {
 
       // 存储分配比
       let storageFpbChart = {
-        nama: this.storageUtilization.title, // CPU分配比
+        name: this.storageUtilization.title, // CPU分配比
         data: [
           {
             value: vdcMemUsedData.allocateChild,

@@ -265,7 +265,7 @@ export default {
       this.pageInfo = this.dataInfo;
       // cpu分配比
       let cpufpb = {
-        nama: this.$t("common.details.CPUallocationRatio"), // "cpu分配比",
+        name: this.$t("common.details.CPUallocationRatio"), // "cpu分配比",
         value: this.calculatePercentage(
           this.pageInfo.cpuUsed,
           this.pageInfo.cpuTotal
@@ -274,7 +274,7 @@ export default {
       this.cpufpbChart.option = this.getpersentoption(cpufpb);
       // 内存分配比
       let memfpb = {
-        nama: this.$t("common.details.memoryAllocationRatio"), // "内存分配比",
+        name: this.$t("common.details.memoryAllocationRatio"), // "内存分配比",
         value: this.calculatePercentage(
           this.pageInfo.memUsed,
           this.pageInfo.memTotal
@@ -283,7 +283,7 @@ export default {
       this.memfpbChart.option = this.getpersentoption(memfpb);
       // 存储分配比
       let storagefpb = {
-        nama: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
+        name: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
         value: this.calculatePercentage(
           this.pageInfo.storageUsed,
           this.pageInfo.storageTotal
@@ -292,7 +292,7 @@ export default {
       this.storagefpbChart.option = this.getpersentoption(storagefpb);
       // 饼图
       let wljqinfo = {
-        nama: this.$t("resourceMgr.zoneClusterDesc"), // "物理集群",
+        name: this.$t("resourceMgr.zoneClusterDesc"), // "物理集群",
         data: [
           {
             value: this.pageInfo.clusterOnline,
@@ -313,7 +313,7 @@ export default {
       this.wljqChart.option = this.geibingoption(wljqinfo);
 
       let wlzjinfo = {
-        nama: this.$t("resourceMgr.clusterPhysicalHost"), // "物理主机",
+        name: this.$t("resourceMgr.clusterPhysicalHost"), // "物理主机",
         data: [
           {
             value: this.pageInfo.physicalHostOnline,
@@ -334,7 +334,7 @@ export default {
       this.wlzjChart.option = this.geibingoption(wlzjinfo);
 
       let yfwqinfo = {
-        nama: this.$t("authorityMgr.serverVmNum"), // "云服务器",
+        name: this.$t("authorityMgr.serverVmNum"), // "云服务器",
         data: [
           {
             value: this.pageInfo.machineOnline,
