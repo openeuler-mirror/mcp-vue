@@ -253,7 +253,7 @@ export default {
 
       // cpu百分比图
       let cpufpb = {
-        nama: this.$t("common.details.CPUUtilization"), // "CPU利用率",
+        name: this.$t("common.details.CPUUtilization"), // "CPU利用率",
         value: this.calculatePercentage(
           this.resourceUsedInfo.cpuUsed,
           this.resourceUsedInfo.cpuTotal
@@ -262,7 +262,7 @@ export default {
       this.cpufpbChart.option = this.getpersentoption(cpufpb);
       // 内存分配比
       let memfpb = {
-        nama: this.$t("common.details.memoryUtilization"), // "内存利用率",
+        name: this.$t("common.details.memoryUtilization"), // "内存利用率",
         value: this.calculatePercentage(
           this.resourceUsedInfo.memUsed,
           this.resourceUsedInfo.memTotal
@@ -271,7 +271,7 @@ export default {
       this.memfpbChart.option = this.getpersentoption(memfpb);
       // 存储分配比
       let storagefpb = {
-        nama: this.$t("common.details.storageUtilization"), // "存储利用率",
+        name: this.$t("common.details.storageUtilization"), // "存储利用率",
         value: this.calculatePercentage(
           this.resourceUsedInfo.storageUsed,
           this.resourceUsedInfo.storageTotal

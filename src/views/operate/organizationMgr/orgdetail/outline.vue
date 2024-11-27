@@ -276,7 +276,7 @@ export default {
     drowChart() {
       // cpu分配比
       let cpufpb = {
-        nama: this.$t("common.details.CPUallocationRatio"), // "cpu分配比",
+        name: this.$t("common.details.CPUallocationRatio"), // "cpu分配比",
         value: this.calculatePercentage(
           this.pageInfo.allocationCpu,
           this.pageInfo.totalCpu
@@ -285,7 +285,7 @@ export default {
       this.cpufpbChart.option = this.getpersentoption(cpufpb);
       // 内存分配比
       let memfpb = {
-        nama: this.$t("common.details.memoryAllocationRatio"), // "内存分配比",
+        name: this.$t("common.details.memoryAllocationRatio"), // "内存分配比",
         value: this.calculatePercentage(
           this.pageInfo.allocationMem,
           this.pageInfo.totalMem
@@ -294,7 +294,7 @@ export default {
       this.memfpbChart.option = this.getpersentoption(memfpb);
       // 存储分配比
       let storagefpb = {
-        nama: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
+        name: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
         value: this.calculatePercentage(
           this.pageInfo.allocationStorage,
           this.pageInfo.totalStorage
@@ -304,7 +304,7 @@ export default {
 
       // 饼图
       let wlzjinfo = {
-        nama: this.$t("authorityMgr.userNum"), // "用户数",
+        name: this.$t("authorityMgr.userNum"), // "用户数",
         data: [
           {
             value: this.pageInfo.activeUser,
@@ -325,7 +325,7 @@ export default {
       this.wlzjChart.option = this.geibingoption(wlzjinfo);
 
       let yfwqinfo = {
-        nama: this.$t("authorityMgr.serverVmNum"), // "云服务器",
+        name: this.$t("authorityMgr.serverVmNum"), // "云服务器",
         data: [
           {
             value: this.pageInfo.machineOnline,

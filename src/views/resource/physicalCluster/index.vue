@@ -319,13 +319,13 @@ export default {
     },
     // 删除
     deleteInfo(row) {
-      let clusterEdleteConfirm = this.$t("resourceMgr.clusterEdleteConfirm"); // 确定删除该物理集群吗?
-      let clusterEdleteSuccess = this.$t("resourceMgr.clusterEdleteSuccess"); // "删除物理集群成功!"
+      let clusterDeleteConfirm = this.$t("resourceMgr.clusterDeleteConfirm"); // 确定删除该物理集群吗?
+      let clusterDeleteSuccess = this.$t("resourceMgr.clusterDeleteSuccess"); // "删除物理集群成功!"
 
       let params = {
         clusterId: row.clusterId,
       };
-      this.$confirm(clusterEdleteConfirm, this.$t("common.tips"), {
+      this.$confirm(clusterDeleteConfirm, this.$t("common.tips"), {
         confirmButtonText: this.$t("common.confirm"),
         cancelButtonText: this.$t("common.cancel"),
         type: "warning",
@@ -333,7 +333,7 @@ export default {
         .then(() => {
           deleteCluster(params)
             .then((res) => {
-              this.alertTips(clusterEdleteSuccess, "success");
+              this.alertTips(clusterDeleteSuccess, "success");
               this.renderTable();
             })
             .catch((err) => {

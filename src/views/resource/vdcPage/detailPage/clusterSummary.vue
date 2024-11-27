@@ -292,7 +292,7 @@ export default {
       this.pageInfo = this.dataInfo;
       // cpu分配比
       let cpufpb = {
-        nama: this.$t("common.details.CPUallocationRatio"), // "cpu分配比",
+        name: this.$t("common.details.CPUallocationRatio"), // "cpu分配比",
         data: [
           {
             value: this.pageInfo.allocationCpu,
@@ -317,7 +317,7 @@ export default {
       this.cpufpbChart.option = this.getbingoption(cpufpb);
       // 内存分配比
       let memfpb = {
-        nama: this.$t("common.details.memoryAllocationRatio"), // "内存分配比",
+        name: this.$t("common.details.memoryAllocationRatio"), // "内存分配比",
         data: [
           {
             value: this.pageInfo.allocationMem,
@@ -342,7 +342,7 @@ export default {
       this.memfpbChart.option = this.getbingoption(memfpb);
       // 存储分配比
       let storagefpb = {
-        nama: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
+        name: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
         data: [
           {
             value: this.pageInfo.allocationStorage,
@@ -384,7 +384,7 @@ export default {
           }
 
           let fpb = {
-            nama: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
+            name: this.$t("common.details.storageAllocationRatio"), // "存储分配比",
             data: [
               {
                 value: element.allocationChild,
