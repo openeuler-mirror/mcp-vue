@@ -322,20 +322,11 @@ export default {
           });
           this.lefttreeData = JSON.parse(JSON.stringify(treeList));
           let permissions = dealtree.getKeyWihoutParent(this.createDataFormData.permissions.slice(),this.lefttreeData)
-          let { editflag } = this.formOptions;
-          if (editflag) {
-            // 编辑
-            this.$nextTick(() => {
-              this.$refs.lefttree.setCheckedKeys(permissions, false);
-              // this.getLeftCheckedKeys();
-            });
-          } else {
-            // 新增
-            this.$nextTick(() => {
-              this.$refs.lefttree.setCheckedKeys(permissions, false);
-              // this.getLeftCheckedKeys();
-            });
-          }
+          // 编辑/新增
+          this.$nextTick(() => {
+            this.$refs.lefttree.setCheckedKeys(permissions, false);
+            // this.getLeftCheckedKeys();
+          });
         })
         .catch((err) => {
           this.alertTips(err);
